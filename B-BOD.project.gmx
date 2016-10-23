@@ -19,6 +19,7 @@
       <object>objects\obj_obstacle</object>
       <object>objects\obj_wall</object>
     </objects>
+    <object>objects\obj_viewControl</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_baseMap</room>

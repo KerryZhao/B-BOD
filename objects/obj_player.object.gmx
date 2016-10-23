@@ -7,7 +7,535 @@
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
-  <events/>
+  <events>
+    <event eventtype="0" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Set Gamepad and Controls
+gamepadSlot = 0;
+moveAxis = gp_axislh;
+jumpButtons[0] = gp_face1;
+jumpButtons[1] = gp_shoulderlb;
+jetButtons[0] = gp_face4;
+jetButtons[1] = gp_shoulderl;
+jetButtons[2] = gp_shoulderr;
+shootButtons[0] = gp_face3;
+shootButtons[1] = gp_shoulderrb;
+aimVAxis = gp_axislv;
+aimHAxis = gp_axislh;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Set the Speed Variables
+moveMaxSpeed = 10;
+jumpSpeed = 10;
+jetSpeed = 50;
+fuelUseSpeed = 40;
+fuelRefillSpeed = 20;
+jetMaxSpeed = 10;
+shootSpeed = 10;
+shootCooldown = 250;
+cooldown = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Set Aim and Move Variables
+aimH = 0;
+aimV = 0;
+aimDistance = 30;
+moveSpeed = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>107</id>
+        <kind>0</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_set_gravity</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>0</kind>
+            <string>270</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>0.4</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Set Player Properties
+depth = -1;
+onGround = false;
+color = c_white;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Set Health Variables
+maxHitPoints = 100;
+hitPoints = maxHitPoints;
+healthPadding = 10;
+healthThickness = 10;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Set Jetpack Variables
+maxFuel = 100;
+fuel = maxFuel;
+fuelPadding = 5;
+fuelThickness = 5;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>103</id>
+        <kind>0</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_set_hspeed</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>0</kind>
+            <string>moveSpeed</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check Jump Button
+for(var i=0;i&lt;array_length_1d(jumpButtons);i++){
+    if(gamepad_button_check(gamepadSlot, jumpButtons[i]) &amp;&amp; onGround){
+        vspeed -= jumpSpeed;
+        onGround = false;
+        break;
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check Shoot Button
+cooldown -= delta_time/1000;
+for(var i=0;i&lt;array_length_1d(shootButtons);i++){
+    if(gamepad_button_check(gamepadSlot, shootButtons[i]) &amp;&amp; cooldown&lt;=0){
+        var ball = instance_create(x+sprite_width/2+aimH, y+sprite_height/2+aimV, obj_ball);
+        ball.vspeed = aimV/aimDistance*shootSpeed;
+        ball.hspeed = aimH/aimDistance*shootSpeed;
+        with(ball)
+            if(!place_free(x, y))
+                instance_destroy();
+        cooldown = shootCooldown;
+        break;
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check Jetpack Button
+var jetpackUsed = false;
+for(var i=0;i&lt;array_length_1d(jetButtons) &amp;&amp; fuel&gt;0 &amp;&amp; !jetpackUsed;i++){
+    if(gamepad_button_check(gamepadSlot, jetButtons[i])){
+        vspeed -= jetSpeed*delta_time/1000000;
+        fuel -= fuelUseSpeed*delta_time/1000000;
+        if(vspeed&lt;-jetMaxSpeed)
+            vspeed = -jetMaxSpeed;
+        jetpackUsed = true;
+    }
+}
+
+//Refill fuel
+if(!jetpackUsed &amp;&amp; onGround){
+    if(fuel&lt;maxFuel)
+        fuel += fuelRefillSpeed*delta_time/1000000;
+    else
+        fuel = maxFuel;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Set not on ground at start of step
+onGround = false;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check Move Axis
+hspeed -= moveSpeed;
+moveSpeed = gamepad_axis_value(gamepadSlot, moveAxis)*moveMaxSpeed;
+hspeed += moveSpeed;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check Aim Axis
+var tempH = gamepad_axis_value(gamepadSlot, aimHAxis);
+var tempV = gamepad_axis_value(gamepadSlot, aimVAxis);
+if(abs(tempH)&gt;0.09 || abs(tempV)&gt;0.09){
+    var length = point_distance(0, 0, tempH, tempV);
+    aimH = tempH/length*aimDistance;
+    aimV = tempV/length*aimDistance;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="obj_obstacle">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check Side Hit
+if(other.bbox_top&gt;bbox_bottom || other.bbox_bottom&lt;bbox_top){
+    if(other.bbox_top&gt;bbox_bottom)
+        onGround = true;
+    vspeed=0;
+}
+else{
+    alarm[0] = 1;
+    hspeed = 0;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw Self
+draw_sprite_ext(sprite_index, 0, x, y, 1, 1, 0, color, 1);
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>515</id>
+        <kind>0</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_draw_arrow</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>-1</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>0</kind>
+            <string>sprite_width/2+aimH</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>sprite_height/2+aimV</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>sprite_width/2+aimH*2</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>sprite_height/2+aimV*2</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>12</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw Health Bar
+draw_healthbar(x-healthPadding, y+sprite_height+healthPadding, x+sprite_width+healthPadding, y+sprite_height+healthPadding+healthThickness, hitPoints/maxHitPoints*100, c_white, c_red, c_lime, 0, true, true);
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw Fuel Bar
+if(fuel!=maxFuel)
+    draw_healthbar(x-fuelPadding, y+sprite_height+healthPadding+healthThickness+fuelPadding, x+sprite_width+fuelPadding, y+sprite_height+healthPadding+healthThickness+fuelPadding+fuelThickness, fuel/maxFuel*100, c_white, c_yellow, c_orange, 0, false, false);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+  </events>
   <PhysicsObject>0</PhysicsObject>
   <PhysicsObjectSensor>0</PhysicsObjectSensor>
   <PhysicsObjectShape>0</PhysicsObjectShape>
