@@ -28,7 +28,7 @@
             <string>///View Variables
 bufferSize = 64;
 minXSize = 1024;
-minYSize = 768;
+minYSize = 576;
 </string>
           </argument>
         </arguments>

@@ -21,25 +21,49 @@
     <sound>sound\snd_bgMusic1</sound>
   </sounds>
   <sprites name="sprites">
-    <sprite>sprites\spr_wall</sprite>
-    <sprite>sprites\spr_player</sprite>
-    <sprite>sprites\spr_ball</sprite>
+    <sprites name="Player Sprites">
+      <sprite>sprites\spr_player</sprite>
+      <sprite>sprites\spr_ball</sprite>
+    </sprites>
+    <sprites name="Map Object Sprites">
+      <sprite>sprites\spr_wall</sprite>
+    </sprites>
+    <sprites name="Menu Sprites">
+      <sprites name="Map Icons">
+        <sprite>sprites\spr_mapIcon_City</sprite>
+        <sprite>sprites\spr_mapIcon_Forest</sprite>
+      </sprites>
+    </sprites>
   </sprites>
   <backgrounds name="background">
     <background>background\bg_scfi</background>
+    <background>background\bg_menu</background>
   </backgrounds>
   <paths name="paths"/>
   <objects name="objects">
-    <object>objects\obj_player</object>
-    <object>objects\obj_ball</object>
     <objects name="Obstacles">
       <object>objects\obj_obstacle</object>
       <object>objects\obj_wall</object>
     </objects>
     <object>objects\obj_viewControl</object>
+    <objects name="Player Objects">
+      <object>objects\obj_ball</object>
+      <object>objects\obj_player</object>
+    </objects>
+    <objects name="Menu Objects">
+      <objects name="Level Loaders">
+        <object>objects\obj_levelLoad_City</object>
+        <object>objects\obj_levelLoad_Forest</object>
+      </objects>
+    </objects>
   </objects>
   <rooms name="rooms">
-    <room>rooms\rm_baseMap</room>
+    <room>rooms\rm_mainMenu</room>
+    <rooms name="Multiplayer Maps">
+      <room>rooms\rm_City</room>
+      <room>rooms\rm_Forest</room>
+      <room>rooms\rm_debugDontTouch</room>
+    </rooms>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>
