@@ -24,6 +24,7 @@
     <sprite>sprites\spr_wall</sprite>
     <sprite>sprites\spr_player</sprite>
     <sprite>sprites\spr_ball</sprite>
+    <sprite>sprites\sprite3</sprite>
   </sprites>
   <backgrounds name="background">
     <background>background\bg_scfi</background>
@@ -37,8 +38,11 @@
       <object>objects\obj_wall</object>
     </objects>
     <object>objects\obj_viewControl</object>
+    <object>objects\obj_target</object>
+    <object>objects\obj_singlePlayermanager</object>
   </objects>
   <rooms name="rooms">
+    <room>rooms\room1</room>
     <room>rooms\rm_baseMap</room>
   </rooms>
   <help>
