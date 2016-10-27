@@ -141,6 +141,7 @@ moveDir = 1;
 depth = -1;
 onGround = false;
 color = c_white;
+controlThreshold = 0.1;
 </string>
           </argument>
         </arguments>
@@ -191,6 +192,8 @@ maxFuel = 100;
 fuel = maxFuel;
 fuelPadding = 5;
 fuelThickness = 5;
+jetSound = 0;
+jetpackUsed = false;
 </string>
           </argument>
         </arguments>
@@ -212,7 +215,6 @@ fuelThickness = 5;
           <argument>
             <kind>1</kind>
             <string>///Sound Variables
-jetSound = 0;
 </string>
           </argument>
         </arguments>
@@ -257,128 +259,7 @@ jetSound = 0;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Check Move Axis
-hspeed -= moveSpeed;
-moveSpeed = gamepad_axis_value(gamepadSlot, moveAxis)*moveMaxSpeed;
-if(moveSpeed!=0)
-    moveDir = sign(moveSpeed);
-show_debug_message(image_index);
-if(onGround){
-    if(floor(image_index)==5)
-        image_index = 0;
-    else if(moveSpeed!=0)
-        image_speed = abs(moveSpeed/moveMaxSpeed)*delta_time/100000;
-    else if(floor(image_index)==0)
-        image_speed = 0;
-    if(floor(image_index)==3)
-        image_index = 0;
-}
-else if(floor(image_index)!=5){
-    image_speed = 0;
-}
-hspeed += moveSpeed;
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Check Aim Axis
-var tempH = gamepad_axis_value(gamepadSlot, aimHAxis);
-var tempV = gamepad_axis_value(gamepadSlot, aimVAxis);
-if(abs(tempH)&gt;0.09 || abs(tempV)&gt;0.09){
-    var length = point_distance(0, 0, tempH, tempV);
-    aimH = tempH/length*aimDistance;
-    aimV = tempV/length*aimDistance;
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Check Shoot Button
-cooldown -= delta_time/1000;
-for(var i=0;i&lt;array_length_1d(shootButtons);i++){
-    if(gamepad_button_check(gamepadSlot, shootButtons[i]) &amp;&amp; cooldown&lt;=0){
-        var ball = instance_create(x+sprite_width/2+aimH, y+sprite_height/2+aimV, obj_ball);
-        ball.vspeed = aimV/aimDistance*shootSpeed;
-        ball.hspeed = aimH/aimDistance*shootSpeed;
-        with(ball)
-            if(!place_free(x, y))
-                instance_destroy();
-        cooldown = shootCooldown;
-        audio_play_sound_at(snd_toss, x, y, 0, 300, 100, 1, false, 1);
-    }
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Check Jetpack Button
-var jetpackUsed = false;
-for(var i=0;i&lt;array_length_1d(jetButtons) &amp;&amp; fuel&gt;0 &amp;&amp; !jetpackUsed;i++){
-    if(gamepad_button_check(gamepadSlot, jetButtons[i])){
-        vspeed -= jetSpeed*delta_time/1000000;
-        fuel -= fuelUseSpeed*delta_time/1000000;
-        if(vspeed&lt;-jetMaxSpeed)
-            vspeed = -jetMaxSpeed;
-        if(floor(image_index)!=5){
-            onGround = false;
-            image_index = 5;
-            image_speed = 0;
-        }
-        if(jetSound==0 || !audio_is_playing(jetSound))
-            jetSound = audio_play_sound_at(snd_jetpack, x, y, 0, 300, 100, 1, false, 1);
-        jetpackUsed = true;
-    }
-}
-
-//Refill fuel
+            <string>///Refill Fuel
 if(!jetpackUsed){
   if(jetSound!=0){
     audio_stop_sound(jetSound);
@@ -411,15 +292,23 @@ if(!jetpackUsed){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Check Jump Button
-for(var i=0;i&lt;array_length_1d(jumpButtons) &amp;&amp; onGround;i++){
-    if(gamepad_button_check(gamepadSlot, jumpButtons[i]) &amp;&amp; onGround){
-        vspeed -= jumpSpeed;
-        onGround = false;
-        image_index = 5;
+            <string>///Update Animation
+if(moveSpeed!=0)
+    moveDir = sign(moveSpeed);
+if(onGround){
+    if(floor(image_index)==5)
+        image_index = 0;
+    else if(moveSpeed!=0)
+        image_speed = abs(moveSpeed/moveMaxSpeed)*delta_time/100000;
+    else{
+        image_index = 0;
         image_speed = 0;
-        audio_play_sound_at(snd_jump, x, y, 0, 300, 100, 1, false, 1);
     }
+    if(floor(image_index)==3)
+        image_index = 0;
+}
+else if(floor(image_index)!=5){
+    image_speed = 0;
 }
 </string>
           </argument>
@@ -443,7 +332,8 @@ for(var i=0;i&lt;array_length_1d(jumpButtons) &amp;&amp; onGround;i++){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Set not on ground at start of step
+            <string>///Set Test States to False
+jetpackUsed = false;
 onGround = false;
 </string>
           </argument>
@@ -477,6 +367,155 @@ else{
     alarm[0] = 1;
     hspeed = 0;
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="12">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Jetpack</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Send player up
+vspeed -= jetSpeed*delta_time/1000000;
+fuel -= fuelUseSpeed*delta_time/1000000;
+if(vspeed&lt;-jetMaxSpeed)
+    vspeed = -jetMaxSpeed;
+if(floor(image_index)!=5){
+    onGround = false;
+    image_index = 5;
+    image_speed = 0;
+}
+if(jetSound==0 || !audio_is_playing(jetSound))
+    jetSound = audio_play_sound_at(snd_jetpack, x, y, 0, 300, 100, 1, false, 1);
+jetpackUsed = true;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="11">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Jump</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Send player up
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="10">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Shoot</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Shoot a ball in the Aim Direction
+var ball = instance_create(x+sprite_width/2+aimH, y+sprite_height/2+aimV, obj_ball);
+ball.vspeed = aimV/aimDistance*shootSpeed;
+ball.hspeed = aimH/aimDistance*shootSpeed;
+with(ball)
+    if(!place_free(x, y))
+        instance_destroy();
+cooldown = shootCooldown;
+audio_play_sound_at(snd_toss, x, y, 0, 300, 100, 1, false, 1);
 </string>
           </argument>
         </arguments>
