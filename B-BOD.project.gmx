@@ -63,16 +63,6 @@
     <font>fonts\fnt_arial</font>
   </fonts>
   <objects name="objects">
-    <objects name="Menu Objects">
-      <object>objects\obj_mainMenuObject</object>
-      <object>objects\obj_multiPlayerLocalButton</object>
-      <object>objects\obj_singlePlayerButton</object>
-      <object>objects\obj_multiPlayerOnlineButton</object>
-      <objects name="Level Loaders">
-        <object>objects\obj_levelLoad_City</object>
-        <object>objects\obj_levelLoad_Forest</object>
-      </objects>
-    </objects>
     <objects name="Game Objects">
       <object>objects\obj_ball</object>
       <objects name="Obstacles">
@@ -93,6 +83,16 @@
         <object>objects\obj_textBox</object>
         <objects name="Button">
           <object>objects\obj_button</object>
+          <objects name="Menu Objects">
+            <object>objects\obj_mainMenuObject</object>
+            <object>objects\obj_multiPlayerLocalButton</object>
+            <object>objects\obj_singlePlayerButton</object>
+            <object>objects\obj_multiPlayerOnlineButton</object>
+            <objects name="Level Loaders">
+              <object>objects\obj_levelLoad_City</object>
+              <object>objects\obj_levelLoad_Forest</object>
+            </objects>
+          </objects>
           <objects name="Multiplayer">
             <object>objects\obj_buttonMJoin</object>
             <object>objects\obj_buttonMHost</object>
@@ -113,6 +113,7 @@
       <room>rooms\rm_mainMenu</room>
       <room>rooms\rm_gameTypeSelect</room>
       <room>rooms\rm_multiplayerLocalMapSelect</room>
+      <room>rooms\rm_serverMenu</room>
       <room>rooms\rm_lobby</room>
     </rooms>
     <rooms name="Multiplayer Maps">
