@@ -326,8 +326,30 @@ if(abs(tempH)&gt;0.09 || abs(tempV)&gt;0.09){
           <argument>
             <kind>1</kind>
             <string>///Check Shoot Button
-cooldown -= delta_time/1000;
-for(var i=0;i&lt;array_length_1d(shootButtons);i++){
+
+//Check to see if we are in single player
+
+if(object_exists(obj_singlePlayermanager) == true)
+{   
+    cooldown -= delta_time/1000;
+    for(var i=0;i&lt;array_length_1d(shootButtons);i++){
+    if(gamepad_button_check(gamepadSlot, shootButtons[i]) &amp;&amp; cooldown&lt;=0 &amp;&amp;  obj_singlePlayermanager.ammunition &gt; 0){
+        var ball = instance_create(x+sprite_width/2+aimH, y+sprite_height/2+aimV, obj_ball);
+        ball.vspeed = aimV/aimDistance*shootSpeed;
+        ball.hspeed = aimH/aimDistance*shootSpeed;
+        with(ball)
+            if(!place_free(x, y))
+                instance_destroy();
+        cooldown = shootCooldown;
+        audio_play_sound_at(snd_toss, x, y, 0, 300, 100, 1, false, 1);
+        obj_singlePlayermanager.ammunition  =  obj_singlePlayermanager.ammunition -1;
+        }
+    }
+}
+else
+{
+    cooldown -= delta_time/1000;
+    for(var i=0;i&lt;array_length_1d(shootButtons);i++){
     if(gamepad_button_check(gamepadSlot, shootButtons[i]) &amp;&amp; cooldown&lt;=0){
         var ball = instance_create(x+sprite_width/2+aimH, y+sprite_height/2+aimV, obj_ball);
         ball.vspeed = aimV/aimDistance*shootSpeed;
@@ -337,6 +359,8 @@ for(var i=0;i&lt;array_length_1d(shootButtons);i++){
                 instance_destroy();
         cooldown = shootCooldown;
         audio_play_sound_at(snd_toss, x, y, 0, 300, 100, 1, false, 1);
+
+        }
     }
 }
 </string>

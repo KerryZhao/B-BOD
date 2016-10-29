@@ -35,6 +35,8 @@ with(other)
 //increment score and decrement targets needed
 obj_singlePlayermanager.targetsHit++;
 obj_singlePlayermanager.targetsNeededtext = obj_singlePlayermanager.targetsNeededtext - 1;
+obj_singlePlayermanager.cusScore = obj_singlePlayermanager.cusScore + 100;
+obj_singlePlayermanager.ballsdestroyed++;
 
 </string>
           </argument>

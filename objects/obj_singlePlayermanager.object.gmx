@@ -29,10 +29,20 @@
 targetsNeeded = 0;
 targetsNeededtext = 0;
 targetsHit = 0;
+ammunition = 0;
+ballsdestroyed = 0;
+cusScore = 0;
 win = false;
+ingame = true;
 //tell targetsNeeded how many targets there are 
 targetsNeeded = instance_number(obj_target);
 targetsNeededtext = instance_number(obj_target);
+ammunition = targetsNeeded + 2;
+ammoIcons = ds_list_create();
+for(x=0;x&lt;ammunition;x++)
+{ 
+ds_list_add(ammoIcons, instance_create(room_width-(16*x),16,obj_ammoIcon));
+}
 </string>
           </argument>
         </arguments>
@@ -56,9 +66,21 @@ targetsNeededtext = instance_number(obj_target);
           <argument>
             <kind>1</kind>
             <string>///Check on whether or not targetsHit is the same as targetsNeeded
+show_debug_message(ballsdestroyed);
+if(ballsdestroyed==targetsNeeded+2 &amp;&amp; ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   ingame = false;
+}
+
 if(targetsHit == targetsNeeded )
 {
     win = true;
+}
+if(win == true &amp;&amp; ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   ingame = false;
 }
 </string>
           </argument>
@@ -83,13 +105,16 @@ if(targetsHit == targetsNeeded )
           <argument>
             <kind>1</kind>
             <string>///Text that say how many targets need to be hit and how many we have hit
-text1 = "Targets Needed: " + string(obj_singlePlayermanager.targetsNeededtext);
-draw_text(0, 0, text1);
-text2 = "Targets Hit: " + string(obj_singlePlayermanager.targetsHit);
-draw_text(0,20,text2);
-if(win == true)
+if(ingame == true)
 {
-draw_text(50,50,"You win");
+    text1 = "Targets Needed: " + string(obj_singlePlayermanager.targetsNeededtext);
+    draw_text(0, 0, text1);
+    text2 = "Targets Hit: " + string(obj_singlePlayermanager.targetsHit);
+    draw_text(0,20,text2);
+    if(win == true)
+    {
+    draw_text(50,50,"You win");
+    }
 }
 </string>
           </argument>
