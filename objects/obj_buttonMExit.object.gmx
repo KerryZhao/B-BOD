@@ -65,11 +65,11 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Disconnect from server
+            <string>///Disconnect from game
 room_goto(rm_mainMenu);
-network_destroy(global.multiplayerGame.socketID);
-global.multiplayerGame.state = NONE;
-global.multiplayerGame.connected = false;
+if(global.multiplayerGame.socketID!=-1)
+    network_destroy(global.multiplayerGame.socketID);
+with(global.multiplayerGame) instance_destroy();
 </string>
           </argument>
         </arguments>

@@ -93,6 +93,10 @@ aimV = 0;
 aimDistance = 30;
 moveSpeed = 0;
 moveDir = 1;
+
+//Aim drawing
+aimHighlight = c_black;
+aimHeadSize = 30;
 </string>
           </argument>
         </arguments>
@@ -140,8 +144,10 @@ moveDir = 1;
             <string>///Set Player Properties
 depth = -1;
 onGround = false;
-color = c_white;
 controlThreshold = 0.1;
+name = "Steve";
+nameColor = c_black;
+num = 0;
 </string>
           </argument>
         </arguments>
@@ -215,6 +221,35 @@ jetpackUsed = false;
           <argument>
             <kind>1</kind>
             <string>///Sound Variables
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Player Colors
+playerColors[0] = c_red;
+playerColors[1] = c_blue;
+playerColors[2] = c_yellow;
+playerColors[3] = c_lime;
+playerColors[4] = c_white;
+playerColors[5] = c_fuchsia;
+playerColors[6] = c_purple;
+playerColors[7] = c_aqua;
 </string>
           </argument>
         </arguments>
@@ -465,6 +500,11 @@ jetpackUsed = true;
           <argument>
             <kind>1</kind>
             <string>///Send player up
+vspeed -= jumpSpeed;
+onGround = false;
+image_index = 5;
+image_speed = 0;
+audio_play_sound_at(snd_jump, x, y, 0, 300, 100, 1, false, 1);
 </string>
           </argument>
         </arguments>
@@ -539,6 +579,7 @@ audio_play_sound_at(snd_toss, x, y, 0, 300, 100, 1, false, 1);
           <argument>
             <kind>1</kind>
             <string>///Draw Self
+color = playerColors[num];
 if(moveDir==-1)
     draw_sprite_ext(sprite_index, -1, x+sprite_width, y, moveDir, 1, 0, color, 1);
 else
@@ -549,37 +590,68 @@ else
       </action>
       <action>
         <libid>1</libid>
-        <id>515</id>
-        <kind>0</kind>
-        <userelative>-1</userelative>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
         <isquestion>0</isquestion>
         <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_draw_arrow</functionname>
+        <exetype>2</exetype>
+        <functionname></functionname>
         <codestring></codestring>
         <whoName>self</whoName>
-        <relative>-1</relative>
+        <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
           <argument>
-            <kind>0</kind>
-            <string>sprite_width/2+aimH</string>
+            <kind>1</kind>
+            <string>///Draw the Aim Arrow
+var x1 = x+sprite_width/2+aimH;
+var x2 = x+sprite_width/2+aimH*2;
+var y1 = y+sprite_height/2+aimV;
+var y2 = y+sprite_height/2+aimV*2;
+x3 = x2+((x1-x2)*cos(pi/12)+(y1-y2)*sin(pi/12))*aimHeadSize/aimDistance;
+y3 = y2+((y1-y2)*cos(pi/12)-(x1-x2)*sin(pi/12))*aimHeadSize/aimDistance;
+x4 = x2+((x1-x2)*cos(pi/12)-(y1-y2)*sin(pi/12))*aimHeadSize/aimDistance;
+y4 = y2+((y1-y2)*cos(pi/12)+(x1-x2)*sin(pi/12))*aimHeadSize/aimDistance;
+draw_triangle_colour(x3, y3, x2, y2, x4, y4, color, color, color, false);
+draw_triangle_colour(x3, y3, x2, y2, x4, y4, aimHighlight, aimHighlight, aimHighlight, true);
+
+</string>
           </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
           <argument>
-            <kind>0</kind>
-            <string>sprite_height/2+aimV</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>sprite_width/2+aimH*2</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>sprite_height/2+aimV*2</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>12</string>
+            <kind>1</kind>
+            <string>///Draw Player Name
+
+//Draw the plate behind the name
+var width = string_width(name);
+var height = string_height(name);
+draw_set_alpha(0.25);
+draw_rectangle_colour(x+sprite_width/2-width/2, y-healthPadding-height, x+sprite_width/2+width/2, y-healthPadding, color, color, color, color, false);
+draw_set_alpha(1);
+
+//Draw the name
+draw_set_halign(fa_center);
+draw_set_valign(fa_bottom);
+draw_text_colour(x+sprite_width/2, y-healthPadding, name, nameColor, nameColor, nameColor, nameColor, 1);
+draw_set_valign(fa_top);
+draw_set_halign(fa_left);
+</string>
           </argument>
         </arguments>
       </action>

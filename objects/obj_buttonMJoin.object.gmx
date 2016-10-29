@@ -67,14 +67,9 @@
             <kind>1</kind>
             <string>///Atempt to connect to Server
 global.multiplayerGame = instance_create(0, 0, obj_client);
-global.multiplayerGame.socketID = network_create_socket( network_socket_udp );
-global.multiplayerGame.server = obj_textBox.text;
 if(global.multiplayerGame.socketID&lt;0){
     show_message("Couldn't connect to internet!");
-    network_destroy(global.multiplayerGame.socketID);
-}
-else{
-    with(global.multiplayerGame) event_user(0);
+    with(global.multiplayerGame) instance_destroy();
 }
 </string>
           </argument>

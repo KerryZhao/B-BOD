@@ -67,11 +67,11 @@
             <kind>1</kind>
             <string>///Attempt to start to Server
 global.multiplayerGame = instance_create(0, 0, obj_server);
-global.multiplayerGame.socketID = network_create_server( network_socket_udp, PORT, 4 );
-if(global.multiplayerGame.socketID&lt;0)
+if(global.multiplayerGame.socketID&lt;0){
     show_message("Couldn't create server!");
+    with(global.multiplayerGame)instance_destroy();
+}
 else{
-    with(global.multiplayerGame) event_user(0);
     room_goto_next();
 }
 </string>

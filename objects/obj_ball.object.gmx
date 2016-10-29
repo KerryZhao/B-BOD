@@ -250,7 +250,7 @@ if(damage&gt;0){
         <arguments>
           <argument>
             <kind>2</kind>
-            <string>"Player "+string(obj_player.gamepadSlot+1)+" Wins!"</string>
+            <string>"Player "+string(obj_player.num+1)+" ("+obj_player.name+")Wins!"</string>
           </argument>
         </arguments>
       </action>

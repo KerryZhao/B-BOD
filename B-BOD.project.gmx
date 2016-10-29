@@ -73,6 +73,7 @@
         <object>objects\obj_player</object>
         <object>objects\obj_playerClient</object>
         <object>objects\obj_playerNetwork</object>
+        <object>objects\obj_spawnPoint</object>
       </objects>
     </objects>
     <objects name="UI">
@@ -83,15 +84,16 @@
         <object>objects\obj_textBox</object>
         <objects name="Button">
           <object>objects\obj_button</object>
+          <objects name="Level Loaders">
+            <object>objects\obj_levelLoad_City</object>
+            <object>objects\obj_levelLoad_Forest</object>
+            <object>objects\obj_levelLoad</object>
+          </objects>
           <objects name="Menu Objects">
             <object>objects\obj_mainMenuObject</object>
             <object>objects\obj_multiPlayerLocalButton</object>
             <object>objects\obj_singlePlayerButton</object>
             <object>objects\obj_multiPlayerOnlineButton</object>
-            <objects name="Level Loaders">
-              <object>objects\obj_levelLoad_City</object>
-              <object>objects\obj_levelLoad_Forest</object>
-            </objects>
           </objects>
           <objects name="Multiplayer">
             <object>objects\obj_buttonMJoin</object>
@@ -106,13 +108,14 @@
     <objects name="Networking">
       <object>objects\obj_server</object>
       <object>objects\obj_client</object>
+      <object>objects\obj_local</object>
     </objects>
   </objects>
   <rooms name="rooms">
     <rooms name="Menu Rooms">
       <room>rooms\rm_mainMenu</room>
       <room>rooms\rm_gameTypeSelect</room>
-      <room>rooms\rm_multiplayerLocalMapSelect</room>
+      <room>rooms\rm_mapSelect</room>
       <room>rooms\rm_serverMenu</room>
       <room>rooms\rm_lobby</room>
     </rooms>

@@ -77,11 +77,16 @@
             <kind>1</kind>
             <string>///Draw Clients Connected
 
+//Check if local
+var isLocal = instance_number(obj_local)&gt;0;
+
 //Draw headers
 draw_text(x, y, "Player");
-draw_text(x+colWidth, y, "IP Address");
-draw_text(x+2*colWidth, y, "Ping");
-draw_text(x+3*colWidth, y, "Ready?");
+if(!isLocal){
+    draw_text(x+colWidth, y, "IP Address");
+    draw_text(x+2*colWidth, y, "Ping");
+    draw_text(x+3*colWidth, y, "Ready?");
+}
 
 //Draw table lines
 var headerHeight = string_height("Player");
@@ -92,9 +97,13 @@ draw_line(x, y+colHeight*(1+numPlayers), x+colWidth*4, y+colHeight*(1+numPlayers
 
 //Draw Players
 for(var i=0;i&lt;numPlayers;i++){
-    var split = scr_splitString( global.multiplayerGame.clientInfo[| i], "&amp;");
-    for(var j=0;j&lt;array_length_1d(split);j++)
-        draw_text(x+j*colWidth, y+i*colHeight+colHeight, split[j]);
+    if(isLocal)
+        draw_text(x, y+i*colHeight+colHeight, global.multiplayerGame.clientInfo[| i]);
+    else{
+        var split = scr_splitString( global.multiplayerGame.clientInfo[| i], "&amp;");
+        for(var j=0;j&lt;array_length_1d(split);j++)
+            draw_text(x+j*colWidth, y+i*colHeight+colHeight, split[j]);
+    }
 }
 
 </string>

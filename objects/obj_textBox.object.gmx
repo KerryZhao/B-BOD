@@ -244,7 +244,7 @@ else if(keyboard_lastkey==vk_left &amp;&amp; textPosition&gt;0){
 else if(keyboard_lastkey==vk_right&amp;&amp; textPosition&lt;textLength){
     textPosition++;
 }
-else if(keyboard_lastchar!="" &amp;&amp; textLength&lt;textLimit){
+else if(keyboard_lastchar!="" &amp;&amp; textLength&lt;textLimit &amp;&amp; keyboard_lastchar!="#"){
     if(textPosition==textLength)
         text += keyboard_lastchar;
     else

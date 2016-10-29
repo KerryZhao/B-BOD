@@ -58,29 +58,33 @@ readyBuffer = buffer_create(1, buffer_fast, 1);
       </action>
       <action>
         <libid>1</libid>
-        <id>605</id>
+        <id>301</id>
         <kind>0</kind>
-        <userelative>0</userelative>
+        <userelative>-1</userelative>
         <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
+        <useapplyto>-1</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_set_alarm</functionname>
         <codestring></codestring>
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
           <argument>
-            <kind>1</kind>
-            <string>Check Macros for States</string>
+            <kind>0</kind>
+            <string>1</string>
+          </argument>
+          <argument>
+            <kind>4</kind>
+            <string>0</string>
           </argument>
         </arguments>
       </action>
       <action>
         <libid>1</libid>
-        <id>611</id>
-        <kind>6</kind>
-        <userelative>-1</userelative>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
         <isquestion>0</isquestion>
         <useapplyto>-1</useapplyto>
         <exetype>2</exetype>
@@ -92,11 +96,101 @@ readyBuffer = buffer_create(1, buffer_fast, 1);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>state</string>
+            <string>///Setup Server
+
+//Create socket
+socketID = network_create_server( network_socket_udp, PORT, 4 );
+
+// Ask for name
+serverName = get_string("Enter your name.", "Steve");
+if(string_lettersdigits(serverName)!=serverName){
+    show_message("Your name can only contain letters and digits!");
+    serverName = "";
+}
+if(serverName==""){
+    room_goto(rm_mainMenu);
+    network_destroy(socketID);
+    instance_destroy();
+    exit;
+}
+serverName = serverName;
+serverReady = false;
+state = LOBBY;
+              
+// Send new Client List to everyone
+event_user(1);
+</string>
           </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
           <argument>
-            <kind>0</kind>
-            <string>0</string>
+            <kind>1</kind>
+            <string>///Setup Multiplayer Map
+
+//Get spawn points
+var spawns = ds_list_create();
+for(var i=0;i&lt;instance_number(obj_spawnPoint);i++)
+    ds_list_add(spawns, i);
+ds_list_shuffle(spawns);
+
+//Spawn each player to a random spawn point
+for(var i=0;i&lt;global.multiplayerGame.clientInfo;i++){
+    var player;
+    if(i==0){
+        player = instance_create(spawns[|0].x, spawns[|0].y, obj_playerClient);
+        var slot = -1;
+        while(!gamepad_is_connected(slot) &amp;&amp; gamepad_get_device_count()&gt;slot){
+            slot++;
+        }
+        if(gamepad_get_device_count()&gt;slot)
+            player.gamepadSlot = 0;
+        else
+            player.gamepadSlot = slot;
+    }
+    else
+        player = instance_create(spawns[|0].x, spawns[|0].y, obj_playerNetwork);
+    player.name = string_copy(global.multiplayerGame.clientInfo[i], 0, string_pos("&amp;", global.multiplayerGame.clientInfo[i])-1);
+    player.num = i;
+    ds_list_delete(spawns, 0);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Send setup to clients
+</string>
           </argument>
         </arguments>
       </action>
@@ -335,69 +429,6 @@ for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map
 
 // Send the message to all the clients
 scr_sendMessageUdpAll(clients, infoBuffer);
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="7" enumb="10">
-      <action>
-        <libid>1</libid>
-        <id>301</id>
-        <kind>0</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_set_alarm</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>0</kind>
-            <string>1</string>
-          </argument>
-          <argument>
-            <kind>4</kind>
-            <string>0</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Send connection message to server
-
-// Ask for name
-serverName = "";
-while(serverName==""){
-    serverName = get_string("Enter your name.", "Steve");
-    if(string_lettersdigits(serverName)!=serverName){
-        show_message("Your name can only contain letters and digits!");
-        serverName = "";
-    }
-}
-serverName = serverName;
-serverReady = false;
-state = LOBBY;
-              
-// Send new Client List to everyone
-event_user(1);
 </string>
           </argument>
         </arguments>

@@ -57,29 +57,9 @@ clientInfo = ds_list_create();
       </action>
       <action>
         <libid>1</libid>
-        <id>605</id>
-        <kind>0</kind>
+        <id>603</id>
+        <kind>7</kind>
         <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>Check Macros for States</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>611</id>
-        <kind>6</kind>
-        <userelative>-1</userelative>
         <isquestion>0</isquestion>
         <useapplyto>-1</useapplyto>
         <exetype>2</exetype>
@@ -91,11 +71,44 @@ clientInfo = ds_list_create();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>state</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>NONE</string>
+            <string>///Send connection message to server
+
+//Create Socket
+socketID = network_create_socket( network_socket_udp );
+
+//Get server
+server = obj_textBox.text;
+
+// Ask for name
+var name = get_string("Enter your name.", "Steve");
+if(string_lettersdigits(name)!=name){
+    show_message("Your name can only contain letters and digits!");
+    name = "";
+}
+if(name==""){
+    room_goto(rm_mainMenu);
+    network_destroy(socketID);
+    instance_destroy();
+    exit;
+}
+ready = false;
+state = LOBBY;
+
+// Send connect message
+buffer_seek(connectBuffer, buffer_seek_start, 0);
+buffer_write(connectBuffer, buffer_u8, CONNECT);
+buffer_write(connectBuffer, buffer_string, name);
+result = network_send_udp(socketID, server, PORT, connectBuffer, buffer_tell(connectBuffer));
+
+if(result&lt;0){
+    show_message("Could not send message to server!");
+}
+else{
+    //Start alarm to check for server connection
+    alarm[1] = room_speed*PING_TIMEOUT;
+    connected = false;
+}
+</string>
           </argument>
         </arguments>
       </action>
@@ -395,55 +408,6 @@ switch(buffer_read(async_load[? "buffer"], buffer_u8)){
                 obj_buttonMReady.buttonText = "Ready";
         }
         break;
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="7" enumb="10">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Send connection message to server
-// Ask for name
-var name = "";
-while(name==""){
-    name = get_string("Enter your name.", "Steve");
-    if(string_lettersdigits(name)!=name){
-        show_message("Your name can only contain letters and digits!");
-        name = "";
-    }
-}
-ready = false;
-state = LOBBY;
-
-// Send connect message
-buffer_seek(connectBuffer, buffer_seek_start, 0);
-buffer_write(connectBuffer, buffer_u8, CONNECT);
-buffer_write(connectBuffer, buffer_string, name);
-result = network_send_udp(socketID, server, PORT, connectBuffer, buffer_tell(connectBuffer));
-
-if(result&lt;0){
-    show_message("Could not send message to server!");
-}
-else{
-    //Start alarm to check for server connection
-    alarm[1] = room_speed*PING_TIMEOUT;
-    connected = false;
 }
 </string>
           </argument>

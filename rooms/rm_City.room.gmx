@@ -229,10 +229,6 @@ audio_sound_gain(bgMusic, 0.20, 0);</code>
     <instance objName="obj_wall" x="864" y="128" name="inst_A68ACAF2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wall" x="864" y="96" name="inst_A3AF4E9B" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wall" x="896" y="96" name="inst_2BE42136" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_player" x="96" y="128" name="inst_E5BFDA0B" locked="0" code="if(!gamepad_is_connected(0))&#xA;    instance_destroy();&#xA;else{&#xA;    gamepadSlot = 0;&#xA;    color = c_red;&#xA;}" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_player" x="672" y="64" name="inst_1C6E5282" locked="0" code="if(!gamepad_is_connected(1))&#xA;    instance_destroy();&#xA;else{&#xA;    gamepadSlot = 1;&#xA;    color = c_blue;&#xA;}" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_player" x="288" y="320" name="inst_4B72CDB1" locked="0" code="if(!gamepad_is_connected(2))&#xA;    instance_destroy();&#xA;else{&#xA;    gamepadSlot = 2;&#xA;    color = c_green;&#xA;}" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_player" x="672" y="416" name="inst_85B65437" locked="0" code="if(!gamepad_is_connected(3))&#xA;    instance_destroy();&#xA;else{&#xA;    gamepadSlot = 3;&#xA;    color = c_yellow;&#xA;}" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wall" x="0" y="768" name="inst_B651464E" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wall" x="0" y="800" name="inst_C15105E2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wall" x="0" y="832" name="inst_3A78BC24" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
@@ -535,6 +531,14 @@ audio_sound_gain(bgMusic, 0.20, 0);</code>
     <instance objName="obj_wall" x="1024" y="1728" name="inst_AC49E4C2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wall" x="1504" y="1728" name="inst_AC960EAF" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wall" x="1536" y="1728" name="inst_460146F7" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_spawnPoint" x="96" y="128" name="inst_7F8D99F1" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_spawnPoint" x="672" y="416" name="inst_EBCB297D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_spawnPoint" x="768" y="1024" name="inst_CC07264C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_spawnPoint" x="1856" y="672" name="inst_3C8821BE" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_spawnPoint" x="1120" y="1664" name="inst_B75DA3CC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_spawnPoint" x="1696" y="1568" name="inst_5CAEAFF9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_spawnPoint" x="224" y="1376" name="inst_01B4C56A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_spawnPoint" x="1152" y="672" name="inst_A491F736" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>
