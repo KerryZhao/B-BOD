@@ -36,8 +36,14 @@
     </sprites>
   </sprites>
   <backgrounds name="background">
-    <background>background\bg_scfi</background>
-    <background>background\bg_menu</background>
+    <backgrounds name="Map Backgrounds">
+      <background>background\bg_city</background>
+      <background>background\bg_forest</background>
+    </backgrounds>
+    <backgrounds name="Menu Backgrounds">
+      <background>background\bg_menu</background>
+      <background>background\bg_mainMenu</background>
+    </backgrounds>
   </backgrounds>
   <paths name="paths"/>
   <objects name="objects">
@@ -55,10 +61,12 @@
         <object>objects\obj_levelLoad_City</object>
         <object>objects\obj_levelLoad_Forest</object>
       </objects>
+      <object>objects\obj_mainMenuObject</object>
     </objects>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_mainMenu</room>
+    <room>rooms\rm_multiplayerMapSelect</room>
     <rooms name="Multiplayer Maps">
       <room>rooms\rm_City</room>
       <room>rooms\rm_Forest</room>
