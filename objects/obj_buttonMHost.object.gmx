@@ -71,10 +71,7 @@ global.multiplayerGame.socketID = network_create_server( network_socket_udp, POR
 if(global.multiplayerGame.socketID&lt;0)
     show_message("Couldn't create server!");
 else{
-    with(global.multiplayerGame){
-        state = LOBBY;
-        event_user(0);
-    }
+    with(global.multiplayerGame) event_user(0);
     room_goto_next();
 }
 </string>

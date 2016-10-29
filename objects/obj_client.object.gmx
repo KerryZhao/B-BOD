@@ -28,6 +28,7 @@
             <string>///Create Buffers
 connectBuffer = buffer_create(256, buffer_grow, 1);
 pingBuffer = buffer_create(2, buffer_fast, 1);
+readyBuffer = buffer_create(1, buffer_fast, 1);
 </string>
           </argument>
         </arguments>
@@ -49,7 +50,7 @@ pingBuffer = buffer_create(2, buffer_fast, 1);
           <argument>
             <kind>1</kind>
             <string>///Create Client Info List
-clientNames = ds_list_create();
+clientInfo = ds_list_create();
 </string>
           </argument>
         </arguments>
@@ -94,7 +95,7 @@ clientNames = ds_list_create();
           </argument>
           <argument>
             <kind>0</kind>
-            <string>0</string>
+            <string>NONE</string>
           </argument>
         </arguments>
       </action>
@@ -379,10 +380,20 @@ switch(buffer_read(async_load[? "buffer"], buffer_u8)){
         
     case CONNECT:
         // Get the client current client list
-        ds_list_clear(clientNames);
+        ds_list_clear(clientInfo);
         var numClients = buffer_read(async_load[? "buffer"], buffer_u8);
         for(var i=0;i&lt;numClients;i++)
-            ds_list_add(clientNames, buffer_read(async_load[? "buffer"], buffer_string));
+            ds_list_add(clientInfo, buffer_read(async_load[? "buffer"], buffer_string));
+        break;
+        
+    case READY:
+        ready = !ready;
+        if(instance_number(obj_buttonMReady)&gt;0){
+            if(ready)
+                obj_buttonMReady.buttonText = "Unready";
+            else
+                obj_buttonMReady.buttonText = "Ready";
+        }
         break;
 }
 </string>
@@ -391,48 +402,6 @@ switch(buffer_read(async_load[? "buffer"], buffer_u8)){
       </action>
     </event>
     <event eventtype="7" enumb="10">
-      <action>
-        <libid>1</libid>
-        <id>612</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>-1</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_if_variable</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>0</kind>
-            <string>state</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>LOBBY</string>
-          </argument>
-          <argument>
-            <kind>4</kind>
-            <string>0</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>422</id>
-        <kind>1</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-      </action>
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -452,9 +421,16 @@ switch(buffer_read(async_load[? "buffer"], buffer_u8)){
             <string>///Send connection message to server
 // Ask for name
 var name = "";
-while(name=="")
+while(name==""){
     name = get_string("Enter your name.", "Steve");
-    
+    if(string_lettersdigits(name)!=name){
+        show_message("Your name can only contain letters and digits!");
+        name = "";
+    }
+}
+ready = false;
+state = LOBBY;
+
 // Send connect message
 buffer_seek(connectBuffer, buffer_seek_start, 0);
 buffer_write(connectBuffer, buffer_u8, CONNECT);
@@ -472,20 +448,6 @@ else{
 </string>
           </argument>
         </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>424</id>
-        <kind>2</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
       </action>
     </event>
   </events>

@@ -5,8 +5,6 @@ var clients = argument0;
 var buffer = argument1;
 
 for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map_find_next(clients, address)){
-    var delim = string_pos(":", address);
-    var ip = string_copy(address, 0, delim-1);
-    var port = real(string_copy(address, delim+1, string_length(address)-delim));
-    network_send_udp(socketID, ip, port, buffer, buffer_tell(buffer) );
+    var split = scr_splitString(address, ":");
+    network_send_udp(socketID, split[0], real(split[1]), buffer, buffer_tell(buffer) );
 }

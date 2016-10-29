@@ -74,10 +74,7 @@ if(global.multiplayerGame.socketID&lt;0){
     network_destroy(global.multiplayerGame.socketID);
 }
 else{
-    with(global.multiplayerGame){
-        state = LOBBY;
-        event_user(0);
-    }
+    with(global.multiplayerGame) event_user(0);
 }
 </string>
           </argument>

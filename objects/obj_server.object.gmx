@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>///Create Client Info List
 clients = ds_map_create();
-clientNames = ds_list_create();
+clientInfo = ds_list_create();
 </string>
           </argument>
         </arguments>
@@ -49,8 +49,9 @@ clientNames = ds_list_create();
           <argument>
             <kind>1</kind>
             <string>///Create Buffers
-connectBuffer = buffer_create(256, buffer_grow, 1);
+infoBuffer = buffer_create(256, buffer_grow, 1);
 pingBuffer = buffer_create(2, buffer_fast, 1);
+readyBuffer = buffer_create(1, buffer_fast, 1);
 </string>
           </argument>
         </arguments>
@@ -176,13 +177,15 @@ event_user(1);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Handle Messages from Clients
+            <string>///Handle Simple Ping
 if(async_load [? "type"]!=network_type_data)
     exit;
 
 //Get The sender and the type of message
 var sender = async_load[? "ip"]+":"+string(async_load[? "port"]);
-switch(buffer_read(async_load[? "buffer"], buffer_u8)){
+curMType = buffer_read(async_load[? "buffer"], buffer_u8);
+
+switch(curMType){
     case PING:
         //Check if pinging or being pinged
         if(buffer_read(async_load[? "buffer"], buffer_u8)==0){
@@ -200,22 +203,69 @@ switch(buffer_read(async_load[? "buffer"], buffer_u8)){
             client[? "ping"] = true;
         }
         break;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Handle Clients in Lobby
+if(state==LOBBY){
+
+    if(async_load [? "type"]!=network_type_data)
+        exit;
     
-    case CONNECT:
-        if(!ds_map_exists(clients, sender)){
+    //Get The sender and the type of message
+    var sender = async_load[? "ip"]+":"+string(async_load[? "port"]);
+    
+    switch(curMType){
+        case CONNECT:
+            if(!ds_map_exists(clients, sender)){
             
-            //Add the sender to the client list
-            var client = ds_map_create();
-            client[? "name"] = buffer_read(async_load[? "buffer"], buffer_string);
-            client[? "pingTime"] = 0;
-            client[? "pingFail"] = 0;
-            ds_map_add_map(clients, sender, client);
+                //Add the sender to the client list
+                var client = ds_map_create();
+                client[? "name"] = buffer_read(async_load[? "buffer"], buffer_string);
+                client[? "pingTime"] = 0;
+                client[? "pingFail"] = 0;
+                client[? "ready"] = false;
+                ds_map_add_map(clients, sender, client);
+                
+                // Update Client List
+                event_user(1);
             
-            //Update all the Client Lists
-            event_user(1);
-        
-        }
-        break;
+            }
+            break;
+        case READY:
+            if(ds_map_exists(clients, sender)){
+            
+                //Update the sender's ready state
+                var client = clients[? sender];
+                client[? "ready"] = !client[? "ready"];
+                
+                //Tell Client message was gotten
+                buffer_seek(readyBuffer, buffer_seek_start, 0);
+                buffer_write(readyBuffer, buffer_u8, READY);
+                scr_sendMessageUdp(sender, readyBuffer);
+                
+            }
+            break;
+    }
+    
 }
 </string>
           </argument>
@@ -262,72 +312,35 @@ switch(buffer_read(async_load[? "buffer"], buffer_u8)){
             <string>///Create and send Client List
 
 // Create a message for the new list of clients
-buffer_seek(connectBuffer, buffer_seek_start, 0);
-buffer_write(connectBuffer, buffer_u8, CONNECT );
-buffer_write(connectBuffer, buffer_u8, ds_map_size(clients)+1 );
+buffer_seek(infoBuffer, buffer_seek_start, 0);
+buffer_write(infoBuffer, buffer_u8, CONNECT );
+buffer_write(infoBuffer, buffer_u8, ds_map_size(clients)+1 );
 
-// Get the CLient names, address, and ping
+// Get the Client names, address, and ping
 var i = 0;
-ds_list_clear(clientNames);
-buffer_write(connectBuffer, buffer_string, serverName);
-clientNames[| i++] = serverName;
+ds_list_clear(clientInfo);
+var serverInfo = serverName+"&amp;Host&amp;0ms&amp;";
+if(serverReady) serverInfo += "Yes";
+else serverInfo += "No";
+buffer_write(infoBuffer, buffer_string, serverInfo);
+clientInfo[| i++] = serverInfo;
 for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map_find_next(clients, address)){
     var client = clients[? address];
-    var name = client[? "name"]+"     "+address+"      "+string(client[? "pingTime"])+"ms";
-    buffer_write(connectBuffer, buffer_string, name);
-    clientNames[| i++] = name;
+    var info = client[? "name"]+"&amp;"+address+"&amp;"+string(client[? "pingTime"])+"ms&amp;";
+    if(client[? "ready"]) info += "Yes";
+    else info += "No";
+    buffer_write(infoBuffer, buffer_string, info);
+    clientInfo[| i++] = info;
 }
 
 // Send the message to all the clients
-scr_sendMessageUdpAll(clients, connectBuffer);
+scr_sendMessageUdpAll(clients, infoBuffer);
 </string>
           </argument>
         </arguments>
       </action>
     </event>
     <event eventtype="7" enumb="10">
-      <action>
-        <libid>1</libid>
-        <id>612</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>-1</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_if_variable</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>0</kind>
-            <string>state</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>LOBBY</string>
-          </argument>
-          <argument>
-            <kind>4</kind>
-            <string>0</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>422</id>
-        <kind>1</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-      </action>
       <action>
         <libid>1</libid>
         <id>301</id>
@@ -372,29 +385,22 @@ scr_sendMessageUdpAll(clients, connectBuffer);
 
 // Ask for name
 serverName = "";
-while(serverName=="")
+while(serverName==""){
     serverName = get_string("Enter your name.", "Steve");
-serverName = "Host: "+serverName;
+    if(string_lettersdigits(serverName)!=serverName){
+        show_message("Your name can only contain letters and digits!");
+        serverName = "";
+    }
+}
+serverName = serverName;
+serverReady = false;
+state = LOBBY;
               
 // Send new Client List to everyone
 event_user(1);
 </string>
           </argument>
         </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>424</id>
-        <kind>2</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
       </action>
     </event>
   </events>
