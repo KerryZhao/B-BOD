@@ -24,6 +24,7 @@
     <sprites name="Player Sprites">
       <sprite>sprites\spr_player</sprite>
       <sprite>sprites\spr_ball</sprite>
+      <sprite>sprites\spr_cursor</sprite>
     </sprites>
     <sprites name="Map Object Sprites">
       <sprite>sprites\spr_wall</sprite>
@@ -32,6 +33,11 @@
       <sprites name="Map Icons">
         <sprite>sprites\spr_mapIcon_City</sprite>
         <sprite>sprites\spr_mapIcon_Forest</sprite>
+      </sprites>
+      <sprites name="Game Type Selection Sprites">
+        <sprite>sprites\spr_singlePlayerButton</sprite>
+        <sprite>sprites\spr_multiPlayerLocalButton</sprite>
+        <sprite>sprites\spr_multiPlayerOnlineButton</sprite>
       </sprites>
     </sprites>
   </sprites>
@@ -47,26 +53,34 @@
   </backgrounds>
   <paths name="paths"/>
   <objects name="objects">
-    <objects name="Obstacles">
-      <object>objects\obj_obstacle</object>
-      <object>objects\obj_wall</object>
-    </objects>
-    <object>objects\obj_viewControl</object>
-    <objects name="Player Objects">
-      <object>objects\obj_ball</object>
-      <object>objects\obj_player</object>
-    </objects>
     <objects name="Menu Objects">
+      <object>objects\obj_mainMenuObject</object>
+      <object>objects\obj_multiPlayerLocalButton</object>
+      <object>objects\obj_singlePlayerButton</object>
+      <object>objects\obj_multiPlayerOnlineButton</object>
       <objects name="Level Loaders">
         <object>objects\obj_levelLoad_City</object>
         <object>objects\obj_levelLoad_Forest</object>
       </objects>
-      <object>objects\obj_mainMenuObject</object>
+    </objects>
+    <objects name="Gameplay Objects">
+      <object>objects\obj_viewControl</object>
+      <objects name="Obstacles">
+        <object>objects\obj_obstacle</object>
+        <object>objects\obj_wall</object>
+      </objects>
+      <objects name="Player Objects">
+        <object>objects\obj_ball</object>
+        <object>objects\obj_player</object>
+      </objects>
     </objects>
   </objects>
   <rooms name="rooms">
-    <room>rooms\rm_mainMenu</room>
-    <room>rooms\rm_multiplayerMapSelect</room>
+    <rooms name="Menu Rooms">
+      <room>rooms\rm_mainMenu</room>
+      <room>rooms\rm_gameTypeSelect</room>
+      <room>rooms\rm_multiplayerLocalMapSelect</room>
+    </rooms>
     <rooms name="Multiplayer Maps">
       <room>rooms\rm_City</room>
       <room>rooms\rm_Forest</room>
