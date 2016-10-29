@@ -10,8 +10,7 @@
   <persistent>0</persistent>
   <colour>12632256</colour>
   <showcolour>-1</showcolour>
-  <code>randomize();
-var bgMusic = audio_play_sound(snd_bgMusic1, 0, true);
+  <code>var bgMusic = audio_play_sound(snd_bgMusic1, 0, true);
 audio_sound_gain(bgMusic, 0.20, 0);</code>
   <enableViews>-1</enableViews>
   <clearViewBackground>-1</clearViewBackground>
