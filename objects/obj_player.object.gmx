@@ -25,38 +25,6 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Set Gamepad and Controls
-gamepadSlot = 0;
-moveAxis = gp_axislh;
-jumpButtons[0] = gp_face1;
-jumpButtons[1] = gp_shoulderlb;
-jetButtons[0] = gp_face4;
-jetButtons[1] = gp_shoulderl;
-jetButtons[2] = gp_shoulderr;
-shootButtons[0] = gp_face3;
-shootButtons[1] = gp_shoulderrb;
-aimVAxis = gp_axislv;
-aimHAxis = gp_axislh;
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
             <string>///Set the Speed Variables
 moveMaxSpeed = 10;
 jumpSpeed = 10;
@@ -554,8 +522,6 @@ ball.hspeed = aimH/aimDistance*shootSpeed;
 with(ball)
     if(!place_free(x, y))
         instance_destroy();
-cooldown = shootCooldown;
-audio_play_sound_at(snd_toss, x, y, 0, 300, 100, 1, false, 1);
 </string>
           </argument>
         </arguments>
@@ -584,38 +550,6 @@ if(moveDir==-1)
     draw_sprite_ext(sprite_index, -1, x+sprite_width, y, moveDir, 1, 0, color, 1);
 else
     draw_sprite_ext(sprite_index, -1, x, y, moveDir, 1, 0, color, 1);
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Draw the Aim Arrow
-var x1 = x+sprite_width/2+aimH;
-var x2 = x+sprite_width/2+aimH*2;
-var y1 = y+sprite_height/2+aimV;
-var y2 = y+sprite_height/2+aimV*2;
-x3 = x2+((x1-x2)*cos(pi/12)+(y1-y2)*sin(pi/12))*aimHeadSize/aimDistance;
-y3 = y2+((y1-y2)*cos(pi/12)-(x1-x2)*sin(pi/12))*aimHeadSize/aimDistance;
-x4 = x2+((x1-x2)*cos(pi/12)-(y1-y2)*sin(pi/12))*aimHeadSize/aimDistance;
-y4 = y2+((y1-y2)*cos(pi/12)+(x1-x2)*sin(pi/12))*aimHeadSize/aimDistance;
-draw_triangle_colour(x3, y3, x2, y2, x4, y4, color, color, color, false);
-draw_triangle_colour(x3, y3, x2, y2, x4, y4, aimHighlight, aimHighlight, aimHighlight, true);
-
 </string>
           </argument>
         </arguments>

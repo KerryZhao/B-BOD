@@ -119,6 +119,7 @@ for(var i=0;i&lt;ds_list_size(clientInfo);i++){
     player.num = i;
     ds_list_delete(spawns, 0);
 }
+ds_list_destroy(spawns);
 </string>
           </argument>
         </arguments>
@@ -145,6 +146,8 @@ for(var i=0;i&lt;ds_list_size(clientInfo);i++){
 for(var i=0;i&lt;gamepad_get_device_count();i++){
     if(gamepad_is_connected(i)){
         var index = ds_list_find_index(controllers, i);
+        
+        //Check for player join
         if(gamepad_button_check_pressed(i, gp_start) &amp;&amp; index==-1){
             ds_list_add(controllers, i);
             var name = get_string("Enter Player "+string(ds_list_size(controllers))+"'s name.", "Steve");
@@ -155,10 +158,24 @@ for(var i=0;i&lt;gamepad_get_device_count();i++){
                 ds_list_add(clientInfo, name);
             else
                 ds_list_delete(controllers, i);
+                
+            //Check number of Players
+            if(ds_list_size(controllers)&gt;=2)
+                obj_buttonMStart.disabled = false;
+            else
+                obj_buttonMStart.disabled = true;
         }
+        
+        //Check for player leave
         if(gamepad_button_check_pressed(i, gp_face2) &amp;&amp; index!=-1){
             ds_list_delete(controllers, index);
             ds_list_delete(clientInfo, index);
+            
+            //Check number of Players
+            if(ds_list_size(controllers)&gt;=2)
+                obj_buttonMStart.disabled = false;
+            else
+                obj_buttonMStart.disabled = true;
         }
     }
 }

@@ -8,6 +8,54 @@
   <parentName>obj_player</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
+    <event eventtype="0" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>604</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_inherited</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Set Gamepad and Controls
+gamepadSlot = 0;
+moveAxis = gp_axislh;
+jumpButtons[0] = gp_face1;
+jumpButtons[1] = gp_shoulderlb;
+jetButtons[0] = gp_face4;
+jetButtons[1] = gp_shoulderl;
+jetButtons[2] = gp_shoulderr;
+shootButtons[0] = gp_face3;
+shootButtons[1] = gp_shoulderrb;
+aimVAxis = gp_axisrv;
+aimHAxis = gp_axisrh;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="3" enumb="2">
       <action>
         <libid>1</libid>
@@ -57,7 +105,21 @@ if(abs(tempH)&gt;controlThreshold || abs(tempV)&gt;controlThreshold){
 cooldown -= delta_time/1000;
 for(var i=0;i&lt;array_length_1d(shootButtons);i++){
     if(gamepad_button_check(gamepadSlot, shootButtons[i]) &amp;&amp; cooldown&lt;=0){
-        event_user(0);
+        if(instance_number(obj_client)&gt;0){
+            //Send server message to shoot
+            var buffer = obj_client.shootBuffer;
+            buffer_seek(buffer, buffer_seek_start, 0);
+            buffer_write(buffer, buffer_u8, SHOOT);
+            buffer_write(buffer, buffer_f32, x+sprite_width/2+aimH);
+            buffer_write(buffer, buffer_f32, y+sprite_height/2+aimV);
+            buffer_write(buffer, buffer_f32, aimH/aimDistance*shootSpeed);
+            buffer_write(buffer, buffer_f32, aimV/aimDistance*shootSpeed);
+            network_send_udp(obj_client.socketID, obj_client.server, PORT, buffer, buffer_tell(buffer));
+        }
+        else
+            event_user(0);
+        cooldown = shootCooldown;
+        audio_play_sound_at(snd_toss, x, y, 0, 300, 100, 1, false, 1);
         break;
     }
 }
@@ -159,6 +221,54 @@ hspeed += moveSpeed;
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>604</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_inherited</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw the Aim Arrow
+var x1 = x+sprite_width/2+aimH;
+var x2 = x+sprite_width/2+aimH*2;
+var y1 = y+sprite_height/2+aimV;
+var y2 = y+sprite_height/2+aimV*2;
+x3 = x2+((x1-x2)*cos(pi/12)+(y1-y2)*sin(pi/12))*aimHeadSize/aimDistance;
+y3 = y2+((y1-y2)*cos(pi/12)-(x1-x2)*sin(pi/12))*aimHeadSize/aimDistance;
+x4 = x2+((x1-x2)*cos(pi/12)-(y1-y2)*sin(pi/12))*aimHeadSize/aimDistance;
+y4 = y2+((y1-y2)*cos(pi/12)+(x1-x2)*sin(pi/12))*aimHeadSize/aimDistance;
+draw_triangle_colour(x3, y3, x2, y2, x4, y4, color, color, color, false);
+draw_triangle_colour(x3, y3, x2, y2, x4, y4, aimHighlight, aimHighlight, aimHighlight, true);
+
+</string>
+          </argument>
+        </arguments>
       </action>
     </event>
   </events>

@@ -52,31 +52,9 @@ clientInfo = ds_list_create();
 infoBuffer = buffer_create(256, buffer_grow, 1);
 pingBuffer = buffer_create(2, buffer_fast, 1);
 readyBuffer = buffer_create(1, buffer_fast, 1);
+spawnBuffer = buffer_create(9, buffer_fixed, 1);
+updateBuffer = buffer_create(256, buffer_grow, 1);
 </string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>301</id>
-        <kind>0</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_set_alarm</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>0</kind>
-            <string>1</string>
-          </argument>
-          <argument>
-            <kind>4</kind>
-            <string>0</string>
           </argument>
         </arguments>
       </action>
@@ -116,9 +94,158 @@ if(serverName==""){
 serverName = serverName;
 serverReady = false;
 state = LOBBY;
+serverIP = "Host";
+http_get( "http://ipv4bot.whatismyipaddress.com/" );
               
 // Send new Client List to everyone
 event_user(1);
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>301</id>
+        <kind>0</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_set_alarm</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>0</kind>
+            <string>1</string>
+          </argument>
+          <argument>
+            <kind>4</kind>
+            <string>0</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>updateStepTime</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>room_speed/20</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Destroy DS
+ds_list_destroy(clientInfo);
+for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map_find_next(clients, address)){
+    ds_map_destroy(clients[? address]);
+}
+ds_map_destroy(clients);
+network_destroy(socketID);
+buffer_delete(infoBuffer);
+buffer_delete(pingBuffer);
+buffer_delete(readyBuffer);
+buffer_delete(spawnBuffer);
+buffer_delete(updateBuffer);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Send Updates to Clients holding all player and ball info
+buffer_seek(updateBuffer, buffer_seek_start, 0);
+buffer_write(updateBuffer, buffer_u8, UPDATE);
+
+//Write the ball info
+buffer_write(updateBuffer, buffer_u16, instance_number(obj_ball));
+for(var i=0;i&lt;instance_number(obj_ball);i++){
+    var ball = instance_find(obj_ball, i);
+    buffer_write(updateBuffer, buffer_f32, ball.x);
+    buffer_write(updateBuffer, buffer_f32, ball.y);
+    buffer_write(updateBuffer, buffer_f32, ball.hspeed);
+    buffer_write(updateBuffer, buffer_f32, ball.vspeed);
+    buffer_write(updateBuffer, buffer_u8, ball.damage);
+}
+
+//Write the player info
+buffer_write(updateBuffer, buffer_u8, ds_map_size(clients)+1);
+//Write the server player
+buffer_write(updateBuffer, buffer_f32, serverPlayer.x);
+buffer_write(updateBuffer, buffer_f32, serverPlayer.y);
+buffer_write(updateBuffer, buffer_f32, serverPlayer.hspeed);
+buffer_write(updateBuffer, buffer_f32, serverPlayer.vspeed);
+buffer_write(updateBuffer, buffer_u8, serverPlayer.hitPoints);
+buffer_write(updateBuffer, buffer_f32, serverPlayer.fuel);
+buffer_write(updateBuffer, buffer_f32, serverPlayer.image_index);
+//Write the client players
+for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map_find_next(clients, address)){
+    var client = clients[? address];
+    var player = client[? "player"];
+    buffer_write(updateBuffer, buffer_f32, player.x);
+    buffer_write(updateBuffer, buffer_f32, player.y);
+    buffer_write(updateBuffer, buffer_f32, player.hspeed);
+    buffer_write(updateBuffer, buffer_f32, player.vspeed);
+    buffer_write(updateBuffer, buffer_u8, player.hitPoints);
+    buffer_write(updateBuffer, buffer_f32, player.fuel);
+    buffer_write(updateBuffer, buffer_f32, player.image_index);
+}
+
+//Send all the data to the clients
+scr_sendMessageUdpAll(clients, updateBuffer);
+
+//Update again &amp; again &amp; again...
+alarm[2] = updateStepTime;
 </string>
           </argument>
         </arguments>
@@ -146,29 +273,33 @@ event_user(1);
 //Get spawn points
 var spawns = ds_list_create();
 for(var i=0;i&lt;instance_number(obj_spawnPoint);i++)
-    ds_list_add(spawns, i);
+    ds_list_add(spawns, instance_find(obj_spawnPoint, i));
 ds_list_shuffle(spawns);
 
+//Spawn server Player
+var num = 0;
+var player = instance_create(spawns[|num].x, spawns[|num].y, obj_playerClient);
+var slot = obj_gamepadControl.controller;
+if(!gamepad_is_connected(slot))
+    player.gamepadSlot = 0;
+else
+    player.gamepadSlot = slot;
+player.name = serverName ;
+player.num = num;
+serverPlayer = player;
+
 //Spawn each player to a random spawn point
-for(var i=0;i&lt;global.multiplayerGame.clientInfo;i++){
-    var player;
-    if(i==0){
-        player = instance_create(spawns[|0].x, spawns[|0].y, obj_playerClient);
-        var slot = -1;
-        while(!gamepad_is_connected(slot) &amp;&amp; gamepad_get_device_count()&gt;slot){
-            slot++;
-        }
-        if(gamepad_get_device_count()&gt;slot)
-            player.gamepadSlot = 0;
-        else
-            player.gamepadSlot = slot;
-    }
-    else
-        player = instance_create(spawns[|0].x, spawns[|0].y, obj_playerNetwork);
-    player.name = string_copy(global.multiplayerGame.clientInfo[i], 0, string_pos("&amp;", global.multiplayerGame.clientInfo[i])-1);
-    player.num = i;
-    ds_list_delete(spawns, 0);
+for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map_find_next(clients, address)){
+    num++;
+    player = instance_create(spawns[|num].x, spawns[|num].y, obj_playerNetwork);
+    var client = clients[? address];
+    client[? "player"] = player;
+    player.name = client[? "name"] ;
+    player.num = num;
+    show_debug_message("CREATED PLAYER "+string(num));
 }
+
+ds_list_destroy(spawns);
 </string>
           </argument>
         </arguments>
@@ -190,6 +321,38 @@ for(var i=0;i&lt;global.multiplayerGame.clientInfo;i++){
           <argument>
             <kind>1</kind>
             <string>///Send setup to clients
+for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map_find_next(clients, address)){
+    var client = clients[? address];
+    buffer_seek(spawnBuffer, buffer_seek_start, 0);
+    buffer_write(spawnBuffer, buffer_u8, SPAWN);
+    buffer_write(spawnBuffer, buffer_u32, room);
+    buffer_write(spawnBuffer, buffer_u16, client[? "player"].x);
+    buffer_write(spawnBuffer, buffer_u16, client[? "player"].y);
+    scr_sendMessageUdp(address, spawnBuffer);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Start sending Updates
+alarm[2] = 1;
+state = GAME;
 </string>
           </argument>
         </arguments>
@@ -223,8 +386,6 @@ for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map
     if(!client[? "ping"])
         if(++client[? "pingFail"]&gt;=PING_TIMEOUT)
             ds_list_add(disconnect, address);
-    show_debug_message(client[? "pingFail"]);
-    show_debug_message(ds_map_size(clients));
     
     //Set ping variables
     client[? "pingStart"] = current_time;
@@ -235,6 +396,9 @@ for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map
 for(var i=0;i&lt;ds_list_size(disconnect);i++){
     var address = disconnect[| i];
     var client = clients[? address];
+    if(state==GAME)
+        with(client[? "player"]) 
+            instance_destroy();
     ds_map_destroy(client);
     ds_map_delete(clients, disconnect[| i]);
 }
@@ -275,26 +439,30 @@ event_user(1);
 if(async_load [? "type"]!=network_type_data)
     exit;
 
+    
 //Get The sender and the type of message
-var sender = async_load[? "ip"]+":"+string(async_load[? "port"]);
+sender = async_load[? "ip"]+":"+string(async_load[? "port"]);
 curMType = buffer_read(async_load[? "buffer"], buffer_u8);
+show_debug_message(buffer_tell(async_load["buffer"]));
 
 switch(curMType){
     case PING:
         //Check if pinging or being pinged
-        if(buffer_read(async_load[? "buffer"], buffer_u8)==0){
-            //Reply to ping
-            buffer_seek(pingBuffer, buffer_seek_start, 0);
-            buffer_write(pingBuffer, buffer_u8, PING );
-            buffer_write(pingBuffer, buffer_u8, 1 );
-            scr_sendMessageUdp(sender, pingBuffer);
-        }
-        else{
-            //Update ping values
-            var client = clients[? sender];
-            client[? "pingTime"] = current_time-client[? "pingStart"];
-            client[? "pingFail"] = 0;
-            client[? "ping"] = true;
+        if(ds_map_exists(clients, sender)){
+            if(buffer_read(async_load[? "buffer"], buffer_u8)==0){
+                //Reply to ping
+                buffer_seek(pingBuffer, buffer_seek_start, 0);
+                buffer_write(pingBuffer, buffer_u8, PING );
+                buffer_write(pingBuffer, buffer_u8, 1 );
+                scr_sendMessageUdp(sender, pingBuffer);
+            }
+            else{
+                //Update ping values
+                var client = clients[? sender];
+                client[? "pingTime"] = current_time-client[? "pingStart"];
+                client[? "pingFail"] = 0;
+                client[? "ping"] = true;
+            }
         }
         break;
 }
@@ -320,12 +488,6 @@ switch(curMType){
             <kind>1</kind>
             <string>///Handle Clients in Lobby
 if(state==LOBBY){
-
-    if(async_load [? "type"]!=network_type_data)
-        exit;
-    
-    //Get The sender and the type of message
-    var sender = async_load[? "ip"]+":"+string(async_load[? "port"]);
     
     switch(curMType){
         case CONNECT:
@@ -356,10 +518,95 @@ if(state==LOBBY){
                 buffer_write(readyBuffer, buffer_u8, READY);
                 scr_sendMessageUdp(sender, readyBuffer);
                 
+                //Check if enough people are ready
+                var ready = serverReady;
+                for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map_find_next(clients, address)){
+                    var client = clients[? address];
+                    if(!client[? "ready"])
+                        ready = false;
+                }
+                obj_buttonMStart.disabled = !ready;
+                
             }
             break;
     }
     
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Handle Clients in Game
+if(state==GAME){
+    
+    switch(curMType){
+        case UPDATE:
+            var client = clients[? sender];
+            var player = client[? "player"];
+            player.x = buffer_read(async_load[? "buffer"], buffer_f32);
+            player.y = buffer_read(async_load[? "buffer"], buffer_f32);
+            player.hspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+            player.vspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+            player.hitPoints = buffer_read(async_load[? "buffer"], buffer_u8);
+            player.fuel = buffer_read(async_load[? "buffer"], buffer_f32);
+            player.image_index = buffer_read(async_load[? "buffer"], buffer_f32);
+            break;
+        case SHOOT:
+            var ballX = buffer_read(async_load[? "buffer"], buffer_f32);
+            var ballY = buffer_read(async_load[? "buffer"], buffer_f32);
+            var ball = instance_create(ballX, ballY, obj_ball);
+            ball.hspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+            ball.vspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+            with(ball)
+                if(!place_free(x, y))
+                    instance_destroy();
+            break;
+    }
+    
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="62">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Get Server IP
+if ( ds_map_find_value(async_load, "status") == 0 ) {
+
+    serverIP = ds_map_find_value(async_load, "result");
+
 }
 </string>
           </argument>
@@ -413,7 +660,7 @@ buffer_write(infoBuffer, buffer_u8, ds_map_size(clients)+1 );
 // Get the Client names, address, and ping
 var i = 0;
 ds_list_clear(clientInfo);
-var serverInfo = serverName+"&amp;Host&amp;0ms&amp;";
+var serverInfo = serverName+"&amp;"+serverIP+"&amp;0ms&amp;";
 if(serverReady) serverInfo += "Yes";
 else serverInfo += "No";
 buffer_write(infoBuffer, buffer_string, serverInfo);
@@ -426,9 +673,16 @@ for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map
     buffer_write(infoBuffer, buffer_string, info);
     clientInfo[| i++] = info;
 }
+buffer_write(infoBuffer, buffer_u8, 0);
 
 // Send the message to all the clients
-scr_sendMessageUdpAll(clients, infoBuffer);
+var playerNum = 0;
+for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map_find_next(clients, address)){
+    var split = scr_splitString(address, ":");
+    buffer_seek(infoBuffer, buffer_seek_relative, -1);
+    buffer_write(infoBuffer, buffer_u8, playerNum++);
+    network_send_udp(socketID, split[0], real(split[1]), infoBuffer, buffer_tell(infoBuffer) );
+}
 </string>
           </argument>
         </arguments>

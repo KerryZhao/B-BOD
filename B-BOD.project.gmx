@@ -61,6 +61,8 @@
   </scripts>
   <fonts name="fonts">
     <font>fonts\fnt_arial</font>
+    <font>fonts\fnt_plasticLg</font>
+    <font>fonts\fnt_plastic</font>
   </fonts>
   <objects name="objects">
     <objects name="Game Objects">
@@ -78,6 +80,7 @@
     </objects>
     <objects name="UI">
       <object>objects\obj_viewControl</object>
+      <object>objects\obj_gamepadControl</object>
       <object>objects\obj_clientList</object>
       <objects name="Elements">
         <object>objects\obj_label</object>
@@ -125,12 +128,16 @@
       <room>rooms\rm_debugDontTouch</room>
     </rooms>
   </rooms>
-  <constants number="8">
+  <constants number="12">
     <constant name="PORT">27990</constant>
     <constant name="PING_TIMEOUT">4</constant>
     <constant name="PING">0</constant>
     <constant name="CONNECT">1</constant>
     <constant name="READY">2</constant>
+    <constant name="START">3</constant>
+    <constant name="SPAWN">4</constant>
+    <constant name="SHOOT">5</constant>
+    <constant name="UPDATE">6</constant>
     <constant name="NONE">0</constant>
     <constant name="LOBBY">1</constant>
     <constant name="GAME">2</constant>

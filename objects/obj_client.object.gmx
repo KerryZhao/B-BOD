@@ -25,10 +25,8 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Create Buffers
-connectBuffer = buffer_create(256, buffer_grow, 1);
-pingBuffer = buffer_create(2, buffer_fast, 1);
-readyBuffer = buffer_create(1, buffer_fast, 1);
+            <string>///Create Client Info List
+clientInfo = ds_list_create();
 </string>
           </argument>
         </arguments>
@@ -49,9 +47,37 @@ readyBuffer = buffer_create(1, buffer_fast, 1);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Create Client Info List
-clientInfo = ds_list_create();
+            <string>///Create Buffers
+connectBuffer = buffer_create(256, buffer_grow, 1);
+pingBuffer = buffer_create(2, buffer_fast, 1);
+readyBuffer = buffer_create(1, buffer_fast, 1);
+updateBuffer = buffer_create(26, buffer_fixed, 1);
+shootBuffer = buffer_create(17, buffer_fixed, 1);
 </string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>updateStepTime</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>room_speed/5</string>
           </argument>
         </arguments>
       </action>
@@ -80,7 +106,7 @@ socketID = network_create_socket( network_socket_udp );
 server = obj_textBox.text;
 
 // Ask for name
-var name = get_string("Enter your name.", "Steve");
+name = get_string("Enter your name.", "Steve");
 if(string_lettersdigits(name)!=name){
     show_message("Your name can only contain letters and digits!");
     name = "";
@@ -93,6 +119,7 @@ if(name==""){
 }
 ready = false;
 state = LOBBY;
+clientNum = 0;
 
 // Send connect message
 buffer_seek(connectBuffer, buffer_seek_start, 0);
@@ -108,6 +135,108 @@ else{
     alarm[1] = room_speed*PING_TIMEOUT;
     connected = false;
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Destroy DS and Buffers
+ds_list_destroy(clientInfo);
+network_destroy(socketID);
+buffer_delete(connectBuffer);
+buffer_delete(pingBuffer);
+buffer_delete(readyBuffer);
+buffer_delete(updateBuffer);
+buffer_delete(shootBuffer);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="3">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Send Updates to Server holding client player info
+buffer_seek(updateBuffer, buffer_seek_start, 0);
+buffer_write(updateBuffer, buffer_u8, UPDATE);
+
+//Write the player info
+buffer_write(updateBuffer, buffer_f32, player.x);
+buffer_write(updateBuffer, buffer_f32, player.y);
+buffer_write(updateBuffer, buffer_f32, player.hspeed);
+buffer_write(updateBuffer, buffer_f32, player.vspeed);
+buffer_write(updateBuffer, buffer_u8, player.hitPoints);
+buffer_write(updateBuffer, buffer_f32, player.fuel);
+buffer_write(updateBuffer, buffer_f32, player.image_index);
+
+//Send the data to the server
+show_debug_message("---------");
+network_send_udp(socketID, server, PORT, updateBuffer, buffer_tell(updateBuffer));
+
+//Update again &amp; again &amp; again...
+alarm[3] = updateStepTime;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Spawn the Player
+player = instance_create(playerX, playerY, obj_playerClient);
+player.controller = obj_gamepadControl.controller;
+player.name = name;
+player.num = clientNum+1;
+state = GAME;
+
+//Start updating the server
+alarm[3] = updateStepTime;
 </string>
           </argument>
         </arguments>
@@ -361,7 +490,7 @@ alarm[0] = room_speed;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Handle Messages from Server
+            <string>///Handle Ping from Server
 
 // Make sure it is data from the correct server
 if(async_load [? "type"]!=network_type_data || async_load[? "ip"]!=server)
@@ -372,9 +501,12 @@ connected = true;
 if(alarm[1]&gt;1)
     alarm[1] = 1;
     
+// Get Type of message
+buffer_seek(async_load[? "buffer"], buffer_seek_start,0);
+messageType = buffer_read(async_load[? "buffer"], buffer_u8);
+    
 // Determine the type of message
-buffer_seek(async_load[? "buffer"], buffer_seek_start, 0);
-switch(buffer_read(async_load[? "buffer"], buffer_u8)){
+switch(messageType){
     case PING:
         //Check if pinging or being pinged
         if(buffer_read(async_load[? "buffer"], buffer_u8)==0){
@@ -390,24 +522,145 @@ switch(buffer_read(async_load[? "buffer"], buffer_u8)){
             pingFail = 0;
         }
         break;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Handle Messages in LOBBY
+if(state==LOBBY){
+    switch(messageType){
+        case CONNECT:
+            // Get the client current client list
+            ds_list_clear(clientInfo);
+            var numClients = buffer_read(async_load[? "buffer"], buffer_u8);
+            for(var i=0;i&lt;numClients;i++)
+                ds_list_add(clientInfo, buffer_read(async_load[? "buffer"], buffer_string));
+            clientNum = buffer_read(async_load[? "buffer"], buffer_u8);
+            break;
+            
+        case READY:
+            ready = !ready;
+            if(instance_number(obj_buttonMReady)&gt;0){
+                if(ready)
+                    obj_buttonMReady.buttonText = "Unready";
+                else
+                    obj_buttonMReady.buttonText = "Ready";
+            }
+            break;
+            
+        case START:
+            room_goto(rm_mapSelect);
+            break;
         
-    case CONNECT:
-        // Get the client current client list
-        ds_list_clear(clientInfo);
-        var numClients = buffer_read(async_load[? "buffer"], buffer_u8);
-        for(var i=0;i&lt;numClients;i++)
-            ds_list_add(clientInfo, buffer_read(async_load[? "buffer"], buffer_string));
-        break;
+        case SPAWN:
+            //Get goto room and save spawn point
+            room_goto(buffer_read(async_load[? "buffer"], buffer_u32));
+            playerX = buffer_read(async_load[? "buffer"], buffer_u16);
+            playerY = buffer_read(async_load[? "buffer"], buffer_u16);
+            alarm[2] = 1;
+            break;
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Handle Messages in GAME
+if(state==GAME){
+    switch(messageType){
+        case UPDATE:
         
-    case READY:
-        ready = !ready;
-        if(instance_number(obj_buttonMReady)&gt;0){
-            if(ready)
-                obj_buttonMReady.buttonText = "Unready";
-            else
-                obj_buttonMReady.buttonText = "Ready";
-        }
-        break;
+            //Handle getting ball info
+            var numBalls = buffer_read(async_load[? "buffer"], buffer_u16);
+            //Update current balls
+            for(var i=0;i&lt;instance_number(obj_ball) &amp;&amp; i&lt;numBalls;i++){
+                var ball = instance_find(obj_ball, i);
+                ball.x = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.y = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.hspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.vspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.damage = buffer_read(async_load[? "buffer"], buffer_u8);
+            }
+            //Create the new balls
+            for(var i=instance_number(obj_ball);i&lt;numBalls;i++){
+                var ballX = buffer_read(async_load[? "buffer"], buffer_f32);
+                var ballY = buffer_read(async_load[? "buffer"], buffer_f32);
+                var ball = instance_create(ballX, ballY, obj_ball);
+                ball.hspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.vspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.damage = buffer_read(async_load[? "buffer"], buffer_u8);
+            }
+            //Destroy the old balls
+            for(var i=numBalls;i&lt;instance_number(obj_ball);i++)
+                with(instance_find(obj_ball, i))
+                    instance_destroy();
+            
+            //Handle getting player info
+            var numPlayers = buffer_read(async_load[? "buffer"], buffer_u8);
+            var playerNum = 0;
+            for(var i=0;i&lt;numPlayers;i++){
+                if(i==clientNum+1){
+                    buffer_seek(async_load[? "buffer"], buffer_seek_relative, 25);
+                }
+                else{
+                    var player = instance_find(obj_playerNetwork, playerNum++);
+                    if(player==noone){
+                        var pX = buffer_read(async_load[? "buffer"], buffer_f32);
+                        var pY = buffer_read(async_load[? "buffer"], buffer_f32);
+                        player = instance_create(pX, pY, obj_playerNetwork);
+                    }
+                    else{
+                        player.x = buffer_read(async_load[? "buffer"], buffer_f32);
+                        player.y = buffer_read(async_load[? "buffer"], buffer_f32);
+                    }
+                    player.hspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+                    player.vspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+                    player.hitPoints = buffer_read(async_load[? "buffer"], buffer_u8);
+                    player.fuel = buffer_read(async_load[? "buffer"], buffer_f32);
+                    player.image_index = buffer_read(async_load[? "buffer"], buffer_f32);
+                    player.num = i;
+                    var split = scr_splitString(clientInfo[|i], "&amp;");
+                    player.name =split[0];
+                }
+            }
+            for(var i=instance_number(obj_playerNetwork);i&gt;numPlayers-1;i--)
+                with(instance_find(obj_playerNetwork, i))
+                    instance_destroy();
+            break;
+    }
 }
 </string>
           </argument>

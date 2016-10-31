@@ -58,8 +58,8 @@ var minX = room_height;
 var minY = room_height;
 var maxX = 0;
 var maxY = 0;
-for(var i=0;i&lt;instance_number(obj_player);i++){
-    var player = instance_find(obj_player, i);
+for(var i=0;i&lt;instance_number(obj_playerClient);i++){
+    var player = instance_find(obj_playerClient, i);
     if(player.x&lt;minX)
         minX = player.x;
     if(player.y&lt;minY)
