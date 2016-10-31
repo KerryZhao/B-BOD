@@ -41,7 +41,7 @@ ammunition = targetsNeeded + 2;
 ammoIcons = ds_list_create();
 for(x=0;x&lt;ammunition;x++)
 { 
-ds_list_add(ammoIcons, instance_create(room_width-(16*x),16,obj_ammoIcon));
+ds_list_add(ammoIcons, instance_create((16*x)+16,50,obj_ammoIcon));
 }
 </string>
           </argument>
@@ -111,10 +111,15 @@ if(ingame == true)
     draw_text(0, 0, text1);
     text2 = "Targets Hit: " + string(obj_singlePlayermanager.targetsHit);
     draw_text(0,20,text2);
-    if(win == true)
-    {
-    draw_text(50,50,"You win");
-    }
+}
+//Say whether or not we win or lose base on bool 
+if(win == true &amp;&amp; room_get_name(room)=="rm_scoreScreen")
+{
+ draw_text(50,50,"You win");
+}
+else if(win == false &amp;&amp; room_get_name(room)=="rm_scoreScreen")
+{
+ draw_text(50,50,"You lose");
 }
 </string>
           </argument>
