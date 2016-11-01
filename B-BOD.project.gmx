@@ -21,32 +21,127 @@
     <sound>sound\snd_bgMusic1</sound>
   </sounds>
   <sprites name="sprites">
-    <sprite>sprites\spr_wall</sprite>
-    <sprite>sprites\spr_player</sprite>
-    <sprite>sprites\spr_ball</sprite>
-    <sprite>sprites\sprite3</sprite>
+    <sprites name="Player Sprites">
+      <sprite>sprites\spr_player</sprite>
+      <sprite>sprites\spr_ball</sprite>
+      <sprite>sprites\spr_cursor</sprite>
+    </sprites>
+    <sprites name="Map Object Sprites">
+      <sprite>sprites\spr_wall</sprite>
+    </sprites>
+    <sprites name="Menu Sprites">
+      <sprites name="Map Icons">
+        <sprite>sprites\spr_mapIcon_City</sprite>
+        <sprite>sprites\spr_mapIcon_Forest</sprite>
+      </sprites>
+      <sprites name="Game Type Selection Sprites">
+        <sprite>sprites\spr_singlePlayerButton</sprite>
+        <sprite>sprites\spr_multiPlayerLocalButton</sprite>
+        <sprite>sprites\spr_multiPlayerOnlineButton</sprite>
+      </sprites>
+    </sprites>
+    <sprite>sprites\spr_button1</sprite>
+    <sprite>sprites\spr_textBox</sprite>
   </sprites>
   <backgrounds name="background">
-    <background>background\bg_scfi</background>
+    <backgrounds name="Map Backgrounds">
+      <background>background\bg_city</background>
+      <background>background\bg_forest</background>
+    </backgrounds>
+    <backgrounds name="Menu Backgrounds">
+      <background>background\bg_menu</background>
+      <background>background\bg_mainMenu</background>
+    </backgrounds>
   </backgrounds>
   <paths name="paths"/>
+  <scripts name="scripts">
+    <script>scripts\scr_sendMessageUdpAll.gml</script>
+    <script>scripts\scr_sendMessageUdp.gml</script>
+    <script>scripts\scr_splitString.gml</script>
+  </scripts>
+  <fonts name="fonts">
+    <font>fonts\fnt_arial</font>
+    <font>fonts\fnt_plasticLg</font>
+    <font>fonts\fnt_plastic</font>
+  </fonts>
   <objects name="objects">
-    <object>objects\obj_player</object>
-    <object>objects\obj_ball</object>
-    <objects name="Obstacles">
-      <object>objects\obj_obstacle</object>
-      <object>objects\obj_wall</object>
+    <objects name="Game Objects">
+      <object>objects\obj_ball</object>
+      <objects name="Obstacles">
+        <object>objects\obj_obstacle</object>
+        <object>objects\obj_wall</object>
+      </objects>
+      <objects name="Player">
+        <object>objects\obj_player</object>
+        <object>objects\obj_playerClient</object>
+        <object>objects\obj_playerNetwork</object>
+        <object>objects\obj_spawnPoint</object>
+      </objects>
     </objects>
-    <object>objects\obj_viewControl</object>
-    <object>objects\obj_target</object>
-    <object>objects\obj_singlePlayermanager</object>
-    <object>objects\obj_ammoIcon</object>
+    <objects name="UI">
+      <object>objects\obj_viewControl</object>
+      <object>objects\obj_gamepadControl</object>
+      <object>objects\obj_clientList</object>
+      <objects name="Elements">
+        <object>objects\obj_label</object>
+        <object>objects\obj_textBox</object>
+        <objects name="Button">
+          <object>objects\obj_button</object>
+          <objects name="Level Loaders">
+            <object>objects\obj_levelLoad_City</object>
+            <object>objects\obj_levelLoad_Forest</object>
+            <object>objects\obj_levelLoad</object>
+          </objects>
+          <objects name="Menu Objects">
+            <object>objects\obj_mainMenuObject</object>
+            <object>objects\obj_multiPlayerLocalButton</object>
+            <object>objects\obj_singlePlayerButton</object>
+            <object>objects\obj_multiPlayerOnlineButton</object>
+          </objects>
+          <objects name="Multiplayer">
+            <object>objects\obj_buttonMJoin</object>
+            <object>objects\obj_buttonMHost</object>
+            <object>objects\obj_buttonMStart</object>
+            <object>objects\obj_buttonMReady</object>
+            <object>objects\obj_buttonMExit</object>
+          </objects>
+        </objects>
+      </objects>
+    </objects>
+    <objects name="Networking">
+      <object>objects\obj_server</object>
+      <object>objects\obj_client</object>
+      <object>objects\obj_local</object>
+    </objects>
   </objects>
   <rooms name="rooms">
-    <room>rooms\rm_levelOne</room>
-    <room>rooms\rm_scoreScreen</room>
-    <room>rooms\rm_baseMap</room>
+    <rooms name="Menu Rooms">
+      <room>rooms\rm_mainMenu</room>
+      <room>rooms\rm_gameTypeSelect</room>
+      <room>rooms\rm_mapSelect</room>
+      <room>rooms\rm_serverMenu</room>
+      <room>rooms\rm_lobby</room>
+    </rooms>
+    <rooms name="Multiplayer Maps">
+      <room>rooms\rm_City</room>
+      <room>rooms\rm_Forest</room>
+      <room>rooms\rm_debugDontTouch</room>
+    </rooms>
   </rooms>
+  <constants number="12">
+    <constant name="PORT">27990</constant>
+    <constant name="PING_TIMEOUT">4</constant>
+    <constant name="PING">0</constant>
+    <constant name="CONNECT">1</constant>
+    <constant name="READY">2</constant>
+    <constant name="START">3</constant>
+    <constant name="SPAWN">4</constant>
+    <constant name="SHOOT">5</constant>
+    <constant name="UPDATE">6</constant>
+    <constant name="NONE">0</constant>
+    <constant name="LOBBY">1</constant>
+    <constant name="GAME">2</constant>
+  </constants>
   <help>
     <rtf>help.rtf</rtf>
   </help>
