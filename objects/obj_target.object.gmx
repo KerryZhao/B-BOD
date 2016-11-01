@@ -27,19 +27,36 @@
             <kind>1</kind>
             <string>///Destory this instance and add a point to a gamemanager
 //destory this game object and the ball
-instance_destroy();
+destroytarget = false;
+
 with(other)
 {
-if(other.damage&gt;0)
+if(damage&gt;0)
     {
-    instance_destroy();
+    other.destroytarget = true;
     }
+    instance_destroy();
+}
+
+if(destroytarget == true)
+{
+    instance_destroy();
+    obj_singlePlayermanager.targetsHit++;
+    obj_singlePlayermanager.targetsNeededtext = obj_singlePlayermanager.targetsNeededtext - 1;
+    obj_singlePlayermanager.cusScore = obj_singlePlayermanager.cusScore + 100;
 }
 //increment score and decrement targets needed
-obj_singlePlayermanager.targetsHit++;
-obj_singlePlayermanager.targetsNeededtext = obj_singlePlayermanager.targetsNeededtext - 1;
-obj_singlePlayermanager.cusScore = obj_singlePlayermanager.cusScore + 100;
+
+
+
 obj_singlePlayermanager.ballsdestroyed++;
+    size = ds_list_size(obj_singlePlayermanager.ammoIcons);
+    ballid = instance_find(obj_ammoIcon,size);
+    ds_list_delete(obj_singlePlayermanager.ammoIcons, size-1);
+    with(ballid)
+    {
+        instance_destroy();
+    }
 
 </string>
           </argument>
