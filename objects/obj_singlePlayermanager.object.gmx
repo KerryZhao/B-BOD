@@ -90,6 +90,30 @@ if(win == true &amp;&amp; ingame == true)
     <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>font</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>fnt_plasticLg</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
         <id>603</id>
         <kind>7</kind>
         <userelative>0</userelative>
@@ -115,11 +139,16 @@ if(ingame == true)
 //Say whether or not we win or lose base on bool 
 if(win == true &amp;&amp; room_get_name(room)=="rm_scoreScreen")
 {
- draw_text(50,50,"You win");
+ x = display_get_width()/4;
+ y = display_get_height()/4;
+ draw_text(x,y,"You win");
+ draw_text_transformed(x, y, "You win", 5, 5, 0);
 }
 else if(win == false &amp;&amp; room_get_name(room)=="rm_scoreScreen")
 {
- draw_text(50,50,"You lose");
+ x = display_get_width()/4;
+ y = display_get_height()/4;
+ draw_text_transformed(x, y, "You lose", 5, 5, 0);
 }
 </string>
           </argument>
