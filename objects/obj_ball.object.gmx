@@ -335,7 +335,23 @@ obj_singlePlayermanager.ballsdestroyed = obj_singlePlayermanager.ballsdestroyed 
     {
         instance_destroy();
     }
+///see if we lose or win 
 
+if(obj_singlePlayermanager.ballsdestroyed==obj_singlePlayermanager.targetsNeeded+2 &amp;&amp; obj_singlePlayermanager.ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   obj_singlePlayermanager.ingame = false;
+}
+
+if(obj_singlePlayermanager.targetsHit == obj_singlePlayermanager.targetsNeeded )
+{
+    obj_singlePlayermanager.win = true;
+}
+if(obj_singlePlayermanager.win == true &amp;&amp;obj_singlePlayermanager.ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   obj_singlePlayermanager.ingame = false;
+}
 </string>
           </argument>
         </arguments>
@@ -493,7 +509,23 @@ obj_singlePlayermanager.ballsdestroyed = obj_singlePlayermanager.ballsdestroyed 
     {
         instance_destroy();
     }
+///see if we lose or win 
 
+if(obj_singlePlayermanager.ballsdestroyed==obj_singlePlayermanager.targetsNeeded+2 &amp;&amp; obj_singlePlayermanager.ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   obj_singlePlayermanager.ingame = false;
+}
+
+if(obj_singlePlayermanager.targetsHit == obj_singlePlayermanager.targetsNeeded )
+{
+    obj_singlePlayermanager.win = true;
+}
+if(obj_singlePlayermanager.win == true &amp;&amp;obj_singlePlayermanager.ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   obj_singlePlayermanager.ingame = false;
+}
 </string>
           </argument>
         </arguments>
@@ -684,6 +716,54 @@ audio_play_sound_at(snd_bounce, x, y, 0, 300, 100, 1, false, 1);
       </action>
       <action>
         <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///see if we lose or win 
+
+if(obj_singlePlayermanager.ballsdestroyed==obj_singlePlayermanager.targetsNeeded+2 &amp;&amp; obj_singlePlayermanager.ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   obj_singlePlayermanager.ingame = false;
+}
+
+if(obj_singlePlayermanager.targetsHit == obj_singlePlayermanager.targetsNeeded )
+{
+    obj_singlePlayermanager.win = true;
+}
+if(obj_singlePlayermanager.win == true &amp;&amp;obj_singlePlayermanager.ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   obj_singlePlayermanager.ingame = false;
+}
+
+//increment score and decrement targets needed
+obj_singlePlayermanager.ballsdestroyed++;
+    size = ds_list_size(obj_singlePlayermanager.ammoIcons);
+    ballid = instance_find(obj_ammoIcon,size);
+    ds_list_delete(obj_singlePlayermanager.ammoIcons, size-1);
+    with(ballid)
+    {
+        instance_destroy();
+    }
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
         <id>424</id>
         <kind>2</kind>
         <userelative>0</userelative>
@@ -714,7 +794,7 @@ audio_play_sound_at(snd_bounce, x, y, 0, 300, 100, 1, false, 1);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//if we go outside,destroy this and take a ammo icon
+            <string>///if we go outside,destroy this and take a ammo icon
  instance_destroy();
     obj_singlePlayermanager.ballsdestroyed = obj_singlePlayermanager.ballsdestroyed + 1;
      size = ds_list_size(obj_singlePlayermanager.ammoIcons);
@@ -724,7 +804,23 @@ audio_play_sound_at(snd_bounce, x, y, 0, 300, 100, 1, false, 1);
     {
         instance_destroy();
     }
+///see if we lose or win 
 
+if(obj_singlePlayermanager.ballsdestroyed==obj_singlePlayermanager.targetsNeeded+2 &amp;&amp; obj_singlePlayermanager.ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   obj_singlePlayermanager.ingame = false;
+}
+
+if(obj_singlePlayermanager.targetsHit == obj_singlePlayermanager.targetsNeeded )
+{
+    obj_singlePlayermanager.win = true;
+}
+if(obj_singlePlayermanager.win == true &amp;&amp;obj_singlePlayermanager.ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   obj_singlePlayermanager.ingame = false;
+}
 </string>
           </argument>
         </arguments>

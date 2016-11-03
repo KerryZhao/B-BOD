@@ -137,9 +137,27 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Check if disabled
+            <string>///Check if disabled and reset
 if(disabled)
     exit;
+if(instance_exists(obj_singlePlayermanager))    
+    {
+        show_debug_message("it still here");
+    }
+    
+if(instance_exists(obj_singlePlayermanager))
+{
+ 
+  obj_singlePlayermanager.targetsNeeded = 0;
+    obj_singlePlayermanager.targetsNeededtext = 0;
+    obj_singlePlayermanager.targetsHit = 0;
+   obj_singlePlayermanager.ammunition = 0;
+    obj_singlePlayermanager.ballsdestroyed = 0;
+   obj_singlePlayermanager.cusScore = 0;
+   obj_singlePlayermanager.win = false;
+    obj_singlePlayermanager.ingame = false;
+}
+
 </string>
           </argument>
         </arguments>

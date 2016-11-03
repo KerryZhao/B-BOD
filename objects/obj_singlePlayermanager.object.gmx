@@ -34,6 +34,7 @@ ballsdestroyed = 0;
 cusScore = 0;
 win = false;
 ingame = true;
+eneteredroom = false;
 //tell targetsNeeded how many targets there are 
 targetsNeeded = instance_number(obj_target);
 targetsNeededtext = instance_number(obj_target);
@@ -48,7 +49,7 @@ ds_list_add(ammoIcons, instance_create((16*x)+16,50,obj_ammoIcon));
         </arguments>
       </action>
     </event>
-    <event eventtype="3" enumb="0">
+    <event eventtype="7" enumb="4">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -65,22 +66,23 @@ ds_list_add(ammoIcons, instance_create((16*x)+16,50,obj_ammoIcon));
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Check on whether or not targetsHit is the same as targetsNeeded
-show_debug_message(ballsdestroyed);
-if(ballsdestroyed==targetsNeeded+2 &amp;&amp; ingame == true)
+            <string>///when the room starts and it needs to reset 
+///set the values if they are at zero ATM
+if(instance_exists(obj_singlePlayermanager)==true &amp;&amp; room_get_name(room) = "rm_levelOne")
 {
-   room_goto(rm_scoreScreen);
-   ingame = false;
-}
-
-if(targetsHit == targetsNeeded )
-{
-    win = true;
-}
-if(win == true &amp;&amp; ingame == true)
-{
-   room_goto(rm_scoreScreen);
-   ingame = false;
+    
+    if(obj_singlePlayermanager.targetsNeeded==0)
+    {
+         obj_singlePlayermanager.targetsNeeded = instance_number(obj_target);
+         obj_singlePlayermanager.targetsNeededtext = instance_number(obj_target);
+         obj_singlePlayermanager.ammunition = obj_singlePlayermanager.targetsNeeded + 2;
+         obj_singlePlayermanager.ammoIcons = ds_list_create();
+         obj_singlePlayermanager.ingame = true;
+         for(x=0;x&lt;obj_singlePlayermanager.ammunition;x++)
+        { 
+        ds_list_add(obj_singlePlayermanager.ammoIcons, instance_create((16*x)+16,50,obj_ammoIcon));
+        }
+    }
 }
 </string>
           </argument>
