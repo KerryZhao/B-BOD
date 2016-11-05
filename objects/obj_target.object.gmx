@@ -46,9 +46,6 @@ if(destroytarget == true)
     obj_singlePlayermanager.cusScore = obj_singlePlayermanager.cusScore + 100;
 }
 //increment score and decrement targets needed
-
-
-
 obj_singlePlayermanager.ballsdestroyed++;
     size = ds_list_size(obj_singlePlayermanager.ammoIcons);
     ballid = instance_find(obj_ammoIcon,size);
@@ -57,7 +54,23 @@ obj_singlePlayermanager.ballsdestroyed++;
     {
         instance_destroy();
     }
+///see if we lose or win 
 
+if(obj_singlePlayermanager.ballsdestroyed==obj_singlePlayermanager.targetsNeeded+2 &amp;&amp; obj_singlePlayermanager.ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   obj_singlePlayermanager.ingame = false;
+}
+
+if(obj_singlePlayermanager.targetsHit == obj_singlePlayermanager.targetsNeeded )
+{
+    obj_singlePlayermanager.win = true;
+}
+if(obj_singlePlayermanager.win == true &amp;&amp;obj_singlePlayermanager.ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   obj_singlePlayermanager.ingame = false;
+}
 </string>
           </argument>
         </arguments>

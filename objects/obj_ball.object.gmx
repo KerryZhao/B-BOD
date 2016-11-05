@@ -279,7 +279,7 @@ if(damage&gt;0){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Check for end game
+            <string>///Check for Server end game
 if(instance_number(obj_client)==0 &amp;&amp; instance_number(obj_player)&lt;=1){
     show_message_async("Player "+obj_player.name+" wins!");
     if(instance_number(obj_server)!=0){
@@ -342,16 +342,8 @@ if(instance_number(obj_client)==0 &amp;&amp; instance_number(obj_player)&lt;=1){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///take a ammo icon away and count it down 
-obj_singlePlayermanager.ballsdestroyed = obj_singlePlayermanager.ballsdestroyed + 1;
-     size = ds_list_size(obj_singlePlayermanager.ammoIcons);
-      ballid = instance_find(obj_ammoIcon,size);
-    ds_list_delete(obj_singlePlayermanager.ammoIcons, size-1);
-    with(ballid)
-    {
-        instance_destroy();
-    }
-
+            <string>///Check Single Player End Game
+with(obj_singlePlayermanager)event_user(0);
 </string>
           </argument>
         </arguments>
@@ -500,16 +492,8 @@ audio_play_sound_at(snd_bounce, x, y, 0, 300, 100, 1, false, 1);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Take away ammo icon
-obj_singlePlayermanager.ballsdestroyed = obj_singlePlayermanager.ballsdestroyed + 1;
-     size = ds_list_size(obj_singlePlayermanager.ammoIcons);
-      ballid = instance_find(obj_ammoIcon,size);
-    ds_list_delete(obj_singlePlayermanager.ammoIcons, size-1);
-    with(ballid)
-    {
-        instance_destroy();
-    }
-
+            <string>///Check Single Player End Game
+with(obj_singlePlayermanager)event_user(0);
 </string>
           </argument>
         </arguments>
@@ -700,6 +684,28 @@ audio_play_sound_at(snd_bounce, x, y, 0, 300, 100, 1, false, 1);
       </action>
       <action>
         <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check Single Player End Game
+with(obj_singlePlayermanager)event_user(0);
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
         <id>424</id>
         <kind>2</kind>
         <userelative>0</userelative>
@@ -730,7 +736,7 @@ audio_play_sound_at(snd_bounce, x, y, 0, 300, 100, 1, false, 1);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//if we go outside,destroy this and take a ammo icon
+            <string>///if we go outside,destroy this and take a ammo icon
  instance_destroy();
     obj_singlePlayermanager.ballsdestroyed = obj_singlePlayermanager.ballsdestroyed + 1;
      size = ds_list_size(obj_singlePlayermanager.ammoIcons);
@@ -740,7 +746,23 @@ audio_play_sound_at(snd_bounce, x, y, 0, 300, 100, 1, false, 1);
     {
         instance_destroy();
     }
+///see if we lose or win 
 
+if(obj_singlePlayermanager.ballsdestroyed==obj_singlePlayermanager.targetsNeeded+2 &amp;&amp; obj_singlePlayermanager.ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   obj_singlePlayermanager.ingame = false;
+}
+
+if(obj_singlePlayermanager.targetsHit == obj_singlePlayermanager.targetsNeeded )
+{
+    obj_singlePlayermanager.win = true;
+}
+if(obj_singlePlayermanager.win == true &amp;&amp;obj_singlePlayermanager.ingame == true)
+{
+   room_goto(rm_scoreScreen);
+   obj_singlePlayermanager.ingame = false;
+}
 </string>
           </argument>
         </arguments>

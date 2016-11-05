@@ -29,26 +29,37 @@
 targetsNeeded = 0;
 targetsNeededtext = 0;
 targetsHit = 0;
-ammunition = 0;
 ballsdestroyed = 0;
 cusScore = 0;
 win = false;
-ingame = true;
-//tell targetsNeeded how many targets there are 
-targetsNeeded = instance_number(obj_target);
-targetsNeededtext = instance_number(obj_target);
-ammunition = targetsNeeded + 2;
-ammoIcons = ds_list_create();
-for(x=0;x&lt;ammunition;x++)
-{ 
-ds_list_add(ammoIcons, instance_create((16*x)+16,50,obj_ammoIcon));
-}
+ingame = false;
+
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="3" enumb="0">
+    <event eventtype="7" enumb="10">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Lose a ball</string>
+          </argument>
+        </arguments>
+      </action>
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -65,8 +76,36 @@ ds_list_add(ammoIcons, instance_create((16*x)+16,50,obj_ammoIcon));
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Check on whether or not targetsHit is the same as targetsNeeded
-show_debug_message(ballsdestroyed);
+            <string>///increment score and decrement targets needed
+ballsdestroyed++;
+var size = ds_list_size(ammoIcons);
+var ballid = instance_find(obj_ammoIcon,size);
+ds_list_delete(ammoIcons, size-1);
+with(ballid)
+{
+    instance_destroy();
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check for end game
 if(ballsdestroyed==targetsNeeded+2 &amp;&amp; ingame == true)
 {
    room_goto(rm_scoreScreen);
@@ -77,10 +116,50 @@ if(targetsHit == targetsNeeded )
 {
     win = true;
 }
-if(win == true &amp;&amp; ingame == true)
+if(win == true &amp;&amp;ingame == true)
 {
    room_goto(rm_scoreScreen);
    ingame = false;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="4">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///when the room starts and it needs to reset 
+///set the values if they are at zero ATM
+if(instance_exists(obj_target)==true)
+{
+    
+    if(targetsNeeded==0)
+    {
+        targetsNeeded = instance_number(obj_target);
+         targetsNeededtext = instance_number(obj_target);
+         obj_singlePlayer.ammunition = targetsNeeded + 2;
+         ammoIcons = ds_list_create();
+         ingame = true;
+         for(x=0;x&lt;obj_singlePlayer.ammunition;x++)
+        { 
+        ds_list_add(ammoIcons, instance_create((16*x)+16,50,obj_ammoIcon));
+        }
+    }
 }
 </string>
           </argument>
@@ -141,7 +220,6 @@ if(win == true &amp;&amp; room_get_name(room)=="rm_scoreScreen")
 {
  x = display_get_width()/4;
  y = display_get_height()/4;
- draw_text(x,y,"You win");
  draw_text_transformed(x, y, "You win", 5, 5, 0);
 }
 else if(win == false &amp;&amp; room_get_name(room)=="rm_scoreScreen")

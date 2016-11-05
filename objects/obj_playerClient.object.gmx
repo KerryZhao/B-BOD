@@ -200,9 +200,11 @@ for(var i=0;i&lt;array_length_1d(jetButtons) &amp;&amp; fuel&gt;0 &amp;&amp; !je
             <kind>1</kind>
             <string>///Check Move Axis
 hspeed -= moveSpeed;
-moveSpeed = gamepad_axis_value(gamepadSlot, moveAxis)*moveMaxSpeed;
+moveSpeed = gamepad_axis_value(gamepadSlot, moveAxis);
 if(abs(moveSpeed)&lt;controlThreshold)
     moveSpeed = 0;
+else
+    moveSpeed *= moveMaxSpeed;
 hspeed += moveSpeed;
 </string>
           </argument>

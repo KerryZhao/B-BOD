@@ -137,7 +137,7 @@
         <arguments>
           <argument>
             <kind>11</kind>
-            <room>rm_levelOne</room>
+            <room>rm_sPmapSelect</room>
           </argument>
         </arguments>
       </action>

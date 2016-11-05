@@ -137,9 +137,11 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Check if disabled
+            <string>///Check if disabled and reset
 if(disabled)
     exit;
+with(obj_singlePlayermanager) instance_destroy();
+
 </string>
           </argument>
         </arguments>

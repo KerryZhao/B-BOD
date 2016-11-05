@@ -84,7 +84,6 @@
     <instance objName="obj_wall" x="992" y="736" name="inst_CB211060" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wall" x="960" y="736" name="inst_6E5EF2CC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_target" x="256" y="608" name="inst_E5B538A4" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_singlePlayermanager" x="896" y="192" name="inst_1D278452" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_target" x="96" y="288" name="inst_D0A51169" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_target" x="640" y="352" name="inst_AA378C5A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_target" x="448" y="480" name="inst_CF905A8F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
