@@ -27,7 +27,18 @@
       <sprite>sprites\spr_cursor</sprite>
     </sprites>
     <sprites name="Map Object Sprites">
-      <sprite>sprites\spr_wall</sprite>
+      <sprites name="Walls">
+        <sprite>sprites\spr_wallForest1</sprite>
+        <sprite>sprites\spr_wallForest2</sprite>
+        <sprite>sprites\spr_wallForest3</sprite>
+        <sprite>sprites\spr_wallCity</sprite>
+      </sprites>
+      <sprites name="Obstacles">
+        <sprite>sprites\spr_tree</sprite>
+      </sprites>
+      <sprites name="Floors">
+        <sprite>sprites\spr_floorForest</sprite>
+      </sprites>
     </sprites>
     <sprites name="Menu Sprites">
       <sprites name="Map Icons">
@@ -46,6 +57,7 @@
   <backgrounds name="background">
     <backgrounds name="Map Backgrounds">
       <background>background\bg_city</background>
+      <background>background\bg_castle</background>
       <background>background\bg_forest</background>
     </backgrounds>
     <backgrounds name="Menu Backgrounds">
@@ -69,7 +81,12 @@
       <object>objects\obj_ball</object>
       <objects name="Obstacles">
         <object>objects\obj_obstacle</object>
-        <object>objects\obj_wall</object>
+        <object>objects\obj_wallCity</object>
+        <object>objects\obj_wallForest1</object>
+        <object>objects\obj_wallForest2</object>
+        <object>objects\obj_wallForest3</object>
+        <object>objects\obj_floorForest</object>
+        <object>objects\obj_tree</object>
       </objects>
       <objects name="Player">
         <object>objects\obj_player</object>
@@ -125,7 +142,7 @@
     <rooms name="Multiplayer Maps">
       <room>rooms\rm_City</room>
       <room>rooms\rm_Forest</room>
-      <room>rooms\rm_debugDontTouch</room>
+      <room>rooms\rm_Castle</room>
     </rooms>
   </rooms>
   <constants number="12">
