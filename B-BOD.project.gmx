@@ -119,7 +119,9 @@
       <room>rooms\rm_mainMenu</room>
       <room>rooms\rm_gameTypeSelect</room>
       <room>rooms\rm_mapSelect</room>
-      <room>rooms\rm_serverMenu</room>
+      <room>rooms\rm_onlineMenu</room>
+      <room>rooms\rm_joinMenu</room>
+      <room>rooms\rm_hostMenu</room>
       <room>rooms\rm_lobby</room>
     </rooms>
     <rooms name="Multiplayer Maps">
