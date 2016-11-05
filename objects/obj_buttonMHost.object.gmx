@@ -160,6 +160,34 @@ if(disabled)
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///Make sure a name was entered
+show_debug_message(obj_textBox.text);
+show_debug_message(string_lettersdigits(obj_textBox.text)!=obj_textBox.text);
+show_debug_message(obj_textBox.text=="");
+if(string_lettersdigits(obj_textBox.text)!=obj_textBox.text || obj_textBox.text==""){
+    show_message("Your name can only contain letters and digits!");
+    exit;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>///Attempt to start to Server
 global.multiplayerGame = instance_create(0, 0, obj_server);
 if(global.multiplayerGame.socketID&lt;0){
@@ -167,7 +195,7 @@ if(global.multiplayerGame.socketID&lt;0){
     with(global.multiplayerGame)instance_destroy();
 }
 else{
-    room_goto_next();
+    room_goto(rm_lobby);
 }
 </string>
           </argument>

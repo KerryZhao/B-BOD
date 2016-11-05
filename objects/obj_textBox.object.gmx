@@ -177,6 +177,54 @@
           </argument>
         </arguments>
       </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>enterButton</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>-1</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>nextTextBox</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>-1</string>
+          </argument>
+        </arguments>
+      </action>
     </event>
     <event eventtype="5" enumb="1">
       <action>
@@ -229,9 +277,19 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Draw the key pressed or Backspace
+            <string>///Draw the key pressed or Backspace or Enter
 var textLength = string_length(text);
-if(keyboard_lastkey==vk_backspace &amp;&amp; textLength&gt;0){
+if(keyboard_lastkey==vk_enter){
+    if(enterButton!=-1){
+        with(enterButton)
+            event_perform(ev_mouse, ev_left_release);
+    }
+    else if(nextTextBox!=-1){
+        focus = false;
+        nextTextBox.focus = true;
+    }
+}
+else if(keyboard_lastkey==vk_backspace &amp;&amp; textLength&gt;0){
     if(textPosition==textLength)
         text = string_copy(text, 0, textLength-1);
     else
@@ -250,8 +308,8 @@ else if(keyboard_lastchar!="" &amp;&amp; textLength&lt;textLimit &amp;&amp; keyb
     else
         text = string_copy(text, 0, textPosition)+keyboard_lastchar+string_copy(text, textPosition+1, textLength);
     textPosition++;
-    keyboard_lastchar = "";
 }
+keyboard_lastchar = "";
 keyboard_lastkey = -1;
 </string>
           </argument>

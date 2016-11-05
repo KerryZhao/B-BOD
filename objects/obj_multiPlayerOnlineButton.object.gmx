@@ -160,7 +160,7 @@ if(disabled)
         <arguments>
           <argument>
             <kind>11</kind>
-            <room>rm_serverMenu</room>
+            <room>rm_onlineMenu</room>
           </argument>
         </arguments>
       </action>

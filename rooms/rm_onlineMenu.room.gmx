@@ -41,7 +41,7 @@
     <background visible="0" foreground="0" name="" x="0" y="0" htiled="-1" vtiled="-1" hspeed="0" vspeed="0" stretch="0"/>
   </backgrounds>
   <views>
-    <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="1024" hview="768" xport="0" yport="0" wport="1024" hport="768" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
+    <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="1" hview="768" xport="0" yport="0" wport="1024" hport="768" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
     <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="1024" hview="768" xport="0" yport="0" wport="1024" hport="768" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
     <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="1024" hview="768" xport="0" yport="0" wport="1024" hport="768" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
     <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="1024" hview="768" xport="0" yport="0" wport="1024" hport="768" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
@@ -51,9 +51,9 @@
     <view visible="0" objName="&lt;undefined&gt;" xview="0" yview="0" wview="1024" hview="768" xport="0" yport="0" wport="1024" hport="768" hborder="32" vborder="32" hspeed="-1" vspeed="-1"/>
   </views>
   <instances>
-    <instance objName="obj_button" x="384" y="160" name="inst_E751F66B" locked="0" code="image_xscale = 250/sprite_width;&#xA;image_yscale = 110/sprite_height;&#xA;font = fnt_plasticLg;&#xA;buttonText = &quot;Single Player&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_button" x="384" y="288" name="inst_BD2B0A85" locked="0" code="image_xscale = 250/sprite_width;&#xA;image_yscale = 110/sprite_height;&#xA;font = fnt_plasticLg;&#xA;buttonText = &quot;Multiplayer#(Local)&quot;;&#xA;buttonRoom = rm_lobby;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_button" x="384" y="416" name="inst_F4B23FEF" locked="0" code="image_xscale = 250/sprite_width;&#xA;image_yscale = 110/sprite_height;&#xA;font = fnt_plasticLg;&#xA;buttonText = &quot;Multiplayer#(Online)&quot;;&#xA;buttonRoom = rm_onlineMenu;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_button" x="384" y="160" name="inst_1C3905FC" locked="0" code="buttonText = &quot;Host Server&quot;;&#xA;image_xscale = 250/sprite_width;&#xA;image_yscale = 110/sprite_height;&#xA;font = fnt_plasticLg;&#xA;buttonRoom = rm_hostMenu;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_button" x="384" y="288" name="inst_DEB706FF" locked="0" code="buttonText = &quot;Join Server&quot;;&#xA;image_xscale = 250/sprite_width;&#xA;image_yscale = 110/sprite_height;&#xA;font = fnt_plasticLg;&#xA;buttonRoom = rm_joinMenu;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_button" x="384" y="416" name="inst_37DA3A3E" locked="0" code="buttonText = &quot;Back&quot;;&#xA;image_xscale = 250/sprite_width;&#xA;image_yscale = 110/sprite_height;&#xA;font = fnt_plasticLg;&#xA;buttonRoom = rm_gameTypeSelect;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>

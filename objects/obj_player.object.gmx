@@ -113,7 +113,7 @@ aimHeadSize = 30;
             <string>///Set Player Properties
 depth = -1;
 onGround = false;
-controlThreshold = 0.1;
+controlThreshold = 0.2;
 name = "Steve";
 nameColor = c_black;
 num = 0;

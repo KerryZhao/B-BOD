@@ -102,21 +102,15 @@ shootBuffer = buffer_create(17, buffer_fixed, 1);
 //Create Socket
 socketID = network_create_socket( network_socket_udp );
 
-//Get server
-server = obj_textBox.text;
+//Get ip and name
+for(var i=0;i&lt;instance_number(obj_textBox);i++){
+    var textBox = instance_find(obj_textBox, i);
+    if(textBox.isIP)
+        server = textBox.text;
+    else
+        name = textBox.text;
+}
 
-// Ask for name
-name = get_string("Enter your name.", "Steve");
-if(string_lettersdigits(name)!=name){
-    show_message("Your name can only contain letters and digits!");
-    name = "";
-}
-if(name==""){
-    room_goto(rm_mainMenu);
-    network_destroy(socketID);
-    instance_destroy();
-    exit;
-}
 ready = false;
 state = LOBBY;
 clientNum = 0;
@@ -128,7 +122,9 @@ buffer_write(connectBuffer, buffer_string, name);
 result = network_send_udp(socketID, server, PORT, connectBuffer, buffer_tell(connectBuffer));
 
 if(result&lt;0){
-    show_message("Could not send message to server!");
+    obj_buttonMJoin.disabled = false;
+    show_message_async("Could not send message to server!");
+    instance_destroy();
 }
 else{
     //Start alarm to check for server connection
@@ -302,41 +298,25 @@ alarm[3] = updateStepTime;
       </action>
       <action>
         <libid>1</libid>
-        <id>321</id>
-        <kind>0</kind>
+        <id>603</id>
+        <kind>7</kind>
         <userelative>0</userelative>
         <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_message</functionname>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
         <codestring></codestring>
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
           <argument>
-            <kind>2</kind>
-            <string>Server didn't respond!</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>224</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_another_room</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>11</kind>
-            <room>rm_mainMenu</room>
+            <kind>1</kind>
+            <string>///Disconnect
+obj_buttonMJoin.disabled = false;
+show_message_async("Server did not respond!");
+instance_destroy();
+</string>
           </argument>
         </arguments>
       </action>

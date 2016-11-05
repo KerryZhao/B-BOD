@@ -161,7 +161,10 @@ if(disabled)
           <argument>
             <kind>1</kind>
             <string>///Disconnect from game
-room_goto(rm_mainMenu);
+if(instance_number(obj_local)&gt;0)
+    room_goto(rm_gameTypeSelect);
+else
+    room_goto(rm_onlineMenu);
 if(global.multiplayerGame.socketID!=-1)
     network_destroy(global.multiplayerGame.socketID);
 with(global.multiplayerGame) instance_destroy();

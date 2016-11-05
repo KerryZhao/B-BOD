@@ -160,9 +160,66 @@ if(disabled)
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///Make sure an IP and name where entered
+var name = "";
+var ip = "";
+for(var i=0;i&lt;instance_number(obj_textBox);i++){
+    var textBox = instance_find(obj_textBox, i);
+    if(textBox.isIP)
+        ip = textBox.text;
+    else
+        name = textBox.text;
+}
+
+//Check IP
+var split = scr_splitString(ip, ".");
+var valid = array_length_1d(split)==4;
+if(valid){
+    for(var i=0;i&lt;array_length_1d(split) &amp;&amp; valid;i++){
+        if(string_digits(split[i])==split[i]){
+            var num = real(split[i]);
+            if(floor(num)!=num || num&lt;0 || num&gt;255)
+                valid = false;
+        }
+        else
+            valid = false;
+    }
+}
+if(!valid){
+    show_message_async("Invaild IP Address!");
+    exit;
+}
+
+//Check Name
+if(string_lettersdigits(name)!=name || name==""){
+    show_message("Your name can only contain letters and digits!");
+    exit;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>///Atempt to connect to Server
+disabled = true;
 global.multiplayerGame = instance_create(0, 0, obj_client);
 if(global.multiplayerGame.socketID&lt;0){
+    disabled = false;
     show_message("Couldn't connect to internet!");
     with(global.multiplayerGame) instance_destroy();
 }

@@ -80,18 +80,8 @@ endBuffer = buffer_create(256, buffer_grow, 1);
 //Create socket
 socketID = network_create_server( network_socket_udp, PORT, 4 );
 
-// Ask for name
-serverName = get_string("Enter your name.", "Steve");
-if(string_lettersdigits(serverName)!=serverName){
-    show_message("Your name can only contain letters and digits!");
-    serverName = "";
-}
-if(serverName==""){
-    room_goto(rm_mainMenu);
-    network_destroy(socketID);
-    instance_destroy();
-    exit;
-}
+// Get name
+serverName = obj_textBox.text;
 serverName = serverName;
 serverReady = false;
 state = LOBBY;

@@ -150,14 +150,9 @@ for(var i=0;i&lt;gamepad_get_device_count();i++){
         //Check for player join
         if(gamepad_button_check_pressed(i, gp_start) &amp;&amp; index==-1){
             ds_list_add(controllers, i);
-            var name = get_string("Enter Player "+string(ds_list_size(controllers))+"'s name.", "Steve");
-            if(string_lettersdigits(name)!=name){
-                show_message("Name can only contain letters and digits!");
-            }
-            else if(name!="")
-                ds_list_add(clientInfo, name);
-            else
-                ds_list_delete(controllers, i);
+            ds_list_clear(clientInfo);
+            for(var i=0;i&lt;ds_list_size(controllers);i++)
+                ds_list_add(clientInfo, "Player "+string(i+1));
                 
             //Check number of Players
             if(ds_list_size(controllers)&gt;=2)
