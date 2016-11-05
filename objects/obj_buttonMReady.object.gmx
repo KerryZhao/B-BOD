@@ -336,13 +336,15 @@ else buttonText = "Ready";
             <kind>1</kind>
             <string>///Check if enough people are ready
 with(obj_server){
-    var ready = serverReady;
+    var ready = 0;
+    if(serverReady)
+        ready++;
     for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map_find_next(clients, address)){
         var client = clients[? address];
-        if(!client[? "ready"])
-            ready = false;
+        if(client[? "ready"])
+            ready++;
     }
-    obj_buttonMStart.disabled = !ready;
+    obj_buttonMStart.disabled = !(ready&gt;=2 &amp;&amp; ready&gt;=ds_map_size(clients)+1);
 }
 </string>
           </argument>

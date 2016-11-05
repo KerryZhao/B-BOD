@@ -82,6 +82,37 @@
         </arguments>
       </action>
     </event>
+    <event eventtype="3" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check for new X and Y
+if(newX!=-1){
+    x = newX;
+    newX = -1;
+}
+if(newY!=-1){
+    y = newY;
+    newY = -1;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="4" ename="obj_player">
       <action>
         <libid>1</libid>
@@ -138,13 +169,13 @@ if(damage&gt;0){
       </action>
       <action>
         <libid>1</libid>
-        <id>612</id>
+        <id>408</id>
         <kind>0</kind>
         <userelative>0</userelative>
         <isquestion>-1</isquestion>
         <useapplyto>-1</useapplyto>
         <exetype>1</exetype>
-        <functionname>action_if_variable</functionname>
+        <functionname>action_if</functionname>
         <codestring></codestring>
         <whoName>other</whoName>
         <relative>0</relative>
@@ -152,15 +183,7 @@ if(damage&gt;0){
         <arguments>
           <argument>
             <kind>0</kind>
-            <string>hitPoints</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>0</string>
-          </argument>
-          <argument>
-            <kind>4</kind>
-            <string>3</string>
+            <string>hitPoints&lt;=0  &amp;&amp; !server</string>
           </argument>
         </arguments>
       </action>
@@ -194,93 +217,38 @@ if(damage&gt;0){
       </action>
       <action>
         <libid>1</libid>
-        <id>612</id>
-        <kind>0</kind>
+        <id>603</id>
+        <kind>7</kind>
         <userelative>0</userelative>
-        <isquestion>-1</isquestion>
+        <isquestion>0</isquestion>
         <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_if_variable</functionname>
+        <exetype>2</exetype>
+        <functionname></functionname>
         <codestring></codestring>
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
           <argument>
-            <kind>0</kind>
-            <string>instance_number(obj_player)</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>1</string>
-          </argument>
-          <argument>
-            <kind>4</kind>
-            <string>0</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>422</id>
-        <kind>1</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>321</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_message</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>2</kind>
-            <string>"Player "+string(obj_player.num+1)+" ("+obj_player.name+")Wins!"</string>
+            <kind>1</kind>
+            <string>///Check for end game
+if(instance_number(obj_client)==0 &amp;&amp; instance_number(obj_player)&lt;=1){
+    show_message_async("Player "+obj_player.name+" wins!");
+    if(instance_number(obj_server)!=0){
+        with(obj_server){
+            state = NONE;
+            buffer_seek(endBuffer, buffer_seek_start, 0);
+            buffer_write(endBuffer, buffer_u8, END_GAME);
+            buffer_write(endBuffer, buffer_string, obj_player.name);
+            scr_sendMessageUdpAll(clients, endBuffer);
+        }
+    }
+    with(global.multiplayerGame) instance_destroy();
+    room_goto(rm_mainMenu);
+}
+</string>
           </argument>
         </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>331</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_restart_game</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>424</id>
-        <kind>2</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
       </action>
       <action>
         <libid>1</libid>

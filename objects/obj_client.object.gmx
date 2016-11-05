@@ -2,7 +2,7 @@
 <object>
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
-  <visible>0</visible>
+  <visible>-1</visible>
   <depth>0</depth>
   <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
@@ -77,7 +77,7 @@ shootBuffer = buffer_create(17, buffer_fixed, 1);
           </argument>
           <argument>
             <kind>0</kind>
-            <string>room_speed/5</string>
+            <string>room_speed/10</string>
           </argument>
         </arguments>
       </action>
@@ -188,24 +188,38 @@ buffer_delete(shootBuffer);
           <argument>
             <kind>1</kind>
             <string>///Send Updates to Server holding client player info
+
 buffer_seek(updateBuffer, buffer_seek_start, 0);
 buffer_write(updateBuffer, buffer_u8, UPDATE);
 
-//Write the player info
-buffer_write(updateBuffer, buffer_f32, player.x);
-buffer_write(updateBuffer, buffer_f32, player.y);
-buffer_write(updateBuffer, buffer_f32, player.hspeed);
-buffer_write(updateBuffer, buffer_f32, player.vspeed);
-buffer_write(updateBuffer, buffer_u8, player.hitPoints);
-buffer_write(updateBuffer, buffer_f32, player.fuel);
-buffer_write(updateBuffer, buffer_f32, player.image_index);
+if(!instance_exists(player)){
+    buffer_write(updateBuffer, buffer_f32, 0);
+    buffer_write(updateBuffer, buffer_f32, 0);
+    buffer_write(updateBuffer, buffer_f32, 0);
+    buffer_write(updateBuffer, buffer_f32, 0);
+    buffer_write(updateBuffer, buffer_f32, 0);
+    buffer_write(updateBuffer, buffer_u8, 0);
+    buffer_write(updateBuffer, buffer_bool, false);
+}
+else{
+
+    //Write the player info
+    buffer_write(updateBuffer, buffer_f32, player.x);
+    buffer_write(updateBuffer, buffer_f32, player.y);
+    playerSend = string(player.x)+", "+string(player.y);
+    buffer_write(updateBuffer, buffer_f32, player.hspeed);
+    buffer_write(updateBuffer, buffer_f32, player.vspeed);
+    buffer_write(updateBuffer, buffer_f32, player.fuel);
+    buffer_write(updateBuffer, buffer_u8, player.image_index);
+    buffer_write(updateBuffer, buffer_bool, player.moveDir);
+}
 
 //Send the data to the server
-show_debug_message("---------");
 network_send_udp(socketID, server, PORT, updateBuffer, buffer_tell(updateBuffer));
 
 //Update again &amp; again &amp; again...
-alarm[3] = updateStepTime;
+if(state==GAME)
+    alarm[3] = updateStepTime;
 </string>
           </argument>
         </arguments>
@@ -234,6 +248,7 @@ player.controller = obj_gamepadControl.controller;
 player.name = name;
 player.num = clientNum+1;
 state = GAME;
+dead = false;
 
 //Start updating the server
 alarm[3] = updateStepTime;
@@ -452,8 +467,10 @@ if(!connected)
 //Check for no response and timeout
 if(!ping){
     if(++pingFail&gt;=PING_TIMEOUT){
-        show_message("You have disconnected from the server!");
+        state = NONE;
+        show_message_async("You have disconnected from the server!");
         connected = false;
+        instance_destroy();
         room_goto(rm_mainMenu);
         exit;
     }
@@ -608,8 +625,8 @@ if(state==GAME){
             //Update current balls
             for(var i=0;i&lt;instance_number(obj_ball) &amp;&amp; i&lt;numBalls;i++){
                 var ball = instance_find(obj_ball, i);
-                ball.x = buffer_read(async_load[? "buffer"], buffer_f32);
-                ball.y = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.newX = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.newY = buffer_read(async_load[? "buffer"], buffer_f32);
                 ball.hspeed = buffer_read(async_load[? "buffer"], buffer_f32);
                 ball.vspeed = buffer_read(async_load[? "buffer"], buffer_f32);
                 ball.damage = buffer_read(async_load[? "buffer"], buffer_u8);
@@ -632,33 +649,45 @@ if(state==GAME){
             var numPlayers = buffer_read(async_load[? "buffer"], buffer_u8);
             var playerNum = 0;
             for(var i=0;i&lt;numPlayers;i++){
-                if(i==clientNum+1){
-                    buffer_seek(async_load[? "buffer"], buffer_seek_relative, 25);
+                var playerID = buffer_read(async_load[? "buffer"], buffer_u8);
+                if(playerID==clientNum+1){
+                    obj_playerClient.hitPoints = buffer_read(async_load[? "buffer"], buffer_u8);
+                    buffer_seek(async_load[? "buffer"], buffer_seek_relative, 22);
                 }
                 else{
                     var player = instance_find(obj_playerNetwork, playerNum++);
+                    var hitPoints = buffer_read(async_load[? "buffer"], buffer_u8);
+                    var pX = buffer_read(async_load[? "buffer"], buffer_f32);
+                    var pY = buffer_read(async_load[? "buffer"], buffer_f32);
                     if(player==noone){
-                        var pX = buffer_read(async_load[? "buffer"], buffer_f32);
-                        var pY = buffer_read(async_load[? "buffer"], buffer_f32);
                         player = instance_create(pX, pY, obj_playerNetwork);
                     }
                     else{
-                        player.x = buffer_read(async_load[? "buffer"], buffer_f32);
-                        player.y = buffer_read(async_load[? "buffer"], buffer_f32);
+                        player.newX = pX;
+                        player.newY = pY;
                     }
+                    player.hitPoints = hitPoints;
                     player.hspeed = buffer_read(async_load[? "buffer"], buffer_f32);
                     player.vspeed = buffer_read(async_load[? "buffer"], buffer_f32);
-                    player.hitPoints = buffer_read(async_load[? "buffer"], buffer_u8);
                     player.fuel = buffer_read(async_load[? "buffer"], buffer_f32);
-                    player.image_index = buffer_read(async_load[? "buffer"], buffer_f32);
-                    player.num = i;
+                    player.image_index = buffer_read(async_load[? "buffer"], buffer_u8);
+                    player.moveDir = buffer_read(async_load[? "buffer"], buffer_bool);
+                    player.num = playerID;
                     var split = scr_splitString(clientInfo[|i], "&amp;");
-                    player.name =split[0];
+                    player.name = split[0];
                 }
             }
             for(var i=instance_number(obj_playerNetwork);i&gt;numPlayers-1;i--)
                 with(instance_find(obj_playerNetwork, i))
                     instance_destroy();
+            break;
+            
+        case END_GAME:
+            state = NONE;
+            var winner = buffer_read(async_load[? "buffer"], buffer_string);
+            show_message_async("Player "+winner+" wins!");
+            instance_destroy();
+            room_goto(rm_mainMenu);
             break;
     }
 }

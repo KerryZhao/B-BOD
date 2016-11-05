@@ -128,7 +128,7 @@
       <room>rooms\rm_debugDontTouch</room>
     </rooms>
   </rooms>
-  <constants number="12">
+  <constants number="13">
     <constant name="PORT">27990</constant>
     <constant name="PING_TIMEOUT">4</constant>
     <constant name="PING">0</constant>
@@ -138,6 +138,7 @@
     <constant name="SPAWN">4</constant>
     <constant name="SHOOT">5</constant>
     <constant name="UPDATE">6</constant>
+    <constant name="END_GAME">7</constant>
     <constant name="NONE">0</constant>
     <constant name="LOBBY">1</constant>
     <constant name="GAME">2</constant>
