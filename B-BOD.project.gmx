@@ -27,14 +27,30 @@
       <sprite>sprites\spr_cursor</sprite>
     </sprites>
     <sprites name="Map Object Sprites">
-      <sprite>sprites\spr_wall</sprite>
       <sprite>sprites\sprite3</sprite>
+      <sprites name="Walls">
+        <sprite>sprites\spr_wallForest1</sprite>
+        <sprite>sprites\spr_wallForest2</sprite>
+        <sprite>sprites\spr_wallForest3</sprite>
+        <sprite>sprites\spr_wallCastle1</sprite>
+        <sprite>sprites\spr_wallCastle2</sprite>
+        <sprite>sprites\spr_wallCity</sprite>
+      </sprites>
+      <sprites name="Obstacles">
+        <sprite>sprites\spr_tree</sprite>
+      </sprites>
+      <sprites name="Floors">
+        <sprite>sprites\spr_floorForest</sprite>
+        <sprite>sprites\spr_floorCastle</sprite>
+      </sprites>
     </sprites>
     <sprites name="Menu Sprites">
       <sprites name="Map Icons">
         <sprite>sprites\spr_mapIcon_City</sprite>
         <sprite>sprites\spr_mapIcon_Forest</sprite>
         <sprite>sprites\spr_Levelonebutton</sprite>
+        <sprite>sprites\spr_mapIcon_Castle</sprite>
+        <sprite>sprites\spr_mapIcon_Space</sprite>
       </sprites>
       <sprites name="Game Type Selection Sprites">
         <sprite>sprites\spr_singlePlayerButton</sprite>
@@ -44,10 +60,13 @@
     </sprites>
     <sprite>sprites\spr_button1</sprite>
     <sprite>sprites\spr_textBox</sprite>
+    <sprite>sprites\spr_castleBg</sprite>
   </sprites>
   <backgrounds name="background">
     <backgrounds name="Map Backgrounds">
       <background>background\bg_city</background>
+      <background>background\bg_castle</background>
+      <background>background\bg_space</background>
       <background>background\bg_forest</background>
     </backgrounds>
     <backgrounds name="Menu Backgrounds">
@@ -71,7 +90,16 @@
       <object>objects\obj_ball</object>
       <objects name="Obstacles">
         <object>objects\obj_obstacle</object>
-        <object>objects\obj_wall</object>
+        <object>objects\obj_wallCity</object>
+        <object>objects\obj_wallForest1</object>
+        <object>objects\obj_wallForest2</object>
+        <object>objects\obj_wallForest3</object>
+        <object>objects\obj_floorForest</object>
+        <object>objects\obj_floorCastle</object>
+        <object>objects\obj_wallCastle1</object>
+        <object>objects\obj_wallCastle2</object>
+        <object>objects\obj_castleBg</object>
+        <object>objects\obj_tree</object>
       </objects>
       <objects name="Player">
         <object>objects\obj_player</object>
@@ -96,6 +124,8 @@
           <objects name="Level Loaders">
             <object>objects\obj_levelLoad_City</object>
             <object>objects\obj_levelLoad_Forest</object>
+            <object>objects\obj_levelLoad_Space</object>
+            <object>objects\obj_levelLoad_Castle</object>
             <object>objects\obj_levelLoad</object>
             <object>objects\obj_leveLoad_level1</object>
           </objects>
@@ -136,8 +166,9 @@
     </rooms>
     <rooms name="Multiplayer Maps">
       <room>rooms\rm_City</room>
+      <room>rooms\rm_Space</room>
       <room>rooms\rm_Forest</room>
-      <room>rooms\rm_debugDontTouch</room>
+      <room>rooms\rm_Castle</room>
     </rooms>
     <rooms name="SinglePlayer Maps">
       <room>rooms\rm_levelOne</room>

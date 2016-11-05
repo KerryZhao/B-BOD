@@ -33,7 +33,9 @@ ballsdestroyed = 0;
 cusScore = 0;
 win = false;
 ingame = false;
-
+width = 200;
+height = 100;
+ammoSize = 16;
 </string>
           </argument>
         </arguments>
@@ -78,13 +80,7 @@ ingame = false;
             <kind>1</kind>
             <string>///increment score and decrement targets needed
 ballsdestroyed++;
-var size = ds_list_size(ammoIcons);
-var ballid = instance_find(obj_ammoIcon,size);
-ds_list_delete(ammoIcons, size-1);
-with(ballid)
-{
-    instance_destroy();
-}
+ammoIcons--;
 </string>
           </argument>
         </arguments>
@@ -153,12 +149,8 @@ if(instance_exists(obj_target)==true)
         targetsNeeded = instance_number(obj_target);
          targetsNeededtext = instance_number(obj_target);
          obj_singlePlayer.ammunition = targetsNeeded + 2;
-         ammoIcons = ds_list_create();
          ingame = true;
-         for(x=0;x&lt;obj_singlePlayer.ammunition;x++)
-        { 
-        ds_list_add(ammoIcons, instance_create((16*x)+16,50,obj_ammoIcon));
-        }
+         ammoIcons = obj_singlePlayer.ammunition;
     }
 }
 </string>
@@ -166,7 +158,7 @@ if(instance_exists(obj_target)==true)
         </arguments>
       </action>
     </event>
-    <event eventtype="8" enumb="0">
+    <event eventtype="8" enumb="64">
       <action>
         <libid>1</libid>
         <id>611</id>
@@ -210,10 +202,23 @@ if(instance_exists(obj_target)==true)
             <string>///Text that say how many targets need to be hit and how many we have hit
 if(ingame == true)
 {
+    draw_set_alpha(0.5);
+    draw_rectangle_colour(0, 0, width, height, c_ltgray, c_ltgray, c_ltgray, c_ltgray, false);
+    draw_set_alpha(1);
     text1 = "Targets Needed: " + string(obj_singlePlayermanager.targetsNeededtext);
     draw_text(0, 0, text1);
     text2 = "Targets Hit: " + string(obj_singlePlayermanager.targetsHit);
     draw_text(0,20,text2);
+    var drawX = 0;
+    var drawY = 40;
+    for(var i=0;i&lt;ammoIcons;i++){
+        draw_ellipse_colour(drawX, drawY, drawX+ammoSize, drawY+ammoSize, c_white, c_white, false);
+        drawX += ammoSize *1.5;
+        if(drawX+ammoSize&gt;=width){
+            drawY += ammoSize * 1.5;
+            drawX = 0;
+        }
+    }
 }
 //Say whether or not we win or lose base on bool 
 if(win == true &amp;&amp; room_get_name(room)=="rm_scoreScreen")
