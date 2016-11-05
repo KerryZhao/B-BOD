@@ -28,6 +28,7 @@
     </sprites>
     <sprites name="Map Object Sprites">
       <sprite>sprites\spr_wall</sprite>
+      <sprite>sprites\sprite3</sprite>
     </sprites>
     <sprites name="Menu Sprites">
       <sprites name="Map Icons">
@@ -74,9 +75,13 @@
       <objects name="Player">
         <object>objects\obj_player</object>
         <object>objects\obj_playerClient</object>
+        <object>objects\obj_singlePlayer</object>
         <object>objects\obj_playerNetwork</object>
         <object>objects\obj_spawnPoint</object>
       </objects>
+      <object>objects\obj_target</object>
+      <object>objects\obj_ammoIcon</object>
+      <object>objects\obj_singlePlayermanager</object>
     </objects>
     <objects name="UI">
       <object>objects\obj_viewControl</object>
@@ -97,6 +102,7 @@
             <object>objects\obj_multiPlayerLocalButton</object>
             <object>objects\obj_singlePlayerButton</object>
             <object>objects\obj_multiPlayerOnlineButton</object>
+            <object>objects\obj_backTomainMenu</object>
           </objects>
           <objects name="Multiplayer">
             <object>objects\obj_buttonMJoin</object>
@@ -123,11 +129,15 @@
       <room>rooms\rm_joinMenu</room>
       <room>rooms\rm_hostMenu</room>
       <room>rooms\rm_lobby</room>
+      <room>rooms\rm_scoreScreen</room>
     </rooms>
     <rooms name="Multiplayer Maps">
       <room>rooms\rm_City</room>
       <room>rooms\rm_Forest</room>
       <room>rooms\rm_debugDontTouch</room>
+    </rooms>
+    <rooms name="SinglePlayer Maps">
+      <room>rooms\rm_levelOne</room>
     </rooms>
   </rooms>
   <constants number="13">
