@@ -34,6 +34,7 @@
       <sprites name="Map Icons">
         <sprite>sprites\spr_mapIcon_City</sprite>
         <sprite>sprites\spr_mapIcon_Forest</sprite>
+        <sprite>sprites\spr_Levelonebutton</sprite>
       </sprites>
       <sprites name="Game Type Selection Sprites">
         <sprite>sprites\spr_singlePlayerButton</sprite>
@@ -96,6 +97,7 @@
             <object>objects\obj_levelLoad_City</object>
             <object>objects\obj_levelLoad_Forest</object>
             <object>objects\obj_levelLoad</object>
+            <object>objects\obj_leveLoad_level1</object>
           </objects>
           <objects name="Menu Objects">
             <object>objects\obj_mainMenuObject</object>
@@ -125,6 +127,7 @@
       <room>rooms\rm_mainMenu</room>
       <room>rooms\rm_gameTypeSelect</room>
       <room>rooms\rm_mapSelect</room>
+      <room>rooms\rm_sPmapSelect</room>
       <room>rooms\rm_serverMenu</room>
       <room>rooms\rm_lobby</room>
       <room>rooms\rm_scoreScreen</room>
