@@ -109,6 +109,7 @@
         <object>objects\obj_spawnPoint</object>
       </objects>
       <object>objects\obj_target</object>
+      <object>objects\obj_HPtarget</object>
       <object>objects\obj_ammoIcon</object>
       <object>objects\obj_singlePlayermanager</object>
     </objects>
@@ -153,6 +154,7 @@
     </objects>
   </objects>
   <rooms name="rooms">
+    <room>rooms\rm_test</room>
     <rooms name="Menu Rooms">
       <room>rooms\rm_mainMenu</room>
       <room>rooms\rm_gameTypeSelect</room>
