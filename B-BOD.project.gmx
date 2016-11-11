@@ -112,6 +112,7 @@
       <object>objects\obj_HPtarget</object>
       <object>objects\obj_ammoIcon</object>
       <object>objects\obj_singlePlayermanager</object>
+      <object>objects\obj_timer</object>
     </objects>
     <objects name="UI">
       <object>objects\obj_viewControl</object>
@@ -129,6 +130,7 @@
             <object>objects\obj_levelLoad_Castle</object>
             <object>objects\obj_levelLoad</object>
             <object>objects\obj_leveLoad_level1</object>
+            <object>objects\obj_testroom</object>
           </objects>
           <objects name="Menu Objects">
             <object>objects\obj_mainMenuObject</object>
@@ -154,7 +156,6 @@
     </objects>
   </objects>
   <rooms name="rooms">
-    <room>rooms\rm_test</room>
     <rooms name="Menu Rooms">
       <room>rooms\rm_mainMenu</room>
       <room>rooms\rm_gameTypeSelect</room>
@@ -173,6 +174,7 @@
       <room>rooms\rm_Castle</room>
     </rooms>
     <rooms name="SinglePlayer Maps">
+      <room>rooms\rm_test</room>
       <room>rooms\rm_levelOne</room>
     </rooms>
   </rooms>
