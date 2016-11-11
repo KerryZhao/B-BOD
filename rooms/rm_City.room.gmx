@@ -485,7 +485,7 @@ audio_sound_gain(bgMusic, 0.20, 0);</code>
     <instance objName="obj_spawnPoint" x="1120" y="1664" name="inst_B75DA3CC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_spawnPoint" x="1696" y="1568" name="inst_5CAEAFF9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_spawnPoint" x="224" y="1376" name="inst_01B4C56A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_spawnPoint" x="1152" y="672" name="inst_A491F736" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_spawnPoint" x="1152" y="640" name="inst_A491F736" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="1216" y="1600" name="inst_51393321" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="1216" y="1568" name="inst_358374F7" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="1216" y="1536" name="inst_4DB29C1A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>

@@ -635,17 +635,19 @@ if(state==GAME){
                     buffer_seek(async_load[? "buffer"], buffer_seek_relative, 22);
                 }
                 else{
-                    var player = instance_find(obj_playerNetwork, playerNum++);
+                    var player;
                     var hitPoints = buffer_read(async_load[? "buffer"], buffer_u8);
                     var pX = buffer_read(async_load[? "buffer"], buffer_f32);
                     var pY = buffer_read(async_load[? "buffer"], buffer_f32);
-                    if(player==noone){
+                    if(playerNum&gt;=instance_number(obj_playerNetwork)){
                         player = instance_create(pX, pY, obj_playerNetwork);
                     }
                     else{
+                        player = instance_find(obj_playerNetwork, playerNum);
                         player.newX = pX;
                         player.newY = pY;
                     }
+                    playerNum++;
                     player.hitPoints = hitPoints;
                     player.hspeed = buffer_read(async_load[? "buffer"], buffer_f32);
                     player.vspeed = buffer_read(async_load[? "buffer"], buffer_f32);
