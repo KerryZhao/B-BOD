@@ -736,33 +736,8 @@ with(obj_singlePlayermanager)event_user(0);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///if we go outside,destroy this and take a ammo icon
- instance_destroy();
-    obj_singlePlayermanager.ballsdestroyed = obj_singlePlayermanager.ballsdestroyed + 1;
-     size = ds_list_size(obj_singlePlayermanager.ammoIcons);
-      ballid = instance_find(obj_ammoIcon,size);
-    ds_list_delete(obj_singlePlayermanager.ammoIcons, size-1);
-    with(ballid)
-    {
-        instance_destroy();
-    }
-///see if we lose or win 
-
-if(obj_singlePlayermanager.ballsdestroyed==obj_singlePlayermanager.targetsNeeded+2 &amp;&amp; obj_singlePlayermanager.ingame == true)
-{
-   room_goto(rm_scoreScreen);
-   obj_singlePlayermanager.ingame = false;
-}
-
-if(obj_singlePlayermanager.targetsHit == obj_singlePlayermanager.targetsNeeded )
-{
-    obj_singlePlayermanager.win = true;
-}
-if(obj_singlePlayermanager.win == true &amp;&amp;obj_singlePlayermanager.ingame == true)
-{
-   room_goto(rm_scoreScreen);
-   obj_singlePlayermanager.ingame = false;
-}
+            <string>///Check Single Player End Game
+with(obj_singlePlayermanager)event_user(0);
 </string>
           </argument>
         </arguments>
