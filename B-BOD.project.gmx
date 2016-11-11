@@ -60,7 +60,6 @@
     </sprites>
     <sprite>sprites\spr_button1</sprite>
     <sprite>sprites\spr_textBox</sprite>
-    <sprite>sprites\spr_castleBg</sprite>
   </sprites>
   <backgrounds name="background">
     <backgrounds name="Map Backgrounds">
@@ -68,6 +67,7 @@
       <background>background\bg_castle</background>
       <background>background\bg_space</background>
       <background>background\bg_forest</background>
+      <background>background\bg_tileset</background>
     </backgrounds>
     <backgrounds name="Menu Backgrounds">
       <background>background\bg_menu</background>
@@ -87,20 +87,6 @@
   </fonts>
   <objects name="objects">
     <objects name="Game Objects">
-      <object>objects\obj_ball</object>
-      <objects name="Obstacles">
-        <object>objects\obj_obstacle</object>
-        <object>objects\obj_wallCity</object>
-        <object>objects\obj_wallForest1</object>
-        <object>objects\obj_wallForest2</object>
-        <object>objects\obj_wallForest3</object>
-        <object>objects\obj_floorForest</object>
-        <object>objects\obj_floorCastle</object>
-        <object>objects\obj_wallCastle1</object>
-        <object>objects\obj_wallCastle2</object>
-        <object>objects\obj_castleBg</object>
-        <object>objects\obj_tree</object>
-      </objects>
       <objects name="Player">
         <object>objects\obj_player</object>
         <object>objects\obj_playerClient</object>
@@ -108,6 +94,25 @@
         <object>objects\obj_playerNetwork</object>
         <object>objects\obj_spawnPoint</object>
       </objects>
+      <objects name="Obstacles">
+        <object>objects\obj_obstacle</object>
+        <objects name="City">
+          <object>objects\obj_wallCity</object>
+        </objects>
+        <objects name="Forest">
+          <object>objects\obj_wallForest3</object>
+          <object>objects\obj_wallForest2</object>
+          <object>objects\obj_wallForest1</object>
+          <object>objects\obj_floorForest</object>
+          <object>objects\obj_tree</object>
+        </objects>
+        <objects name="Castle">
+          <object>objects\obj_floorCastle</object>
+          <object>objects\obj_wallCastle2</object>
+          <object>objects\obj_wallCastle1</object>
+        </objects>
+      </objects>
+      <object>objects\obj_ball</object>
       <object>objects\obj_target</object>
       <object>objects\obj_ammoIcon</object>
       <object>objects\obj_singlePlayermanager</object>
