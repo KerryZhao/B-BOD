@@ -61,6 +61,7 @@
     <sprite>sprites\spr_button1</sprite>
     <sprite>sprites\spr_textBox</sprite>
     <sprite>sprites\spr_castleBg</sprite>
+    <sprite>sprites\sprite24</sprite>
   </sprites>
   <backgrounds name="background">
     <backgrounds name="Map Backgrounds">
@@ -109,6 +110,7 @@
         <object>objects\obj_spawnPoint</object>
       </objects>
       <object>objects\obj_target</object>
+      <object>objects\obj_tutorialTarget</object>
       <object>objects\obj_HPtarget</object>
       <object>objects\obj_ammoIcon</object>
       <object>objects\obj_singlePlayermanager</object>
@@ -136,6 +138,7 @@
             <object>objects\obj_mainMenuObject</object>
             <object>objects\obj_multiPlayerLocalButton</object>
             <object>objects\obj_singlePlayerButton</object>
+            <object>objects\obj_tutorial</object>
             <object>objects\obj_multiPlayerOnlineButton</object>
             <object>objects\obj_backTomainMenu</object>
           </objects>
@@ -174,7 +177,7 @@
       <room>rooms\rm_Castle</room>
     </rooms>
     <rooms name="SinglePlayer Maps">
-      <room>rooms\rm_test</room>
+      <room>rooms\rm_tutorial</room>
       <room>rooms\rm_levelOne</room>
     </rooms>
   </rooms>
