@@ -323,6 +323,7 @@
     <instance objName="obj_T7" x="1536" y="384" name="inst_213B7E3E" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
     <instance objName="obj_T4" x="896" y="448" name="inst_FA0F76A5" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
     <instance objName="obj_T5" x="1088" y="448" name="inst_85F7070D" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
+    <instance objName="obj_tutorialManager" x="32" y="32" name="inst_1D258951" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>

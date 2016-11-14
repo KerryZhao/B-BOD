@@ -123,6 +123,7 @@
       <object>objects\obj_singlePlayermanager</object>
       <object>objects\obj_timer</object>
       <object>objects\obj_tutorialTarget</object>
+      <object>objects\obj_tutorialManager</object>
     </objects>
     <objects name="UI">
       <object>objects\obj_viewControl</object>
