@@ -29,12 +29,25 @@
     <sprites name="Map Object Sprites">
       <sprite>sprites\sprite3</sprite>
       <sprites name="Walls">
-        <sprite>sprites\spr_wallForest1</sprite>
-        <sprite>sprites\spr_wallForest2</sprite>
-        <sprite>sprites\spr_wallForest3</sprite>
-        <sprite>sprites\spr_wallCastle1</sprite>
-        <sprite>sprites\spr_wallCastle2</sprite>
-        <sprite>sprites\spr_wallCity</sprite>
+        <sprites name="Castle Walls">
+          <sprite>sprites\spr_wallCastle1</sprite>
+          <sprite>sprites\spr_wallCastle2</sprite>
+          <sprite>sprites\spr_wallCity</sprite>
+        </sprites>
+        <sprites name="Forest Walls">
+          <sprite>sprites\spr_wallForest2</sprite>
+          <sprite>sprites\spr_wallForest3</sprite>
+        </sprites>
+        <sprites name="Space Walls">
+          <sprite>sprites\spr_SpaceWall1</sprite>
+          <sprite>sprites\spr_SpaceWall2</sprite>
+          <sprite>sprites\spr_SpaceWall3</sprite>
+          <sprite>sprites\spr_SpaceWall4</sprite>
+          <sprite>sprites\spr_SpaceWall5</sprite>
+          <sprite>sprites\spr_SpaceWall6</sprite>
+          <sprite>sprites\spr_SpaceWall7</sprite>
+          <sprite>sprites\spr_SpaceWall8</sprite>
+        </sprites>
       </sprites>
       <sprites name="Obstacles">
         <sprite>sprites\spr_tree</sprite>
@@ -110,6 +123,16 @@
           <object>objects\obj_floorCastle</object>
           <object>objects\obj_wallCastle2</object>
           <object>objects\obj_wallCastle1</object>
+        </objects>
+        <objects name="Space">
+          <object>objects\obj_metDownRight</object>
+          <object>objects\obj_metLeft</object>
+          <object>objects\obj_metDown</object>
+          <object>objects\obj_metDownLeft</object>
+          <object>objects\obj_metRight</object>
+          <object>objects\obj_metUp</object>
+          <object>objects\obj_metUpLeft</object>
+          <object>objects\obj_metUpRight</object>
         </objects>
       </objects>
       <object>objects\obj_ball</object>
