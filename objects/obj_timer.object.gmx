@@ -4,7 +4,7 @@
   <solid>0</solid>
   <visible>-1</visible>
   <depth>0</depth>
-  <persistent>0</persistent>
+  <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
@@ -36,7 +36,7 @@ yposition = 100;
         </arguments>
       </action>
     </event>
-    <event eventtype="8" enumb="0">
+    <event eventtype="7" enumb="10">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -53,10 +53,39 @@ yposition = 100;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///draw it out 
+            <string>///calculate time
 seconds =floor(date_second_span(starttime, date_current_datetime()) % 60);
 minutes=floor(date_minute_span(starttime, date_current_datetime()));
-draw_text(xposition,yposition,string(minutes) + "." + string(seconds));
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="4">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///restarts timer when we enter a room with targets
+if(instance_exists(obj_target)==true)
+{
+starttime = date_current_datetime();
+seconds = 0;
+minutes = 0;
+}
 </string>
           </argument>
         </arguments>
