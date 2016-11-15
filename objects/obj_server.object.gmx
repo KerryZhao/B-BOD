@@ -205,8 +205,8 @@ for(var i=0;i&lt;instance_number(obj_ball);i++){
     var ball = instance_find(obj_ball, i);
     buffer_write(updateBuffer, buffer_f32, ball.x);
     buffer_write(updateBuffer, buffer_f32, ball.y);
-    buffer_write(updateBuffer, buffer_f32, ball.hspeed);
-    buffer_write(updateBuffer, buffer_f32, ball.vspeed);
+    buffer_write(updateBuffer, buffer_f32, ball.phy_speed_x);
+    buffer_write(updateBuffer, buffer_f32, ball.phy_speed_y);
     buffer_write(updateBuffer, buffer_u8, ball.damage);
 }
 
@@ -220,8 +220,8 @@ if(!serverPlayerDead){
         buffer_write(updateBuffer, buffer_u8, serverPlayer.hitPoints);
         buffer_write(updateBuffer, buffer_f32, serverPlayer.x);
         buffer_write(updateBuffer, buffer_f32, serverPlayer.y);
-        buffer_write(updateBuffer, buffer_f32, serverPlayer.hspeed);
-        buffer_write(updateBuffer, buffer_f32, serverPlayer.vspeed);
+        buffer_write(updateBuffer, buffer_f32, serverPlayer.phy_speed_x);
+        buffer_write(updateBuffer, buffer_f32, serverPlayer.phy_speed_y);
         buffer_write(updateBuffer, buffer_f32, serverPlayer.fuel);
         buffer_write(updateBuffer, buffer_u8, serverPlayer.image_index);
         buffer_write(updateBuffer, buffer_bool, serverPlayer.moveDir);
@@ -242,8 +242,8 @@ for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map
         buffer_write(updateBuffer, buffer_f32, player.x);
         buffer_write(updateBuffer, buffer_f32, player.y);
         var name = player.name;
-        buffer_write(updateBuffer, buffer_f32, player.hspeed);
-        buffer_write(updateBuffer, buffer_f32, player.vspeed);
+        buffer_write(updateBuffer, buffer_f32, player.phy_speed_x);
+        buffer_write(updateBuffer, buffer_f32, player.phy_speed_y);
         buffer_write(updateBuffer, buffer_f32, player.fuel);
         buffer_write(updateBuffer, buffer_u8, player.image_index);
         buffer_write(updateBuffer, buffer_bool, player.moveDir);
@@ -593,8 +593,8 @@ if(state==GAME){
                 player.newX = pX;
                 player.newY = pY;
                 var name = player.name;
-                player.hspeed = buffer_read(async_load[? "buffer"], buffer_f32);
-                player.vspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+                player.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
+                player.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
                 player.fuel = buffer_read(async_load[? "buffer"], buffer_f32);
                 player.image_index = buffer_read(async_load[? "buffer"], buffer_u8);
                 player.moveDir = buffer_read(async_load[? "buffer"], buffer_bool);
@@ -620,14 +620,22 @@ if(state==GAME){
             }
             break;
         case SHOOT:
-            var ballX = buffer_read(async_load[? "buffer"], buffer_f32);
-            var ballY = buffer_read(async_load[? "buffer"], buffer_f32);
-            var ball = instance_create(ballX, ballY, obj_ball);
-            ball.hspeed = buffer_read(async_load[? "buffer"], buffer_f32);
-            ball.vspeed = buffer_read(async_load[? "buffer"], buffer_f32);
-            with(ball)
-                if(!place_free(x, y))
-                    instance_destroy();
+            var client = clients[? sender];
+            var dead = client[? "dead"];
+             if(!dead){
+                var player = client[? "player"];
+                var ballX = buffer_read(async_load[? "buffer"], buffer_f32);
+                var ballY = buffer_read(async_load[? "buffer"], buffer_f32);
+                var ball = instance_create(ballX, ballY, obj_ball);
+                with(ball){
+                    var xForce = buffer_read(async_load[? "buffer"], buffer_f32);
+                    var yForce = buffer_read(async_load[? "buffer"], buffer_f32);
+                    physics_apply_force(player.x, player.y, xForce, yForce);
+                    if(physics_test_overlap(x, y, phy_rotation, obj_obstacle))
+                        instance_destroy();
+                }
+                    
+            }
             break;
     }
     

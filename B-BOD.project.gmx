@@ -43,6 +43,7 @@
         <sprite>sprites\spr_floorForest</sprite>
         <sprite>sprites\spr_floorCastle</sprite>
       </sprites>
+      <sprite>sprites\spr_spikes</sprite>
     </sprites>
     <sprites name="Menu Sprites">
       <sprites name="Map Icons">
@@ -89,6 +90,7 @@
     <objects name="Game Objects">
       <object>objects\obj_ball</object>
       <objects name="Obstacles">
+        <object>objects\obj_spikes</object>
         <object>objects\obj_obstacle</object>
         <object>objects\obj_wallCity</object>
         <object>objects\obj_wallForest1</object>

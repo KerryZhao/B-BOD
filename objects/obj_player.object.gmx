@@ -25,17 +25,18 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Set the Speed Variables
-moveMaxSpeed = 10;
-jumpSpeed = 10;
-jetSpeed = 50;
+            <string>///Set the Force Variables
+moveMaxForce = 3;
+jumpForce = -60;
+jetForce = -3;
 fuelUseSpeed = 40;
 fuelRefillSpeed = 20;
-jetMaxSpeed = 10;
-shootSpeed = 10;
+shootForce = 50;
 shootCooldown = 250;
 cooldown = 0;
 image_speed = 0;
+
+phy_fixed_rotation = true;
 </string>
           </argument>
         </arguments>
@@ -60,37 +61,13 @@ image_speed = 0;
 aimH = 0;
 aimV = 0;
 aimDistance = 30;
-moveSpeed = 0;
 moveDir = false;
+animationFactor = 1/10;
 
 //Aim drawing
 aimHighlight = c_black;
 aimHeadSize = 30;
 </string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>107</id>
-        <kind>0</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_set_gravity</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>0</kind>
-            <string>270</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>0.4</string>
           </argument>
         </arguments>
       </action>
@@ -227,29 +204,36 @@ playerColors[7] = c_aqua;
         </arguments>
       </action>
     </event>
-    <event eventtype="2" enumb="0">
+    <event eventtype="3" enumb="2">
       <action>
         <libid>1</libid>
-        <id>103</id>
-        <kind>0</kind>
-        <userelative>-1</userelative>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
         <isquestion>0</isquestion>
         <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_set_hspeed</functionname>
+        <exetype>2</exetype>
+        <functionname></functionname>
         <codestring></codestring>
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
           <argument>
-            <kind>0</kind>
-            <string>moveSpeed</string>
+            <kind>1</kind>
+            <string>///Check for new X and Y
+if(newX!=-1){
+    phy_position_x = newX;
+    newX = -1;
+}
+if(newY!=-1){
+    phy_position_y = newY;
+    newY = -1;
+}
+</string>
           </argument>
         </arguments>
       </action>
-    </event>
-    <event eventtype="3" enumb="2">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -283,35 +267,6 @@ if(!jetpackUsed){
           </argument>
         </arguments>
       </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Check for new X and Y
-if(newX!=-1){
-    x = newX;
-    newX = -1;
-}
-if(newY!=-1){
-    y = newY;
-    newY = -1;
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
     </event>
     <event eventtype="3" enumb="1">
       <action>
@@ -330,15 +285,84 @@ if(newY!=-1){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Set Test States to False
+            <string>///Check state
+if(phy_speed_y!=0)
+    onGround = false;
 jetpackUsed = false;
-onGround = false;
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="4" ename="obj_obstacle">
+    <event eventtype="7" enumb="13">
+      <action>
+        <libid>1</libid>
+        <id>605</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>Check if player dead</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>408</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>-1</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_if</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>0</kind>
+            <string>hitPoints&lt;=0  &amp;&amp; !server</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>422</id>
+        <kind>1</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>203</id>
+        <kind>0</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>1</exetype>
+        <functionname>action_kill_object</functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+      </action>
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -355,19 +379,38 @@ onGround = false;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Check Side Hit
-if(other.bbox_top&gt;bbox_bottom || other.bbox_bottom&lt;bbox_top){
-    if(other.bbox_top&gt;bbox_bottom)
-        onGround = true;
-    vspeed=0;
-}
-else{
-    alarm[0] = 1;
-    hspeed = 0;
+            <string>///Check for Server end game
+if(instance_number(obj_client)==0 &amp;&amp; instance_number(obj_player)&lt;=1){
+    show_message_async("Player "+obj_player.name+" wins!");
+    if(instance_number(obj_server)!=0){
+        with(obj_server){
+            state = NONE;
+            buffer_seek(endBuffer, buffer_seek_start, 0);
+            buffer_write(endBuffer, buffer_u8, END_GAME);
+            buffer_write(endBuffer, buffer_string, obj_player.name);
+            scr_sendMessageUdpAll(clients, endBuffer);
+        }
+    }
+    with(global.multiplayerGame) instance_destroy();
+    room_goto(rm_mainMenu);
 }
 </string>
           </argument>
         </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>424</id>
+        <kind>2</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>0</useapplyto>
+        <exetype>0</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
       </action>
     </event>
     <event eventtype="7" enumb="12">
@@ -408,12 +451,9 @@ else{
           <argument>
             <kind>1</kind>
             <string>///Send player up
-vspeed -= jetSpeed*delta_time/1000000;
 fuel -= fuelUseSpeed*delta_time/1000000;
-if(vspeed&lt;-jetMaxSpeed)
-    vspeed = -jetMaxSpeed;
+physics_apply_local_impulse(0, 0, 0, jetForce);
 if(floor(image_index)!=5){
-    onGround = false;
     image_index = 5;
     image_speed = 0;
 }
@@ -463,7 +503,7 @@ jetpackUsed = true;
           <argument>
             <kind>1</kind>
             <string>///Send player up
-vspeed -= jumpSpeed;
+physics_apply_local_impulse(0, 0, 0, jumpForce);
 onGround = false;
 image_index = 5;
 image_speed = 0;
@@ -511,11 +551,12 @@ audio_play_sound_at(snd_jump, x, y, 0, 300, 100, 1, false, 1);
           <argument>
             <kind>1</kind>
             <string>///Shoot a ball in the Aim Direction
-var ball = instance_create(x+sprite_width/2+aimH, y+sprite_height/2+aimV, obj_ball);
-ball.vspeed = aimV/aimDistance*shootSpeed;
-ball.hspeed = aimH/aimDistance*shootSpeed;
+var ball = instance_create(x+aimH*2, y+aimV*2, obj_ball);
+with(ball){
+    physics_apply_force(other.x, other.y, other.aimH/other.aimDistance*other.shootForce, other.aimV/other.aimDistance*other.shootForce);
+}
 with(ball)
-    if(!place_free(x, y))
+    if(physics_test_overlap(x, y, phy_rotation, obj_obstacle))
         instance_destroy();
 </string>
           </argument>
@@ -542,7 +583,7 @@ with(ball)
             <string>///Draw Self
 color = playerColors[num];
 if(moveDir)
-    draw_sprite_ext(sprite_index, -1, x+sprite_width, y, -1, 1, 0, color, 1);
+    draw_sprite_ext(sprite_index, -1, x, y, -1, 1, 0, color, 1);
 else
     draw_sprite_ext(sprite_index, -1, x, y, 1, 1, 0, color, 1);
 </string>
@@ -571,13 +612,13 @@ else
 var width = string_width(name);
 var height = string_height(name);
 draw_set_alpha(0.25);
-draw_rectangle_colour(x+sprite_width/2-width/2, y-healthPadding-height, x+sprite_width/2+width/2, y-healthPadding, color, color, color, color, false);
+draw_rectangle_colour(x-width/2, y-healthPadding-height-sprite_height/2, x+width/2, y-healthPadding-sprite_height/2, color, color, color, color, false);
 draw_set_alpha(1);
 
 //Draw the name
 draw_set_halign(fa_center);
 draw_set_valign(fa_bottom);
-draw_text_colour(x+sprite_width/2, y-healthPadding, name, nameColor, nameColor, nameColor, nameColor, 1);
+draw_text_colour(x, y-healthPadding-sprite_height/2, name, nameColor, nameColor, nameColor, nameColor, 1);
 draw_set_valign(fa_top);
 draw_set_halign(fa_left);
 </string>
@@ -601,7 +642,7 @@ draw_set_halign(fa_left);
           <argument>
             <kind>1</kind>
             <string>///Draw Health Bar
-draw_healthbar(x-healthPadding, y+sprite_height+healthPadding, x+sprite_width+healthPadding, y+sprite_height+healthPadding+healthThickness, hitPoints/maxHitPoints*100, c_white, c_red, c_lime, 0, true, true);
+draw_healthbar(x-healthPadding-sprite_width/2, y+sprite_height/2+healthPadding, x+sprite_width/2+healthPadding, y+sprite_height/2+healthPadding+healthThickness, hitPoints/maxHitPoints*100, c_white, c_red, c_lime, 0, true, true);
 </string>
           </argument>
         </arguments>
@@ -624,7 +665,7 @@ draw_healthbar(x-healthPadding, y+sprite_height+healthPadding, x+sprite_width+he
             <kind>1</kind>
             <string>///Draw Fuel Bar
 if(fuel!=maxFuel)
-    draw_healthbar(x-fuelPadding, y+sprite_height+healthPadding+healthThickness+fuelPadding, x+sprite_width+fuelPadding, y+sprite_height+healthPadding+healthThickness+fuelPadding+fuelThickness, fuel/maxFuel*100, c_white, c_yellow, c_orange, 0, false, false);
+    draw_healthbar(x-fuelPadding-sprite_width/2, y+sprite_height/2+healthPadding+healthThickness+fuelPadding, x+sprite_width/2+fuelPadding, y+sprite_height/2+healthPadding+healthThickness+fuelPadding+fuelThickness, fuel/maxFuel*100, c_white, c_yellow, c_orange, 0, false, false);
 </string>
           </argument>
         </arguments>
@@ -633,13 +674,13 @@ if(fuel!=maxFuel)
   </events>
   <PhysicsObject>0</PhysicsObject>
   <PhysicsObjectSensor>0</PhysicsObjectSensor>
-  <PhysicsObjectShape>0</PhysicsObjectShape>
-  <PhysicsObjectDensity>0.5</PhysicsObjectDensity>
-  <PhysicsObjectRestitution>0.100000001490116</PhysicsObjectRestitution>
+  <PhysicsObjectShape>1</PhysicsObjectShape>
+  <PhysicsObjectDensity>2</PhysicsObjectDensity>
+  <PhysicsObjectRestitution>0</PhysicsObjectRestitution>
   <PhysicsObjectGroup>0</PhysicsObjectGroup>
-  <PhysicsObjectLinearDamping>0.100000001490116</PhysicsObjectLinearDamping>
-  <PhysicsObjectAngularDamping>0.100000001490116</PhysicsObjectAngularDamping>
-  <PhysicsObjectFriction>0.200000002980232</PhysicsObjectFriction>
+  <PhysicsObjectLinearDamping>1</PhysicsObjectLinearDamping>
+  <PhysicsObjectAngularDamping>0</PhysicsObjectAngularDamping>
+  <PhysicsObjectFriction>0.5</PhysicsObjectFriction>
   <PhysicsObjectAwake>-1</PhysicsObjectAwake>
   <PhysicsObjectKinematic>0</PhysicsObjectKinematic>
   <PhysicsShapePoints/>

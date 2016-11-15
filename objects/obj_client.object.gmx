@@ -203,8 +203,8 @@ else{
     buffer_write(updateBuffer, buffer_f32, player.x);
     buffer_write(updateBuffer, buffer_f32, player.y);
     playerSend = string(player.x)+", "+string(player.y);
-    buffer_write(updateBuffer, buffer_f32, player.hspeed);
-    buffer_write(updateBuffer, buffer_f32, player.vspeed);
+    buffer_write(updateBuffer, buffer_f32, player.phy_speed_x);
+    buffer_write(updateBuffer, buffer_f32, player.phy_speed_y);
     buffer_write(updateBuffer, buffer_f32, player.fuel);
     buffer_write(updateBuffer, buffer_u8, player.image_index);
     buffer_write(updateBuffer, buffer_bool, player.moveDir);
@@ -607,8 +607,8 @@ if(state==GAME){
                 var ball = instance_find(obj_ball, i);
                 ball.newX = buffer_read(async_load[? "buffer"], buffer_f32);
                 ball.newY = buffer_read(async_load[? "buffer"], buffer_f32);
-                ball.hspeed = buffer_read(async_load[? "buffer"], buffer_f32);
-                ball.vspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
                 ball.damage = buffer_read(async_load[? "buffer"], buffer_u8);
             }
             //Create the new balls
@@ -616,8 +616,8 @@ if(state==GAME){
                 var ballX = buffer_read(async_load[? "buffer"], buffer_f32);
                 var ballY = buffer_read(async_load[? "buffer"], buffer_f32);
                 var ball = instance_create(ballX, ballY, obj_ball);
-                ball.hspeed = buffer_read(async_load[? "buffer"], buffer_f32);
-                ball.vspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
                 ball.damage = buffer_read(async_load[? "buffer"], buffer_u8);
             }
             //Destroy the old balls
@@ -649,8 +649,8 @@ if(state==GAME){
                     }
                     playerNum++;
                     player.hitPoints = hitPoints;
-                    player.hspeed = buffer_read(async_load[? "buffer"], buffer_f32);
-                    player.vspeed = buffer_read(async_load[? "buffer"], buffer_f32);
+                    player.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
+                    player.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
                     player.fuel = buffer_read(async_load[? "buffer"], buffer_f32);
                     player.image_index = buffer_read(async_load[? "buffer"], buffer_u8);
                     player.moveDir = buffer_read(async_load[? "buffer"], buffer_bool);

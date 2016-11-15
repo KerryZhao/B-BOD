@@ -104,7 +104,6 @@
 //Get spawn points
 var spawns = ds_list_create();
 for(var i=0;i&lt;instance_number(obj_spawnPoint);i++){
-    show_debug_message(i);
     ds_list_add(spawns, instance_find(obj_spawnPoint, i));
 }
 ds_list_shuffle(spawns);
@@ -112,7 +111,6 @@ ds_list_shuffle(spawns);
 //Spawn each player to a random spawn point
 for(var i=0;i&lt;ds_list_size(clientInfo);i++){
     var player;
-    show_debug_message(spawns[| 0]);
     player = instance_create(spawns[|0].x, spawns[|0].y, obj_playerClient);
     player.name = clientInfo[|i];
     player.gamepadSlot =  controllers[|i];
@@ -155,10 +153,10 @@ for(var i=0;i&lt;gamepad_get_device_count();i++){
                 ds_list_add(clientInfo, "Player "+string(i+1));
                 
             //Check number of Players
-            if(ds_list_size(controllers)&gt;=2)
+            /*if(ds_list_size(controllers)&gt;=2)
                 obj_buttonMStart.disabled = false;
-            else
-                obj_buttonMStart.disabled = true;
+            else*/
+                obj_buttonMStart.disabled = false;
         }
         
         //Check for player leave

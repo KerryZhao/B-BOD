@@ -101,25 +101,10 @@ if(abs(tempH)&gt;controlThreshold || abs(tempV)&gt;controlThreshold){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Check Shoot Button
-cooldown -= delta_time/1000;
-for(var i=0;i&lt;array_length_1d(shootButtons);i++){
-    if(gamepad_button_check(gamepadSlot, shootButtons[i]) &amp;&amp; cooldown&lt;=0){
-        if(instance_number(obj_client)&gt;0){
-            //Send server message to shoot
-            var buffer = obj_client.shootBuffer;
-            buffer_seek(buffer, buffer_seek_start, 0);
-            buffer_write(buffer, buffer_u8, SHOOT);
-            buffer_write(buffer, buffer_f32, x+sprite_width/2+aimH);
-            buffer_write(buffer, buffer_f32, y+sprite_height/2+aimV);
-            buffer_write(buffer, buffer_f32, aimH/aimDistance*shootSpeed);
-            buffer_write(buffer, buffer_f32, aimV/aimDistance*shootSpeed);
-            network_send_udp(obj_client.socketID, obj_client.server, PORT, buffer, buffer_tell(buffer));
-        }
-        else
-            event_user(0);
-        cooldown = shootCooldown;
-        audio_play_sound_at(snd_toss, x, y, 0, 300, 100, 1, false, 1);
+            <string>///Check Jump Button
+for(var i=0;i&lt;array_length_1d(jumpButtons) &amp;&amp; onGround;i++){
+    if(gamepad_button_check(gamepadSlot, jumpButtons[i]) &amp;&amp; onGround){
+        event_user(1);
         break;
     }
 }
@@ -143,10 +128,25 @@ for(var i=0;i&lt;array_length_1d(shootButtons);i++){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Check Jump Button
-for(var i=0;i&lt;array_length_1d(jumpButtons) &amp;&amp; onGround;i++){
-    if(gamepad_button_check(gamepadSlot, jumpButtons[i]) &amp;&amp; onGround){
-        event_user(1);
+            <string>///Check Shoot Button
+cooldown -= delta_time/1000;
+for(var i=0;i&lt;array_length_1d(shootButtons);i++){
+    if(gamepad_button_check(gamepadSlot, shootButtons[i]) &amp;&amp; cooldown&lt;=0){
+        if(instance_number(obj_client)&gt;0){
+            //Send server message to shoot
+            var buffer = obj_client.shootBuffer;
+            buffer_seek(buffer, buffer_seek_start, 0);
+            buffer_write(buffer, buffer_u8, SHOOT);
+            buffer_write(buffer, buffer_f32, x+aimH*2);
+            buffer_write(buffer, buffer_f32, y+aimV*2);
+            buffer_write(buffer, buffer_f32, aimH/aimDistance*shootForce);
+            buffer_write(buffer, buffer_f32, aimV/aimDistance*shootForce);
+            network_send_udp(obj_client.socketID, obj_client.server, PORT, buffer, buffer_tell(buffer));
+        }
+        else
+            event_user(0);
+        cooldown = shootCooldown;
+        audio_play_sound_at(snd_toss, x, y, 0, 300, 100, 1, false, 1);
         break;
     }
 }
@@ -199,13 +199,14 @@ for(var i=0;i&lt;array_length_1d(jetButtons) &amp;&amp; fuel&gt;0 &amp;&amp; !je
           <argument>
             <kind>1</kind>
             <string>///Check Move Axis
-hspeed -= moveSpeed;
-moveSpeed = gamepad_axis_value(gamepadSlot, moveAxis);
-if(abs(moveSpeed)&lt;controlThreshold)
-    moveSpeed = 0;
-else
-    moveSpeed *= moveMaxSpeed;
-hspeed += moveSpeed;
+var moveForce = gamepad_axis_value(gamepadSlot, moveAxis);
+if(abs(moveForce)&lt;controlThreshold)
+    moveForce = 0;
+else{
+    moveForce *= moveMaxForce;
+    if(onGround || !physics_test_overlap(x+sign(moveForce), y, 0, obj_obstacle))
+        physics_apply_local_impulse(0, 0, moveForce, 0);
+}
 </string>
           </argument>
         </arguments>
@@ -227,13 +228,13 @@ hspeed += moveSpeed;
           <argument>
             <kind>1</kind>
             <string>///Update Animation
-if(moveSpeed!=0)
-    moveDir = sign(moveSpeed)==-1;
+if(phy_speed_x!=0)
+    moveDir = sign(phy_speed_x)==-1;
 if(onGround){
     if(floor(image_index)==5)
         image_index = 0;
-    else if(moveSpeed!=0)
-        image_speed = abs(moveSpeed/moveMaxSpeed)*delta_time/100000;
+    else if(phy_speed_x!=0)
+        image_speed = abs(phy_speed_x)*delta_time/100000*animationFactor;
     else{
         image_index = 0;
         image_speed = 0;
@@ -295,10 +296,10 @@ else if(floor(image_index)!=5){
           <argument>
             <kind>1</kind>
             <string>///Draw the Aim Arrow
-var x1 = x+sprite_width/2+aimH;
-var x2 = x+sprite_width/2+aimH*2;
-var y1 = y+sprite_height/2+aimV;
-var y2 = y+sprite_height/2+aimV*2;
+var x1 = x+aimH;
+var x2 = x+aimH*2;
+var y1 = y+aimV;
+var y2 = y+aimV*2;
 x3 = x2+((x1-x2)*cos(pi/12)+(y1-y2)*sin(pi/12))*aimHeadSize/aimDistance;
 y3 = y2+((y1-y2)*cos(pi/12)-(x1-x2)*sin(pi/12))*aimHeadSize/aimDistance;
 x4 = x2+((x1-x2)*cos(pi/12)-(y1-y2)*sin(pi/12))*aimHeadSize/aimDistance;
@@ -312,16 +313,21 @@ draw_triangle_colour(x3, y3, x2, y2, x4, y4, aimHighlight, aimHighlight, aimHigh
       </action>
     </event>
   </events>
-  <PhysicsObject>0</PhysicsObject>
+  <PhysicsObject>-1</PhysicsObject>
   <PhysicsObjectSensor>0</PhysicsObjectSensor>
-  <PhysicsObjectShape>0</PhysicsObjectShape>
-  <PhysicsObjectDensity>0.5</PhysicsObjectDensity>
-  <PhysicsObjectRestitution>0.100000001490116</PhysicsObjectRestitution>
+  <PhysicsObjectShape>1</PhysicsObjectShape>
+  <PhysicsObjectDensity>1</PhysicsObjectDensity>
+  <PhysicsObjectRestitution>0</PhysicsObjectRestitution>
   <PhysicsObjectGroup>0</PhysicsObjectGroup>
-  <PhysicsObjectLinearDamping>0.100000001490116</PhysicsObjectLinearDamping>
-  <PhysicsObjectAngularDamping>0.100000001490116</PhysicsObjectAngularDamping>
+  <PhysicsObjectLinearDamping>2.5</PhysicsObjectLinearDamping>
+  <PhysicsObjectAngularDamping>0</PhysicsObjectAngularDamping>
   <PhysicsObjectFriction>0.200000002980232</PhysicsObjectFriction>
   <PhysicsObjectAwake>-1</PhysicsObjectAwake>
   <PhysicsObjectKinematic>0</PhysicsObjectKinematic>
-  <PhysicsShapePoints/>
+  <PhysicsShapePoints>
+    <point>0,0</point>
+    <point>26,0</point>
+    <point>26,48</point>
+    <point>0,48</point>
+  </PhysicsShapePoints>
 </object>
