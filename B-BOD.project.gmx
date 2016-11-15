@@ -21,6 +21,15 @@
     <sound>sound\snd_bgMusic1</sound>
   </sounds>
   <sprites name="sprites">
+    <sprites name="tutorial Sprites">
+      <sprite>sprites\spr_tutorial_1</sprite>
+      <sprite>sprites\spr_tutorial_2</sprite>
+      <sprite>sprites\spr_tutorial_3</sprite>
+      <sprite>sprites\spr_tutorial_4</sprite>
+      <sprite>sprites\spr_tutorial_5</sprite>
+      <sprite>sprites\spr_tutorial_6</sprite>
+      <sprite>sprites\spr_tutorial_7</sprite>
+    </sprites>
     <sprites name="Player Sprites">
       <sprite>sprites\spr_player</sprite>
       <sprite>sprites\spr_ball</sprite>
@@ -29,12 +38,25 @@
     <sprites name="Map Object Sprites">
       <sprite>sprites\sprite3</sprite>
       <sprites name="Walls">
-        <sprite>sprites\spr_wallForest1</sprite>
-        <sprite>sprites\spr_wallForest2</sprite>
-        <sprite>sprites\spr_wallForest3</sprite>
-        <sprite>sprites\spr_wallCastle1</sprite>
-        <sprite>sprites\spr_wallCastle2</sprite>
-        <sprite>sprites\spr_wallCity</sprite>
+        <sprites name="Castle Walls">
+          <sprite>sprites\spr_wallCastle1</sprite>
+          <sprite>sprites\spr_wallCastle2</sprite>
+          <sprite>sprites\spr_wallCity</sprite>
+        </sprites>
+        <sprites name="Forest Walls">
+          <sprite>sprites\spr_wallForest2</sprite>
+          <sprite>sprites\spr_wallForest3</sprite>
+        </sprites>
+        <sprites name="Space Walls">
+          <sprite>sprites\spr_SpaceWall1</sprite>
+          <sprite>sprites\spr_SpaceWall2</sprite>
+          <sprite>sprites\spr_SpaceWall3</sprite>
+          <sprite>sprites\spr_SpaceWall4</sprite>
+          <sprite>sprites\spr_SpaceWall5</sprite>
+          <sprite>sprites\spr_SpaceWall6</sprite>
+          <sprite>sprites\spr_SpaceWall7</sprite>
+          <sprite>sprites\spr_SpaceWall8</sprite>
+        </sprites>
       </sprites>
       <sprites name="Obstacles">
         <sprite>sprites\spr_tree</sprite>
@@ -61,7 +83,6 @@
     </sprites>
     <sprite>sprites\spr_button1</sprite>
     <sprite>sprites\spr_textBox</sprite>
-    <sprite>sprites\spr_castleBg</sprite>
   </sprites>
   <backgrounds name="background">
     <backgrounds name="Map Backgrounds">
@@ -69,6 +90,7 @@
       <background>background\bg_castle</background>
       <background>background\bg_space</background>
       <background>background\bg_forest</background>
+      <background>background\bg_tileset</background>
     </backgrounds>
     <backgrounds name="Menu Backgrounds">
       <background>background\bg_menu</background>
@@ -89,20 +111,6 @@
   <objects name="objects">
     <objects name="Game Objects">
       <object>objects\obj_ball</object>
-      <objects name="Obstacles">
-        <object>objects\obj_spikes</object>
-        <object>objects\obj_obstacle</object>
-        <object>objects\obj_wallCity</object>
-        <object>objects\obj_wallForest1</object>
-        <object>objects\obj_wallForest2</object>
-        <object>objects\obj_wallForest3</object>
-        <object>objects\obj_floorForest</object>
-        <object>objects\obj_floorCastle</object>
-        <object>objects\obj_wallCastle1</object>
-        <object>objects\obj_wallCastle2</object>
-        <object>objects\obj_castleBg</object>
-        <object>objects\obj_tree</object>
-      </objects>
       <objects name="Player">
         <object>objects\obj_player</object>
         <object>objects\obj_playerClient</object>
@@ -110,9 +118,40 @@
         <object>objects\obj_playerNetwork</object>
         <object>objects\obj_spawnPoint</object>
       </objects>
+      <objects name="Obstacles">
+        <object>objects\obj_obstacle</object>
+        <objects name="City">
+          <object>objects\obj_wallCity</object>
+        </objects>
+        <objects name="Forest">
+          <object>objects\obj_wallForest3</object>
+          <object>objects\obj_wallForest2</object>
+          <object>objects\obj_wallForest1</object>
+          <object>objects\obj_floorForest</object>
+          <object>objects\obj_tree</object>
+        </objects>
+        <objects name="Castle">
+          <object>objects\obj_floorCastle</object>
+          <object>objects\obj_wallCastle2</object>
+          <object>objects\obj_wallCastle1</object>
+        </objects>
+        <objects name="Space">
+          <object>objects\obj_metDownRight</object>
+          <object>objects\obj_metLeft</object>
+          <object>objects\obj_metDown</object>
+          <object>objects\obj_metDownLeft</object>
+          <object>objects\obj_metUp</object>
+          <object>objects\obj_metUpLeft</object>
+          <object>objects\obj_metUpRight</object>
+          <object>objects\obj_metRight</object>
+        </objects>
+      </objects>
       <object>objects\obj_target</object>
-      <object>objects\obj_ammoIcon</object>
+      <object>objects\obj_HPtarget</object>
       <object>objects\obj_singlePlayermanager</object>
+      <object>objects\obj_timer</object>
+      <object>objects\obj_tutorialTarget</object>
+      <object>objects\obj_tutorialManager</object>
     </objects>
     <objects name="UI">
       <object>objects\obj_viewControl</object>
@@ -135,6 +174,7 @@
             <object>objects\obj_mainMenuObject</object>
             <object>objects\obj_multiPlayerLocalButton</object>
             <object>objects\obj_singlePlayerButton</object>
+            <object>objects\obj_tutorialButton</object>
             <object>objects\obj_multiPlayerOnlineButton</object>
             <object>objects\obj_backTomainMenu</object>
           </objects>
@@ -152,6 +192,15 @@
       <object>objects\obj_server</object>
       <object>objects\obj_client</object>
       <object>objects\obj_local</object>
+    </objects>
+    <objects name="tutorial_Pictures">
+      <object>objects\obj_T1</object>
+      <object>objects\obj_T2</object>
+      <object>objects\obj_T3</object>
+      <object>objects\obj_T4</object>
+      <object>objects\obj_T5</object>
+      <object>objects\obj_T6</object>
+      <object>objects\obj_T7</object>
     </objects>
   </objects>
   <rooms name="rooms">
@@ -173,6 +222,7 @@
       <room>rooms\rm_Castle</room>
     </rooms>
     <rooms name="SinglePlayer Maps">
+      <room>rooms\rm_tutorial</room>
       <room>rooms\rm_levelOne</room>
     </rooms>
   </rooms>

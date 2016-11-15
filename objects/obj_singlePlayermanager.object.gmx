@@ -102,17 +102,12 @@ ammoIcons--;
           <argument>
             <kind>1</kind>
             <string>///Check for end game
-if(ballsdestroyed==targetsNeeded+2 &amp;&amp; ingame == true)
+if(instance_number(obj_target)==0)
 {
    room_goto(rm_scoreScreen);
    ingame = false;
 }
-
-if(targetsHit == targetsNeeded )
-{
-    win = true;
-}
-if(win == true &amp;&amp;ingame == true)
+else if(obj_player.ammunition&lt;=0 &amp;&amp; instance_number(obj_ball)&lt;=1)
 {
    room_goto(rm_scoreScreen);
    ingame = false;
@@ -208,10 +203,18 @@ if(ingame == true)
     text1 = "Targets Needed: " + string(obj_singlePlayermanager.targetsNeededtext);
     draw_text(0, 0, text1);
     text2 = "Targets Hit: " + string(obj_singlePlayermanager.targetsHit);
-    draw_text(0,20,text2);
+    draw_text(0,20,text2);   
+    with(obj_timer)
+    {
+      event_user(0);
+    }
+     text3 = "Time: " + string(obj_timer.minutes)+ "." + string(obj_timer.seconds);
+    draw_text(0,40,text3);
+    text4 = "Score: " + string(obj_singlePlayermanager.cusScore);
+    draw_text(100,40,text4);
     var drawX = 0;
-    var drawY = 40;
-    for(var i=0;i&lt;ammoIcons;i++){
+    var drawY = 60;
+    for(var i=0;i&lt;obj_player.ammunition;i++){
         draw_ellipse_colour(drawX, drawY, drawX+ammoSize, drawY+ammoSize, c_white, c_white, false);
         drawX += ammoSize *1.5;
         if(drawX+ammoSize&gt;=width){
@@ -226,12 +229,16 @@ if(win == true &amp;&amp; room_get_name(room)=="rm_scoreScreen")
  x = display_get_width()/4;
  y = display_get_height()/4;
  draw_text_transformed(x, y, "You win", 5, 5, 0);
+ draw_text_transformed(x+50,y+100,"Time: " + string(obj_timer.minutes)+ "." + string(obj_timer.seconds),3,3,0);
+ draw_text_transformed(x+50,y+150,"Score: " + string(obj_singlePlayermanager.cusScore),3,3,0);
 }
 else if(win == false &amp;&amp; room_get_name(room)=="rm_scoreScreen")
 {
  x = display_get_width()/4;
  y = display_get_height()/4;
  draw_text_transformed(x, y, "You lose", 5, 5, 0);
+ draw_text_transformed(x+50,y+100,"Time: " + string(obj_timer.minutes)+ "." + string(obj_timer.seconds),3,3,0);
+ draw_text_transformed(x+50,y+150,"Score: " + string(obj_singlePlayermanager.cusScore),3,3,0);
 }
 </string>
           </argument>
