@@ -21,6 +21,15 @@
     <sound>sound\snd_bgMusic1</sound>
   </sounds>
   <sprites name="sprites">
+    <sprites name="tutorial Sprites">
+      <sprite>sprites\spr_tutorial_1</sprite>
+      <sprite>sprites\spr_tutorial_2</sprite>
+      <sprite>sprites\spr_tutorial_3</sprite>
+      <sprite>sprites\spr_tutorial_4</sprite>
+      <sprite>sprites\spr_tutorial_5</sprite>
+      <sprite>sprites\spr_tutorial_6</sprite>
+      <sprite>sprites\spr_tutorial_7</sprite>
+    </sprites>
     <sprites name="Player Sprites">
       <sprite>sprites\spr_player</sprite>
       <sprite>sprites\spr_ball</sprite>
@@ -114,8 +123,12 @@
       </objects>
       <object>objects\obj_ball</object>
       <object>objects\obj_target</object>
+      <object>objects\obj_HPtarget</object>
       <object>objects\obj_ammoIcon</object>
       <object>objects\obj_singlePlayermanager</object>
+      <object>objects\obj_timer</object>
+      <object>objects\obj_tutorialTarget</object>
+      <object>objects\obj_tutorialManager</object>
     </objects>
     <objects name="UI">
       <object>objects\obj_viewControl</object>
@@ -138,6 +151,7 @@
             <object>objects\obj_mainMenuObject</object>
             <object>objects\obj_multiPlayerLocalButton</object>
             <object>objects\obj_singlePlayerButton</object>
+            <object>objects\obj_tutorialButton</object>
             <object>objects\obj_multiPlayerOnlineButton</object>
             <object>objects\obj_backTomainMenu</object>
           </objects>
@@ -155,6 +169,15 @@
       <object>objects\obj_server</object>
       <object>objects\obj_client</object>
       <object>objects\obj_local</object>
+    </objects>
+    <objects name="tutorial_Pictures">
+      <object>objects\obj_T1</object>
+      <object>objects\obj_T2</object>
+      <object>objects\obj_T3</object>
+      <object>objects\obj_T4</object>
+      <object>objects\obj_T5</object>
+      <object>objects\obj_T6</object>
+      <object>objects\obj_T7</object>
     </objects>
   </objects>
   <rooms name="rooms">
@@ -176,6 +199,7 @@
       <room>rooms\rm_Castle</room>
     </rooms>
     <rooms name="SinglePlayer Maps">
+      <room>rooms\rm_tutorial</room>
       <room>rooms\rm_levelOne</room>
     </rooms>
   </rooms>
