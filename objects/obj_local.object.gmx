@@ -155,10 +155,10 @@ for(var i=0;i&lt;gamepad_get_device_count();i++){
                 ds_list_add(clientInfo, "Player "+string(i+1));
                 
             //Check number of Players
-            if(ds_list_size(controllers)&gt;=2)
+            /*if(ds_list_size(controllers)&gt;=2)
                 obj_buttonMStart.disabled = false;
-            else
-                obj_buttonMStart.disabled = true;
+            else*/
+                obj_buttonMStart.disabled = false;
         }
         
         //Check for player leave
