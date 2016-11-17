@@ -58,9 +58,9 @@ phy_fixed_rotation = true;
           <argument>
             <kind>1</kind>
             <string>///Set Aim and Move Variables
-aimH = 0;
-aimV = 0;
 aimDistance = 30;
+aimH = aimDistance;
+aimV = 0;
 moveDir = false;
 animationFactor = 1/10;
 

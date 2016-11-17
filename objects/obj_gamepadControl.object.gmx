@@ -207,7 +207,9 @@ if(!gamepad_is_connected(controller)){
         controller++;
 }
 off = !gamepad_is_connected(controller);
-
+if(!off &amp;&amp; instance_number(obj_local)==0 &amp;&amp; instance_number(obj_playerClient)&gt;0){
+    obj_playerClient.gamepadSlot = controller;
+}
 </string>
           </argument>
         </arguments>

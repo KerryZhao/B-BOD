@@ -296,7 +296,7 @@ else if(floor(image_index)!=5){
           <argument>
             <kind>1</kind>
             <string>///Draw the Aim Arrow
-var x1 = x+aimH;
+/*var x1 = x+aimH;
 var x2 = x+aimH*2;
 var y1 = y+aimV;
 var y2 = y+aimV*2;
@@ -306,7 +306,8 @@ x4 = x2+((x1-x2)*cos(pi/12)-(y1-y2)*sin(pi/12))*aimHeadSize/aimDistance;
 y4 = y2+((y1-y2)*cos(pi/12)+(x1-x2)*sin(pi/12))*aimHeadSize/aimDistance;
 draw_triangle_colour(x3, y3, x2, y2, x4, y4, color, color, color, false);
 draw_triangle_colour(x3, y3, x2, y2, x4, y4, aimHighlight, aimHighlight, aimHighlight, true);
-
+*/
+scr_drawTriangle(x+aimH, y+aimV, x+aimH*2, y+aimV*2, aimHeadSize, pi/12, color, aimHighlight);
 </string>
           </argument>
         </arguments>
