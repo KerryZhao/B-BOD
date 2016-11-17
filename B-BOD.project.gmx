@@ -148,6 +148,7 @@
       </objects>
       <object>objects\obj_target</object>
       <object>objects\obj_HPtarget</object>
+      <object>objects\obj_movingTarget</object>
       <object>objects\obj_singlePlayermanager</object>
       <object>objects\obj_timer</object>
       <object>objects\obj_tutorialTarget</object>
