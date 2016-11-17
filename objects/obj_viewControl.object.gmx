@@ -29,6 +29,10 @@
 bufferSize = 64;
 minXSize = 1024;
 minYSize = 576;
+playerArrowHeight = 25;
+playerArrowLength = 25;
+playerArrowAngle = pi/7;
+playerArrowBuffer = 5;
 </string>
           </argument>
         </arguments>
@@ -190,21 +194,23 @@ else
 
 //Get x position of viewport based on players, viewport size, and room size
 view_xview[0] = (minX+maxX-view_wview[0])/2;
+/*
 if(view_wview[0]&gt;room_width)
     view_xview[0] = -(view_wview[0]-room_width)/2;
 else if(view_xview[0]&lt;0)
     view_xview[0] = 0;
 else if(view_xview[0]&gt;room_width-view_wview[0])
-    view_xview[0] = room_width-view_wview[0];
+    view_xview[0] = room_width-view_wview[0];*/
 
 //Get y position of viewport based on players, viewport size, and room size
 view_yview[0] = (minY+maxY-view_hview[0])/2;
+/*
 if(view_hview[0]&gt;room_height)
     view_yview[0] = -(view_hview[0]-room_height)/2;
 else if(view_yview[0]&lt;0)
     view_yview[0] = 0;
 else if(view_yview[0]&gt;room_height-view_hview[0])
-    view_yview[0] = room_height-view_hview[0];
+    view_yview[0] = room_height-view_hview[0];*/
 </string>
           </argument>
         </arguments>
@@ -222,6 +228,79 @@ else if(view_yview[0]&gt;room_height-view_hview[0])
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw arrows pointing to other players
+var networkPlayers = instance_number(obj_playerNetwork);
+if(networkPlayers&gt;0){
+
+    for(var i=0;i&lt;networkPlayers;i++){
+    
+        // Get the line to the player
+        var player = instance_find(obj_playerNetwork, i);
+        var slope = (player.y - obj_playerClient.y)/(player.x - obj_playerClient.x);
+        var yInter = player.y-slope*player.x;
+        
+        // Get the point on the edge of the screen to the player
+        var edgeX = 0;
+        var edgeY = 0;
+        var off = false;
+        if(player.y&gt;view_yview[0]+view_hview[0]){
+            edgeX = (view_yview[0]+view_hview[0]-playerArrowBuffer - yInter)/slope;
+            if(edgeX&lt;=view_xview[0]+view_wview[0] &amp;&amp; edgeX&gt;=view_xview[0]){
+                off = true;
+                edgeY = slope*edgeX+yInter;
+            }
+        }
+        else if(player.y&lt;view_yview[0]){
+            edgeX = (view_yview[0]+playerArrowBuffer - yInter)/slope;
+            if(edgeX&lt;=view_xview[0]+view_wview[0] &amp;&amp; edgeX&gt;=view_xview[0]){
+                off = true;
+                edgeY = slope*edgeX+yInter;
+            }
+        }
+        if(!off &amp;&amp; player.x&gt;view_xview[0]+view_wview[0]){
+            edgeY = slope*(view_xview[0]+view_wview[0]-playerArrowBuffer)+yInter;
+            edgeX = (edgeY - yInter)/slope;
+            off = true;
+        }
+        else if(!off &amp;&amp; player.x&lt;view_xview[0]){
+            edgeY = slope*(view_xview[0]+playerArrowBuffer)+yInter;
+            edgeX = (edgeY - yInter)/slope;
+            off = true;
+        }
+        
+        //Draw arrow to player if off
+        if(off){
+            var dis = point_distance(obj_playerClient.x, obj_playerClient.y, edgeX, edgeY);
+            var x1 = (obj_playerClient.x-edgeX)/dis*playerArrowHeight+edgeX-view_xview[0];
+            var y1 = (obj_playerClient.y-edgeY)/dis*playerArrowHeight+edgeY-view_yview[0];
+            edgeX -= view_xview[0];
+            edgeY -= view_yview[0];
+            scr_drawTriangle(x1, y1, edgeX, edgeY, playerArrowLength, playerArrowAngle, player.color, player.aimHighlight);
+        }
+    }
+}
+</string>
+          </argument>
+        </arguments>
       </action>
     </event>
   </events>

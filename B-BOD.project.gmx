@@ -59,6 +59,7 @@
         </sprites>
       </sprites>
       <sprites name="Obstacles">
+        <sprite>sprites\spr_bark</sprite>
         <sprite>sprites\spr_tree</sprite>
       </sprites>
       <sprites name="Floors">
@@ -102,6 +103,7 @@
     <script>scripts\scr_sendMessageUdpAll.gml</script>
     <script>scripts\scr_sendMessageUdp.gml</script>
     <script>scripts\scr_splitString.gml</script>
+    <script>scripts\scr_drawTriangle.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\fnt_arial</font>
@@ -128,6 +130,7 @@
           <object>objects\obj_wallForest2</object>
           <object>objects\obj_wallForest1</object>
           <object>objects\obj_floorForest</object>
+          <object>objects\obj_bark</object>
           <object>objects\obj_tree</object>
         </objects>
         <objects name="Castle">
@@ -145,6 +148,7 @@
           <object>objects\obj_metUpRight</object>
           <object>objects\obj_metRight</object>
         </objects>
+        <object>objects\obj_movingPlatform</object>
       </objects>
       <object>objects\obj_target</object>
       <object>objects\obj_HPtarget</object>
