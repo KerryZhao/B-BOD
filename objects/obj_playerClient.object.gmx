@@ -74,8 +74,16 @@ aimHAxis = gp_axisrh;
           <argument>
             <kind>1</kind>
             <string>///Check Aim Axis
-var tempH = gamepad_axis_value(gamepadSlot, aimHAxis);
-var tempV = gamepad_axis_value(gamepadSlot, aimVAxis);
+var tempH;
+var tempV;
+if(gamepadSlot!=-1){
+    tempH = gamepad_axis_value(gamepadSlot, aimHAxis);
+    tempV = gamepad_axis_value(gamepadSlot, aimVAxis);
+}
+else{
+    tempH = mouse_x-x;
+    tempV = mouse_y-y;
+}
 if(abs(tempH)&gt;controlThreshold || abs(tempV)&gt;controlThreshold){
     var length = point_distance(0, 0, tempH, tempV);
     aimH = tempH/length*aimDistance;
@@ -103,7 +111,8 @@ if(abs(tempH)&gt;controlThreshold || abs(tempV)&gt;controlThreshold){
             <kind>1</kind>
             <string>///Check Jump Button
 for(var i=0;i&lt;array_length_1d(jumpButtons) &amp;&amp; onGround;i++){
-    if(gamepad_button_check(gamepadSlot, jumpButtons[i]) &amp;&amp; onGround){
+    if(((gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, jumpButtons[i])) || 
+        (gamepadSlot==-1 &amp;&amp; (keyboard_check(ord('W')) || keyboard_check(ord('I'))))) &amp;&amp; onGround){
         event_user(1);
         break;
     }
@@ -131,7 +140,8 @@ for(var i=0;i&lt;array_length_1d(jumpButtons) &amp;&amp; onGround;i++){
             <string>///Check Shoot Button
 cooldown -= delta_time/1000;
 for(var i=0;i&lt;array_length_1d(shootButtons);i++){
-    if(gamepad_button_check(gamepadSlot, shootButtons[i]) &amp;&amp; cooldown&lt;=0){
+    if(((gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, shootButtons[i])) || 
+        (gamepadSlot==-1 &amp;&amp; mouse_check_button(mb_left))) &amp;&amp; cooldown&lt;=0){
         if(instance_number(obj_client)&gt;0){
             //Send server message to shoot
             var buffer = obj_client.shootBuffer;
@@ -173,7 +183,8 @@ for(var i=0;i&lt;array_length_1d(shootButtons);i++){
             <string>///Check Jetpack Button
 var jetpackUsed = false;
 for(var i=0;i&lt;array_length_1d(jetButtons) &amp;&amp; fuel&gt;0 &amp;&amp; !jetpackUsed;i++){
-    if(gamepad_button_check(gamepadSlot, jetButtons[i])){
+    if((gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, jetButtons[i])) ||
+        (gamepadSlot==-1 &amp;&amp; keyboard_check(vk_space))){
         event_user(2);
         break;
     }
@@ -199,7 +210,11 @@ for(var i=0;i&lt;array_length_1d(jetButtons) &amp;&amp; fuel&gt;0 &amp;&amp; !je
           <argument>
             <kind>1</kind>
             <string>///Check Move Axis
-var moveForce = gamepad_axis_value(gamepadSlot, moveAxis);
+var moveForce;
+if(gamepadSlot!=-1)
+    moveForce = gamepad_axis_value(gamepadSlot, moveAxis);
+else
+    moveForce = (keyboard_check(ord('D')) || keyboard_check(ord('L')))*1+(keyboard_check(ord('A')) || keyboard_check(ord('J')))*-1;
 if(abs(moveForce)&lt;controlThreshold)
     moveForce = 0;
 else{
