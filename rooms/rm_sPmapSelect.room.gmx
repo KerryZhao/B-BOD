@@ -54,6 +54,8 @@
     <instance objName="obj_leveLoad_level1" x="160" y="96" name="inst_9E4277F5" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_singlePlayermanager" x="32" y="32" name="inst_A01DF919" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_timer" x="64" y="32" name="inst_4831FFBC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_levelLoad_level2" x="352" y="96" name="inst_E12BD039" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_levelLoad_level3" x="544" y="96" name="inst_0662EC97" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>0</PhysicsWorld>
