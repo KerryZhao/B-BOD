@@ -268,6 +268,9 @@ global.room_gravity = 60;</code>
     <instance objName="obj_floorForest" x="480" y="512" name="inst_C182A705" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_floorForest" x="512" y="480" name="inst_7DE516A2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_floorForest" x="512" y="512" name="inst_05E7AF06" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_powerupSpawner" x="832" y="704" name="inst_278465F0" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_powerupSpawner" x="1504" y="704" name="inst_B648F9DE" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_powerupSpawner" x="1920" y="704" name="inst_C7D25462" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tileset" x="64" y="768" w="32" h="32" xo="32" yo="32" id="10002497" name="inst_1741A6F4" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>

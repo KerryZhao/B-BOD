@@ -33,6 +33,16 @@ playerArrowHeight = 25;
 playerArrowLength = 25;
 playerArrowAngle = pi/7;
 playerArrowBuffer = 5;
+hudHeight = 8;
+playerHudPadding = 16;
+playerHudHealthWidth = 75;
+playerHudHealthHeight = 8;
+playerHudHealthPadding = 8;
+playerHudWidth = 200;
+playerHudHeight = 70;
+playerHudAlpha = 0.75;
+playerHudBack = c_aqua;
+playerHudStartX = (minXSize-(playerHudWidth*4+playerHudPadding*3))/2;
 </string>
           </argument>
         </arguments>
@@ -231,6 +241,43 @@ else if(view_yview[0]&gt;room_height-view_hview[0])
       </action>
     </event>
     <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw player stats at top of screen
+for(var i=0;i&lt;instance_number(obj_player);i++){
+    var player = instance_find(obj_player, i);
+    var hudX = i*playerHudWidth+i*playerHudPadding+playerHudStartX;
+    draw_set_alpha(playerHudAlpha);
+    draw_rectangle_colour(hudX, hudHeight, hudX+playerHudWidth, hudHeight+playerHudHeight, playerHudBack, playerHudBack, playerHudBack, playerHudBack, false);
+    draw_set_alpha(1);
+    hudX += playerHudPadding;
+    var hudY = hudHeight+playerHudPadding;
+    draw_sprite_ext(spr_playerHead, -1, hudX, hudY, 1, 1, 0, player.playerColors[player.num], 1);
+    draw_text(hudX+32+playerHudPadding, hudY, player.name);
+    draw_healthbar(hudX+32+playerHudPadding, string_height(player.name)+hudY+playerHudHealthPadding, playerHudHealthWidth+hudX+32+playerHudPadding, string_height(player.name)+playerHudHealthPadding+hudY+playerHudHealthHeight, player.hitPoints/player.maxHitPoints*100, c_white, c_red, c_lime, 0, true, true);
+    draw_set_font(fnt_plasticLg);
+    var number = "";
+    scr_drawTextOutline(playerHudHealthWidth+hudX+32+playerHudPadding+playerHudPadding, hudY, player.powerupLetter+" "+number, player.powerupColor, c_black);
+    draw_set_font(fnt_arial);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
       <action>
         <libid>1</libid>
         <id>603</id>

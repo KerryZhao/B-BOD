@@ -86,10 +86,16 @@ ammunition = 0;
           <argument>
             <kind>1</kind>
             <string>///Use ammo
-if(ammunition&gt;0){
-    event_inherited();
-    ammunition--;
-    show_debug_message(ammunition);
+var ball = instance_create(x+aimH*2, y+aimV*2, obj_ball);
+ball.shooter = id;
+with(ball){
+    physics_apply_force(other.x, other.y, other.aimH/other.aimDistance*other.shootForce, other.aimV/other.aimDistance*other.shootForce);
+}
+with(ball){
+    if(physics_test_overlap(x, y, phy_rotation, obj_obstacle) || other.ammunition&lt;=0)
+        instance_destroy();
+    else
+        ammunition--;
 }
 </string>
           </argument>

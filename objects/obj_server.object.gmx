@@ -627,6 +627,7 @@ if(state==GAME){
                 var ballX = buffer_read(async_load[? "buffer"], buffer_f32);
                 var ballY = buffer_read(async_load[? "buffer"], buffer_f32);
                 var ball = instance_create(ballX, ballY, obj_ball);
+                ball.shooter = player;
                 with(ball){
                     var xForce = buffer_read(async_load[? "buffer"], buffer_f32);
                     var yForce = buffer_read(async_load[? "buffer"], buffer_f32);

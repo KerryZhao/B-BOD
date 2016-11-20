@@ -46,9 +46,10 @@ jumpButtons[0] = gp_face1;
 jumpButtons[1] = gp_shoulderlb;
 jetButtons[0] = gp_face4;
 jetButtons[1] = gp_shoulderl;
-jetButtons[2] = gp_shoulderr;
 shootButtons[0] = gp_face3;
 shootButtons[1] = gp_shoulderrb;
+powerupButtons[0] = gp_face2;
+powerupButtons[1] = gp_shoulderr;
 aimVAxis = gp_axisrv;
 aimHAxis = gp_axisrh;
 </string>
@@ -113,7 +114,11 @@ if(abs(tempH)&gt;controlThreshold || abs(tempV)&gt;controlThreshold){
 for(var i=0;i&lt;array_length_1d(jumpButtons) &amp;&amp; onGround;i++){
     if(((gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, jumpButtons[i])) || 
         (gamepadSlot==-1 &amp;&amp; (keyboard_check(ord('W')) || keyboard_check(ord('I'))))) &amp;&amp; onGround){
-        event_user(1);
+        physics_apply_local_impulse(0, 0, 0, jumpForce);
+        onGround = false;
+        image_index = 5;
+        image_speed = 0;
+        audio_play_sound_at(snd_jump, x, y, 0, 300, 100, 1, false, 1);
         break;
     }
 }
@@ -153,8 +158,9 @@ for(var i=0;i&lt;array_length_1d(shootButtons);i++){
             buffer_write(buffer, buffer_f32, aimV/aimDistance*shootForce);
             network_send_udp(obj_client.socketID, obj_client.server, PORT, buffer, buffer_tell(buffer));
         }
-        else
+        else{
             event_user(0);
+        }
         cooldown = shootCooldown;
         audio_play_sound_at(snd_toss, x, y, 0, 300, 100, 1, false, 1);
         break;
@@ -185,7 +191,15 @@ var jetpackUsed = false;
 for(var i=0;i&lt;array_length_1d(jetButtons) &amp;&amp; fuel&gt;0 &amp;&amp; !jetpackUsed;i++){
     if((gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, jetButtons[i])) ||
         (gamepadSlot==-1 &amp;&amp; keyboard_check(vk_space))){
-        event_user(2);
+        fuel -= fuelUseSpeed*delta_time/1000000;
+        physics_apply_local_impulse(0, 0, 0, jetForce);
+        if(floor(image_index)!=5){
+            image_index = 5;
+            image_speed = 0;
+        }
+        if(jetSound==0 || !audio_is_playing(jetSound))
+            jetSound = audio_play_sound_at(snd_jetpack, x, y, 0, 300, 100, 1, false, 1);
+        jetpackUsed = true;
         break;
     }
 }
@@ -266,6 +280,34 @@ else if(floor(image_index)!=5){
       </action>
       <action>
         <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Use powerup
+for(var i=0;i&lt;array_length_1d(powerupButtons);i++){
+    if(((gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, powerupButtons[i])) || 
+        (gamepadSlot==-1 &amp;&amp; mouse_check_button(mb_right)))){
+        event_user(1);
+        break;
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
         <id>604</id>
         <kind>0</kind>
         <userelative>0</userelative>
@@ -277,6 +319,127 @@ else if(floor(image_index)!=5){
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
+      </action>
+    </event>
+    <event eventtype="7" enumb="11">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Use powerup
+if(powerupLetter=="")
+    exit;
+
+switch(powerupColor){
+    case c_red:
+        var shot = false;
+        var ball = -1;
+        var xForce = other.aimH/other.aimDistance*other.shootForce;
+        var yForce = other.aimV/other.aimDistance*other.shootForce;
+        switch(powerupLetter){
+        
+            case "S": //Split ball
+                ball = obj_splitBall;
+                break;
+            case "W": //Warp ball
+                ball = obj_warpBall;
+                break;
+            case "P": //Power ball
+                scr_shootBall(obj_powerBall, x+aimH*2, y+aimV*2, xForce/10, yForce/10);
+                shot = true;
+                break;
+            case "F": //Fast ball
+                scr_shootBall(obj_fastBall, x+aimH*2, y+aimV*2, xForce*10, yForce*10);
+                shot = true;
+                if(powerupAmmo==-1)
+                    powerupAmmo = 4;
+                else if(powerupAmmo&gt;0)
+                    powerupAmmo--;
+                break;
+            case "T": //Time shot
+                ball = obj_timeBall;
+                break;
+            case "B": //Burst shot
+                scr_shootBall(obj_ball, x-aimDistance*2, y, -other.shootForce, 0);
+                scr_shootBall(obj_ball, x+aimDistance*2, y, other.shootForce, 0);
+                scr_shootBall(obj_ball, x, y-aimDistance*2, 0, -other.shootForce);
+                scr_shootBall(obj_ball, x, y+aimDistance*2, 0, other.shootForce);
+                scr_shootBall(obj_ball, x-aimDistance, y-aimDistance, -other.shootForce/2, -other.shootForce/2);
+                scr_shootBall(obj_ball, x-aimDistance, y+aimDistance, -other.shootForce/2, other.shootForce/2);
+                scr_shootBall(obj_ball, x+aimDistance, y+aimDistance, other.shootForce/2, other.shootForce/2);
+                scr_shootBall(obj_ball, x+aimDistance, y-aimDistance, other.shootForce/2, -other.shootForce/2);
+                shot = true;
+                break;
+            case "G": //Grounded shot
+                ball = obj_groundBall;
+                break;
+            case "E": //Explosion shot
+                ball = obj_explosionBall;
+                break;
+            case "M": //Magnet shot
+                ball = obj_magnetBall;
+                break;
+        
+        }
+        
+        //Shoot ball
+        if(ball!=-1){
+            scr_shootBall(ball, x+aimH*2, y+aimV*2, xForce, yForce);
+            shot = true;
+        }
+        
+        //Check if powerup fully used
+        if(shot &amp;&amp; powerupAmmo&lt;=0){
+            powerupLetter = "";
+            powerupAmmo = -1;
+        }
+        break;
+    case c_blue:
+        
+        break;
+    case c_lime:
+        
+        break;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="10">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Shoot a ball in the Aim Direction
+scr_shootBall(obj_ball, x+aimH*2, y+aimV*2, other.aimH/other.aimDistance*other.shootForce, other.aimV/other.aimDistance*other.shootForce);
+</string>
+          </argument>
+        </arguments>
       </action>
     </event>
     <event eventtype="8" enumb="0">
