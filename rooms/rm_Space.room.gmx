@@ -462,6 +462,10 @@ global.room_gravity = 30;</code>
     <instance objName="obj_wallCity" x="1984" y="1440" name="inst_FC731DE7" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="1984" y="1408" name="inst_BA590871" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="1984" y="1376" name="inst_56BC9366" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_powerupSpawner" x="1344" y="1344" name="inst_D3DAB19D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_powerupSpawner" x="1568" y="1344" name="inst_D3D0BBE3" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_powerupSpawner" x="1600" y="1024" name="inst_25F444F1" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_powerupSpawner" x="1312" y="1024" name="inst_ED96FB2A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tileset" x="1280" y="832" w="32" h="32" xo="320" yo="32" id="10001982" name="inst_248346A4" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>
