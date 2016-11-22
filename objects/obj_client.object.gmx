@@ -183,31 +183,28 @@ buffer_delete(shootBuffer);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Send Updates to Server holding client player info
+            <string>///Send Updates to Server holding client control info
 
 buffer_seek(updateBuffer, buffer_seek_start, 0);
 buffer_write(updateBuffer, buffer_u8, UPDATE);
 
 if(!instance_exists(player)){
     buffer_write(updateBuffer, buffer_f32, 0);
-    buffer_write(updateBuffer, buffer_f32, 0);
-    buffer_write(updateBuffer, buffer_f32, 0);
-    buffer_write(updateBuffer, buffer_f32, 0);
-    buffer_write(updateBuffer, buffer_f32, 0);
-    buffer_write(updateBuffer, buffer_u8, 0);
     buffer_write(updateBuffer, buffer_bool, false);
 }
 else{
-
     //Write the player info
-    buffer_write(updateBuffer, buffer_f32, player.x);
-    buffer_write(updateBuffer, buffer_f32, player.y);
-    playerSend = string(player.x)+", "+string(player.y);
-    buffer_write(updateBuffer, buffer_f32, player.phy_speed_x);
-    buffer_write(updateBuffer, buffer_f32, player.phy_speed_y);
-    buffer_write(updateBuffer, buffer_f32, player.fuel);
-    buffer_write(updateBuffer, buffer_u8, player.image_index);
-    buffer_write(updateBuffer, buffer_bool, player.moveDir);
+    var moveForce;
+    var jetpack;
+    with(player){
+        if(gamepadSlot!=-1)
+            moveForce = gamepad_axis_value(gamepadSlot, moveAxis);
+        else
+            moveForce = (keyboard_check(ord('D')) || keyboard_check(ord('L')))*1+(keyboard_check(ord('A')) || keyboard_check(ord('J')))*-1;
+        jetpack = (gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, jetButtons[i])) || (gamepadSlot==-1 &amp;&amp; keyboard_check(vk_space));    
+    }
+    buffer_write(updateBuffer, buffer_f32, moveForce);
+    buffer_write(updateBuffer, buffer_bool, jetpack);
 }
 
 //Send the data to the server
@@ -600,6 +597,31 @@ if(state==GAME){
     switch(messageType){
         case UPDATE:
         
+            //Handle getting powerup info
+            var numPowerups = buffer_read(async_load[? "buffer"], buffer_u8);
+            //Update current powerups
+            for(var i=0;i&lt;instance_number(obj_powerup) &amp;&amp; i&lt;numPowerups;i++){
+                var powerup = instance_find(obj_powerup, i);
+                powerup.newX = buffer_read(async_load[? "buffer"], buffer_f32);
+                powerup.newY = buffer_read(async_load[? "buffer"], buffer_f32);
+                powerup.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+                powerup.powerupColor = buffer_read(async_load[? "buffer"], buffer_u32);
+                powerup.powerupLetter = buffer_read(async_load[? "buffer"], buffer_string);
+            }
+            //Create the new powerups
+            for(var i=instance_number(obj_powerup);i&lt;numPowerups;i++){
+                var powerX = buffer_read(async_load[? "buffer"], buffer_f32);
+                var powerY = buffer_read(async_load[? "buffer"], buffer_f32);
+                var powerup = instance_create(powerX, powerY, obj_powerup);
+                powerup.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+                powerup.powerupColor = buffer_read(async_load[? "buffer"], buffer_u32);
+                powerup.powerupLetter = buffer_read(async_load[? "buffer"], buffer_string)
+            }
+            //Destroy the old powerups
+            for(var i=numPowerups;i&lt;instance_number(obj_powerup);i++)
+                with(instance_find(obj_powerup, i))
+                    instance_destroy();
+        
             //Handle getting ball info
             var numBalls = buffer_read(async_load[? "buffer"], buffer_u16);
             //Update current balls
@@ -624,40 +646,66 @@ if(state==GAME){
             for(var i=numBalls;i&lt;instance_number(obj_ball);i++)
                 with(instance_find(obj_ball, i))
                     instance_destroy();
+                    
+            //Handle getting special ball info
+            var numSBalls = buffer_read(async_load[? "buffer"], buffer_u16);
+            //Update current balls
+            for(var i=0;i&lt;instance_number(obj_ballSpecial) &amp;&amp; i&lt;numSBalls;i++){
+                var ball = instance_find(obj_ballSpecial, i);
+                ball.newX = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.newY = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.damage = buffer_read(async_load[? "buffer"], buffer_u8);
+                ball.type = buffer_read(async_load[? "buffer"], buffer_string);
+            }
+            //Create the new special balls
+            for(var i=instance_number(obj_ballSpecial);i&lt;numSBalls;i++){
+                var ballX = buffer_read(async_load[? "buffer"], buffer_f32);
+                var ballY = buffer_read(async_load[? "buffer"], buffer_f32);
+                var ball = instance_create(ballX, ballY, obj_ballSpecial);
+                ball.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.damage = buffer_read(async_load[? "buffer"], buffer_u8);
+                ball.type = buffer_read(async_load[? "buffer"], buffer_string);
+            }
+            //Destroy the old special balls
+            for(var i=numSBalls;i&lt;instance_number(obj_ballSpecial);i++)
+                with(instance_find(obj_ballSpecial, i))
+                    instance_destroy();
             
             //Handle getting player info
             var numPlayers = buffer_read(async_load[? "buffer"], buffer_u8);
             var playerNum = 0;
             for(var i=0;i&lt;numPlayers;i++){
                 var playerID = buffer_read(async_load[? "buffer"], buffer_u8);
+                var player;
+                var pX = buffer_read(async_load[? "buffer"], buffer_f32);
+                var pY = buffer_read(async_load[? "buffer"], buffer_f32);
                 if(playerID==clientNum+1){
-                    obj_playerClient.hitPoints = buffer_read(async_load[? "buffer"], buffer_u8);
-                    buffer_seek(async_load[? "buffer"], buffer_seek_relative, 22);
+                    player = instance_find(obj_playerClient, 0);
+                    player.newX = pX;
+                    player.newY = pY;
+                }
+                else if(playerNum&gt;=instance_number(obj_playerNetwork)){
+                    player = instance_create(pX, pY, obj_playerNetwork);
+                    playerNum++;
                 }
                 else{
-                    var player;
-                    var hitPoints = buffer_read(async_load[? "buffer"], buffer_u8);
-                    var pX = buffer_read(async_load[? "buffer"], buffer_f32);
-                    var pY = buffer_read(async_load[? "buffer"], buffer_f32);
-                    if(playerNum&gt;=instance_number(obj_playerNetwork)){
-                        player = instance_create(pX, pY, obj_playerNetwork);
-                    }
-                    else{
-                        player = instance_find(obj_playerNetwork, playerNum);
-                        player.newX = pX;
-                        player.newY = pY;
-                    }
+                    player = instance_find(obj_playerNetwork, playerNum);
+                    player.newX = pX;
+                    player.newY = pY;
                     playerNum++;
-                    player.hitPoints = hitPoints;
-                    player.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
-                    player.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
-                    player.fuel = buffer_read(async_load[? "buffer"], buffer_f32);
-                    player.image_index = buffer_read(async_load[? "buffer"], buffer_u8);
-                    player.moveDir = buffer_read(async_load[? "buffer"], buffer_bool);
-                    player.num = playerID;
-                    var split = scr_splitString(clientInfo[|i], "&amp;");
-                    player.name = split[0];
                 }
+                player.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
+                player.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+                player.hitPoints = buffer_read(async_load[? "buffer"], buffer_u8);
+                player.fuel = buffer_read(async_load[? "buffer"], buffer_f32);
+                player.powerupColor = buffer_read(async_load[? "buffer"], buffer_u32);
+                player.powerupLetter = buffer_read(async_load[? "buffer"], buffer_string);
+                player.num = playerID;
+                var split = scr_splitString(clientInfo[|i], "&amp;");
+                player.name = split[0];
             }
             for(var i=instance_number(obj_playerNetwork);i&gt;numPlayers-1;i--)
                 with(instance_find(obj_playerNetwork, i))

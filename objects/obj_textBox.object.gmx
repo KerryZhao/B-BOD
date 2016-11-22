@@ -279,7 +279,7 @@
             <kind>1</kind>
             <string>///Draw the key pressed or Backspace or Enter
 var textLength = string_length(text);
-if(keyboard_lastkey==vk_enter){
+if(keyboard_lastkey==vk_enter || keyboard_lastkey==vk_tab){
     if(enterButton!=-1){
         with(enterButton)
             event_perform(ev_mouse, ev_left_release);

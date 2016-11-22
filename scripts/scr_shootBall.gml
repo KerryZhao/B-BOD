@@ -10,4 +10,7 @@ with(tempBall){
     physics_apply_force(other.x, other.y, argument3, argument4);
     if(physics_test_overlap(x, y, phy_rotation, obj_obstacle))
         instance_destroy();
+    else
+        return tempBall;
 }
+return -1;

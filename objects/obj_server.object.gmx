@@ -195,19 +195,45 @@ buffer_delete(endBuffer);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Send Updates to Clients holding all player and ball info
+            <string>///Send Updates to Clients holding all player, ball, and powerup info
 buffer_seek(updateBuffer, buffer_seek_start, 0);
 buffer_write(updateBuffer, buffer_u8, UPDATE);
 
+//Write the powerup info
+var powerups = instance_number(obj_powerup);
+buffer_write(updateBuffer, buffer_u8, powerups);
+for(var i=0;i&lt;powerups;i++){
+    var powerup = instance_find(obj_powerup, i);
+    buffer_write(updateBuffer, buffer_f32, powerup.phy_position_x);
+    buffer_write(updateBuffer, buffer_f32, powerup.phy_position_y);
+    buffer_write(updateBuffer, buffer_f32, powerup.phy_speed_y);
+    buffer_write(updateBuffer, buffer_u32, powerup.powerupColor);
+    buffer_write(updateBuffer, buffer_string, powerup.powerupLetter);
+}
+
 //Write the ball info
-buffer_write(updateBuffer, buffer_u16, instance_number(obj_ball));
-for(var i=0;i&lt;instance_number(obj_ball);i++){
+var balls = instance_number(obj_ball);
+buffer_write(updateBuffer, buffer_u16, balls);
+for(var i=0;i&lt;balls;i++){
     var ball = instance_find(obj_ball, i);
     buffer_write(updateBuffer, buffer_f32, ball.x);
     buffer_write(updateBuffer, buffer_f32, ball.y);
     buffer_write(updateBuffer, buffer_f32, ball.phy_speed_x);
     buffer_write(updateBuffer, buffer_f32, ball.phy_speed_y);
     buffer_write(updateBuffer, buffer_u8, ball.damage);
+}
+
+//Write the special ball info
+var sBalls = instance_number(obj_ballSpecial);
+buffer_write(updateBuffer, buffer_u16, sBalls);
+for(var i=0;i&lt;sBalls;i++){
+    var ball = instance_find(obj_ballSpecial, i);
+    buffer_write(updateBuffer, buffer_f32, ball.x);
+    buffer_write(updateBuffer, buffer_f32, ball.y);
+    buffer_write(updateBuffer, buffer_f32, ball.phy_speed_x);
+    buffer_write(updateBuffer, buffer_f32, ball.phy_speed_y);
+    buffer_write(updateBuffer, buffer_u8, ball.damage);
+    buffer_write(updateBuffer, buffer_string, ball.type);
 }
 
 //Write the player info
@@ -217,14 +243,14 @@ buffer_write(updateBuffer, buffer_u8, numPlayers);
 if(!serverPlayerDead){
     if(instance_exists(serverPlayer)){
         buffer_write(updateBuffer, buffer_u8, playerID);
-        buffer_write(updateBuffer, buffer_u8, serverPlayer.hitPoints);
         buffer_write(updateBuffer, buffer_f32, serverPlayer.x);
         buffer_write(updateBuffer, buffer_f32, serverPlayer.y);
         buffer_write(updateBuffer, buffer_f32, serverPlayer.phy_speed_x);
         buffer_write(updateBuffer, buffer_f32, serverPlayer.phy_speed_y);
+        buffer_write(updateBuffer, buffer_u8, serverPlayer.hitPoints);
         buffer_write(updateBuffer, buffer_f32, serverPlayer.fuel);
-        buffer_write(updateBuffer, buffer_u8, serverPlayer.image_index);
-        buffer_write(updateBuffer, buffer_bool, serverPlayer.moveDir);
+        buffer_write(updateBuffer, buffer_u32, serverPlayer.powerupColor);
+        buffer_write(updateBuffer, buffer_string, serverPlayer.powerupLetter);
     }
     else{
         serverPlayerDead = true;
@@ -238,15 +264,14 @@ for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map
     if(!client[? "dead"]){
         var player = client[? "player"];
         buffer_write(updateBuffer, buffer_u8, playerID);
-        buffer_write(updateBuffer, buffer_u8, player.hitPoints);
         buffer_write(updateBuffer, buffer_f32, player.x);
         buffer_write(updateBuffer, buffer_f32, player.y);
-        var name = player.name;
         buffer_write(updateBuffer, buffer_f32, player.phy_speed_x);
         buffer_write(updateBuffer, buffer_f32, player.phy_speed_y);
+        buffer_write(updateBuffer, buffer_u8, player.hitPoints);
         buffer_write(updateBuffer, buffer_f32, player.fuel);
-        buffer_write(updateBuffer, buffer_u8, player.image_index);
-        buffer_write(updateBuffer, buffer_bool, player.moveDir);
+        buffer_write(updateBuffer, buffer_u32, player.powerupColor);
+        buffer_write(updateBuffer, buffer_string, player.powerupLetter);
     }
     playerID++;
 }
@@ -588,16 +613,9 @@ if(state==GAME){
             var dead = client[? "dead"];
             if(!dead){
                 var player = client[? "player"];
-                var pX = buffer_read(async_load[? "buffer"], buffer_f32);
-                var pY = buffer_read(async_load[? "buffer"], buffer_f32);
-                player.newX = pX;
-                player.newY = pY;
                 var name = player.name;
-                player.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
-                player.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
-                player.fuel = buffer_read(async_load[? "buffer"], buffer_f32);
-                player.image_index = buffer_read(async_load[? "buffer"], buffer_u8);
-                player.moveDir = buffer_read(async_load[? "buffer"], buffer_bool);
+                player.moveForce = buffer_read(async_load[? "buffer"], buffer_f32);
+                player.jetpackUsed = buffer_read(async_load[? "buffer"], buffer_bool);
                 if(player.hitPoints&lt;=0){
                     client[? "dead"] = true;
                     with(player) instance_destroy();
@@ -620,22 +638,24 @@ if(state==GAME){
             }
             break;
         case SHOOT:
+        case POWERUP:
+        case JUMP:
             var client = clients[? sender];
             var dead = client[? "dead"];
              if(!dead){
                 var player = client[? "player"];
-                var ballX = buffer_read(async_load[? "buffer"], buffer_f32);
-                var ballY = buffer_read(async_load[? "buffer"], buffer_f32);
-                var ball = instance_create(ballX, ballY, obj_ball);
-                ball.shooter = player;
-                with(ball){
-                    var xForce = buffer_read(async_load[? "buffer"], buffer_f32);
-                    var yForce = buffer_read(async_load[? "buffer"], buffer_f32);
-                    physics_apply_force(player.x, player.y, xForce, yForce);
-                    if(physics_test_overlap(x, y, phy_rotation, obj_obstacle))
-                        instance_destroy();
+                if(curMType!=JUMP){
+                    player.aimH = buffer_read(async_load[? "buffer"], buffer_f32);
+                    player.aimV = buffer_read(async_load[? "buffer"], buffer_f32);
                 }
-                    
+                with(player){
+                    if(other.curMType==SHOOT)
+                        event_user(0);
+                    else if(other.curMType==POWERUP)
+                        event_user(1);
+                    else if(other.curMType==JUMP)
+                        event_user(2);
+                }
             }
             break;
     }
