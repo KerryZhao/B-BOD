@@ -91,6 +91,8 @@
         <sprite>sprites\spr_Levelonebutton</sprite>
         <sprite>sprites\spr_mapIcon_Castle</sprite>
         <sprite>sprites\spr_mapIcon_Space</sprite>
+        <sprite>sprites\spr_Leveltwobutton</sprite>
+        <sprite>sprites\spr_Levelthreebutton</sprite>
       </sprites>
       <sprites name="Game Type Selection Sprites">
         <sprite>sprites\spr_singlePlayerButton</sprite>
@@ -170,6 +172,7 @@
       </objects>
       <object>objects\obj_target</object>
       <object>objects\obj_HPtarget</object>
+      <object>objects\obj_movingTarget</object>
       <object>objects\obj_singlePlayermanager</object>
       <object>objects\obj_timer</object>
       <object>objects\obj_tutorialTarget</object>
@@ -201,11 +204,14 @@
             <object>objects\obj_levelLoad_Castle</object>
             <object>objects\obj_levelLoad</object>
             <object>objects\obj_leveLoad_level1</object>
+            <object>objects\obj_levelLoad_level2</object>
+            <object>objects\obj_levelLoad_level3</object>
           </objects>
           <objects name="Menu Objects">
             <object>objects\obj_mainMenuObject</object>
             <object>objects\obj_multiPlayerLocalButton</object>
             <object>objects\obj_singlePlayerButton</object>
+            <object>objects\obj_testButton</object>
             <object>objects\obj_tutorialButton</object>
             <object>objects\obj_multiPlayerOnlineButton</object>
             <object>objects\obj_backTomainMenu</object>
@@ -256,7 +262,10 @@
     <rooms name="SinglePlayer Maps">
       <room>rooms\rm_tutorial</room>
       <room>rooms\rm_levelOne</room>
+      <room>rooms\rm_levelTwo</room>
+      <room>rooms\rm_levelThree</room>
     </rooms>
+    <room>rooms\rm_test</room>
   </rooms>
   <constants number="15">
     <constant name="PORT">27990</constant>
