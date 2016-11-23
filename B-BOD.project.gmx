@@ -40,6 +40,7 @@
         <sprite>sprites\scr_stationU</sprite>
         <sprite>sprites\scr_stationT</sprite>
         <sprite>sprites\spr_item</sprite>
+        <sprite>sprites\spr_telepad</sprite>
       </sprites>
       <sprite>sprites\spr_explosion</sprite>
       <sprites name="balls">
@@ -186,6 +187,7 @@
         <object>objects\obj_station</object>
         <object>objects\obj_item</object>
         <object>objects\obj_explosion</object>
+        <object>objects\obj_telepad</object>
       </objects>
       <objects name="balls">
         <object>objects\obj_ballSpecial</object>

@@ -216,6 +216,10 @@ maxAmmo = 26;
 maxAmmoRegen = 10;
 ammo = maxAmmoRegen;
 ammoRefillSpeed = 1;
+itemTime = room_speed*5;
+itemUse = false;
+fuelUp = maxFuel*3/4;
+telepad = -1;
 </string>
           </argument>
         </arguments>
@@ -276,6 +280,11 @@ moveMaxForce = 3;
 jumpForce = -60;
 jetForce = -3;
 shootCooldown = 250;
+if(itemUse){
+    items[UTILITY] = "";
+    itemUse = false;
+}
+    
 </string>
           </argument>
         </arguments>
@@ -720,7 +729,73 @@ switch(curStation){
         
         break;
     case UTILITY:
-        
+        switch(items[curStation]){
+            case "S":
+                if(!itemUse){
+                    moveMaxForce *= 2;
+                    alarm[0] = itemTime;
+                    itemUse = true;
+                }
+                break;
+            case "F":
+                items[curStation] = "";
+                fuel += fuelUp;
+                break;
+            case "U":
+                if(!itemUse){
+                    jetForce *= 2;
+                    alarm[0] = itemTime;
+                    itemUse = true;
+                }
+                break;
+            case "J3":
+                items[curStation] = "J2";
+                physics_apply_local_impulse(0, 0, 0, jumpForce*2);
+                break;
+            case "J2":
+                items[curStation] = "J";
+                physics_apply_local_impulse(0, 0, 0, jumpForce*2);
+                break;
+            case "J":
+                items[curStation] = "";
+                physics_apply_local_impulse(0, 0, 0, jumpForce*2);
+                break;
+            case "T":
+                if(telepad==-1){
+                    telepad = instance_create(x, y, obj_telepad);
+                    telepad.color = color;
+                }
+                else{
+                    items[curStation] = "";
+                    warpX = telepad.x;
+                    warpY = telepad.y;
+                    with(telepad)
+                        instance_destroy();
+                    telepad = -1;
+                }
+                break;
+            case "R":
+                var empties = ds_list_create();
+                if(items[OFFENSE]=="")
+                    ds_list_add(empties, OFFENSE);
+                if(items[DEFENSE]=="")
+                    ds_list_add(empties, DEFENSE);
+                if(items[TRAP]=="")
+                    ds_list_add(empties, TRAP);
+                if(ds_list_size(empties)&gt;0){
+                    ds_list_shuffle(empties);
+                    var station = empties[| 0];
+                    var letter = irandom(array_length_2d(global.letters, station)-1);
+                    items[station] = global.letters[station, letter];
+                }
+                ds_list_destroy(empties);
+                items[curStation] = "";
+                break;
+            case "A":
+                items[curStation] = "";
+                ammo += 5;
+                break;
+        }
         break;
     case TRAP:
         
