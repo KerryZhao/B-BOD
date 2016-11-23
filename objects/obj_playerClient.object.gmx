@@ -48,8 +48,8 @@ jetButtons[0] = gp_face4;
 jetButtons[1] = gp_shoulderl;
 shootButtons[0] = gp_face3;
 shootButtons[1] = gp_shoulderrb;
-powerupButtons[0] = gp_face2;
-powerupButtons[1] = gp_shoulderr;
+itemButtons[0] = gp_face2;
+itemButtons[1] = gp_shoulderr;
 aimVAxis = gp_axisrv;
 aimHAxis = gp_axisrh;
 </string>
@@ -242,15 +242,15 @@ else
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Use powerup
-for(var i=0;i&lt;array_length_1d(powerupButtons);i++){
-    if(((gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, powerupButtons[i])) || 
+            <string>///Use item
+for(var i=0;i&lt;array_length_1d(itemButtons);i++){
+    if(((gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, itemButtons[i])) || 
         (gamepadSlot==-1 &amp;&amp; mouse_check_button(mb_right))) &amp;&amp; cooldown&lt;=0){
         if(instance_number(obj_client)&gt;0){
-            //Send server message to use power-up
+            //Send server message to use item
             var buffer = obj_client.shootBuffer;
             buffer_seek(buffer, buffer_seek_start, 0);
-            buffer_write(buffer, buffer_u8, POWERUP);
+            buffer_write(buffer, buffer_u8, ITEM);
             buffer_write(buffer, buffer_f32, aimH);
             buffer_write(buffer, buffer_f32, aimV);
             network_send_udp(obj_client.socketID, obj_client.server, PORT, buffer, buffer_tell(buffer));

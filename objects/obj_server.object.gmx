@@ -195,20 +195,20 @@ buffer_delete(endBuffer);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Send Updates to Clients holding all player, ball, and powerup info
+            <string>///Send Updates to Clients holding all player, ball, and item info
 buffer_seek(updateBuffer, buffer_seek_start, 0);
 buffer_write(updateBuffer, buffer_u8, UPDATE);
 
-//Write the powerup info
-var powerups = instance_number(obj_powerup);
-buffer_write(updateBuffer, buffer_u8, powerups);
-for(var i=0;i&lt;powerups;i++){
-    var powerup = instance_find(obj_powerup, i);
-    buffer_write(updateBuffer, buffer_f32, powerup.phy_position_x);
-    buffer_write(updateBuffer, buffer_f32, powerup.phy_position_y);
-    buffer_write(updateBuffer, buffer_f32, powerup.phy_speed_y);
-    buffer_write(updateBuffer, buffer_u32, powerup.powerupColor);
-    buffer_write(updateBuffer, buffer_string, powerup.powerupLetter);
+//Write the item info
+var items = instance_number(obj_item);
+buffer_write(updateBuffer, buffer_u8, items);
+for(var i=0;i&lt;items;i++){
+    var item = instance_find(obj_item, i);
+    buffer_write(updateBuffer, buffer_f32, item.phy_position_x);
+    buffer_write(updateBuffer, buffer_f32, item.phy_position_y);
+    buffer_write(updateBuffer, buffer_f32, item.phy_speed_y);
+    buffer_write(updateBuffer, buffer_u8, item.station);
+    buffer_write(updateBuffer, buffer_string, item.type);
 }
 
 //Write the ball info
@@ -249,8 +249,10 @@ if(!serverPlayerDead){
         buffer_write(updateBuffer, buffer_f32, serverPlayer.phy_speed_y);
         buffer_write(updateBuffer, buffer_u8, serverPlayer.hitPoints);
         buffer_write(updateBuffer, buffer_f32, serverPlayer.fuel);
-        buffer_write(updateBuffer, buffer_u32, serverPlayer.powerupColor);
-        buffer_write(updateBuffer, buffer_string, serverPlayer.powerupLetter);
+        buffer_write(updateBuffer, buffer_string, serverPlayer.items[OFFENSE]);
+        buffer_write(updateBuffer, buffer_string, serverPlayer.items[DEFENSE]);
+        buffer_write(updateBuffer, buffer_string, serverPlayer.items[UTILITY]);
+        buffer_write(updateBuffer, buffer_string, serverPlayer.items[TRAP]);
     }
     else{
         serverPlayerDead = true;
@@ -270,8 +272,10 @@ for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map
         buffer_write(updateBuffer, buffer_f32, player.phy_speed_y);
         buffer_write(updateBuffer, buffer_u8, player.hitPoints);
         buffer_write(updateBuffer, buffer_f32, player.fuel);
-        buffer_write(updateBuffer, buffer_u32, player.powerupColor);
-        buffer_write(updateBuffer, buffer_string, player.powerupLetter);
+        buffer_write(updateBuffer, buffer_string, player.items[OFFENSE]);
+        buffer_write(updateBuffer, buffer_string, player.items[DEFENSE]);
+        buffer_write(updateBuffer, buffer_string, player.items[UTILITY]);
+        buffer_write(updateBuffer, buffer_string, player.items[TRAP]);
     }
     playerID++;
 }
@@ -638,7 +642,7 @@ if(state==GAME){
             }
             break;
         case SHOOT:
-        case POWERUP:
+        case ITEM:
         case JUMP:
             var client = clients[? sender];
             var dead = client[? "dead"];
@@ -648,10 +652,12 @@ if(state==GAME){
                     player.aimH = buffer_read(async_load[? "buffer"], buffer_f32);
                     player.aimV = buffer_read(async_load[? "buffer"], buffer_f32);
                 }
+                if(curMType==ITEM)
+                    player.curStation = buffer_read(async_load[? "buffer"], buffer_u8);
                 with(player){
                     if(other.curMType==SHOOT)
                         event_user(0);
-                    else if(other.curMType==POWERUP)
+                    else if(other.curMType==ITEM)
                         event_user(1);
                     else if(other.curMType==JUMP)
                         event_user(2);

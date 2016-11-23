@@ -482,7 +482,7 @@ global.room_gravity = 30;</code>
     <instance objName="obj_metRight" x="736" y="960" name="inst_71233C9C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_metRight" x="736" y="928" name="inst_969DE9AD" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_metUpRight" x="736" y="896" name="inst_7EFC9E0A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_metUp" x="704" y="896" name="inst_FC529BD1" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_metUp" x="704" y="864" name="inst_FC529BD1" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_metUpLeft" x="224" y="416" name="inst_FF16C3DE" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_metUp" x="256" y="416" name="inst_AC9F078D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_metUp" x="288" y="416" name="inst_8DBC73F6" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
@@ -533,6 +533,11 @@ global.room_gravity = 30;</code>
     <instance objName="obj_metUpRight" x="1088" y="256" name="inst_A0F4DE4C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_metUpRight" x="1120" y="288" name="inst_0232B442" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_movingPlatform" x="928" y="1280" name="inst_09EC7E90" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="1376" y="1344" name="inst_A0A19978" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="1536" y="1344" name="inst_45A81A00" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="1024" y="224" name="inst_BC40F3EC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="1440" y="352" name="inst_ABB25151" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="1792" y="608" name="inst_FDCA9BD9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tileset" x="1280" y="832" w="32" h="32" xo="320" yo="32" id="10001982" name="inst_248346A4" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>

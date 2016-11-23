@@ -597,29 +597,29 @@ if(state==GAME){
     switch(messageType){
         case UPDATE:
         
-            //Handle getting powerup info
-            var numPowerups = buffer_read(async_load[? "buffer"], buffer_u8);
-            //Update current powerups
-            for(var i=0;i&lt;instance_number(obj_powerup) &amp;&amp; i&lt;numPowerups;i++){
-                var powerup = instance_find(obj_powerup, i);
-                powerup.newX = buffer_read(async_load[? "buffer"], buffer_f32);
-                powerup.newY = buffer_read(async_load[? "buffer"], buffer_f32);
-                powerup.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
-                powerup.powerupColor = buffer_read(async_load[? "buffer"], buffer_u32);
-                powerup.powerupLetter = buffer_read(async_load[? "buffer"], buffer_string);
+            //Handle getting items info
+            var numItems = buffer_read(async_load[? "buffer"], buffer_u8);
+            //Update current items
+            for(var i=0;i&lt;instance_number(obj_item) &amp;&amp; i&lt;numItems;i++){
+                var item = instance_find(obj_item, i);
+                item.newX = buffer_read(async_load[? "buffer"], buffer_f32);
+                item.newY = buffer_read(async_load[? "buffer"], buffer_f32);
+                item.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+                item.station = buffer_read(async_load[? "buffer"], buffer_u32);
+                item.type = buffer_read(async_load[? "buffer"], buffer_string);
             }
-            //Create the new powerups
-            for(var i=instance_number(obj_powerup);i&lt;numPowerups;i++){
+            //Create the new items
+            for(var i=instance_number(obj_item);i&lt;numItems;i++){
                 var powerX = buffer_read(async_load[? "buffer"], buffer_f32);
                 var powerY = buffer_read(async_load[? "buffer"], buffer_f32);
-                var powerup = instance_create(powerX, powerY, obj_powerup);
-                powerup.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
-                powerup.powerupColor = buffer_read(async_load[? "buffer"], buffer_u32);
-                powerup.powerupLetter = buffer_read(async_load[? "buffer"], buffer_string)
+                var item = instance_create(powerX, powerY, obj_item);
+                item.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+                item.station = buffer_read(async_load[? "buffer"], buffer_u8);
+                item.type = buffer_read(async_load[? "buffer"], buffer_string);
             }
-            //Destroy the old powerups
-            for(var i=numPowerups;i&lt;instance_number(obj_powerup);i++)
-                with(instance_find(obj_powerup, i))
+            //Destroy the old items
+            for(var i=numItems;i&lt;instance_number(obj_item);i++)
+                with(instance_find(obj_item, i))
                     instance_destroy();
         
             //Handle getting ball info
@@ -701,8 +701,10 @@ if(state==GAME){
                 player.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
                 player.hitPoints = buffer_read(async_load[? "buffer"], buffer_u8);
                 player.fuel = buffer_read(async_load[? "buffer"], buffer_f32);
-                player.powerupColor = buffer_read(async_load[? "buffer"], buffer_u32);
-                player.powerupLetter = buffer_read(async_load[? "buffer"], buffer_string);
+                player.items[OFFENSE] = buffer_read(async_load[? "buffer"], buffer_string);
+                player.items[DEFENSE] = buffer_read(async_load[? "buffer"], buffer_string);
+                player.items[UTILITY] = buffer_read(async_load[? "buffer"], buffer_string);
+                player.items[TRAP] = buffer_read(async_load[? "buffer"], buffer_string);
                 player.num = playerID;
                 var split = scr_splitString(clientInfo[|i], "&amp;");
                 player.name = split[0];

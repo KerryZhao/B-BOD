@@ -222,10 +222,17 @@ playerColors[7] = c_aqua;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Create the Powerup variables
-powerupLetter = "";
-powerupColor = c_black;
-powerupAmmo = -1;
+            <string>///Create the Item variables
+oLetter = "";
+dLetter = "";
+uLetter = "";
+tLetter = "";
+items[OFFENSE] = "";
+items[DEFENSE] = "";
+items[UTILITY] = "";
+items[TRAP] = "";
+curStation = 0;
+fastShots = -1;
 </string>
           </argument>
         </arguments>
@@ -249,8 +256,16 @@ powerupAmmo = -1;
           <argument>
             <kind>1</kind>
             <string>///Continue Fast Shot
-if(powerupLetter=="F")
-    event_user(1);
+var xForce = aimH/aimDistance*shootForce;
+var yForce = aimV/aimDistance*shootForce;
+var ball = scr_shootBall(obj_ballSpecial, x+aimH*2, y+aimV*2, xForce*10, yForce*10);
+ball.type = "F";
+if(fastShots&gt;0){
+    fastShots--;
+    alarm[1] = 2;
+}
+else
+    items[OFFENSE] = "";
 </string>
           </argument>
         </arguments>
@@ -642,17 +657,17 @@ audio_play_sound_at(snd_jump, x, y, 0, 300, 100, 1, false, 1);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Use powerup
-if(powerupLetter=="")
+            <string>///Use item
+if(items[curStation]=="")
     exit;
 
-switch(powerupColor){
-    case c_red:
+switch(curStation){
+    case OFFENSE:
         var shot = false;
         var ball = -1;
         var xForce = aimH/aimDistance*shootForce;
         var yForce = aimV/aimDistance*shootForce;
-        switch(powerupLetter){
+        switch(items[curStation]){
         
             case "S": //Split ball
             case "W": //Warp ball
@@ -667,11 +682,8 @@ switch(powerupColor){
                 break;
             case "F": //Fast ball
                 ball = scr_shootBall(obj_ballSpecial, x+aimH*2, y+aimV*2, xForce*10, yForce*10);
-                alarm[1] = 2;
-                if(powerupAmmo==-1)
-                    powerupAmmo = 4;
-                else if(powerupAmmo&gt;0)
-                    powerupAmmo--;
+                alarm[1] = 1;
+                fastShots = 5;
                 break;
             case "B": //Burst shot
                 scr_shootBall(obj_ball, x-aimDistance*2, y, -shootForce, 0);
@@ -688,18 +700,19 @@ switch(powerupColor){
         
         //Set shot ball type
         if(ball!=-1)
-           ball.type = powerupLetter;
+           ball.type = items[curStation];
         
-        //Check if powerup fully used
-        if(powerupAmmo&lt;=0 &amp;&amp; (ball!=-1 || powerupLetter=="B")){
-            powerupLetter = "";
-            powerupAmmo = -1;
-        }
+        //Check if item fully used
+        if((ball!=-1 || items[curStation]=="B") &amp;&amp; items[curStation]!="F")
+            items[curStation] = "";
         break;
-    case c_blue:
+    case DEFENSE:
         
         break;
-    case c_lime:
+    case UTILITY:
+        
+        break;
+    case TRAP:
         
         break;
 }

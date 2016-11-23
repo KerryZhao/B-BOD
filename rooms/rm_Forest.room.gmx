@@ -389,6 +389,12 @@ global.room_gravity = 60;</code>
     <instance objName="obj_bark" x="896" y="320" name="inst_AB994CE6" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_bark" x="864" y="352" name="inst_CD570B7D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_bark" x="896" y="352" name="inst_EE345F55" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="224" y="320" name="inst_32C4EE30" locked="0" code="station = DEFENSE;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="480" y="704" name="inst_9D526B90" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="1376" y="704" name="inst_70FE4CFF" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="128" y="704" name="inst_882BF6FE" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="2048" y="704" name="inst_5F0B2509" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="1984" y="416" name="inst_C1F79D85" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tileset" x="64" y="768" w="32" h="32" xo="32" yo="32" id="10002497" name="inst_1741A6F4" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>

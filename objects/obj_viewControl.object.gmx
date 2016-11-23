@@ -270,8 +270,7 @@ for(var i=0;i&lt;instance_number(obj_player);i++){
     draw_text(hudX+32+playerHudPadding, hudY, player.name);
     draw_healthbar(hudX+32+playerHudPadding, string_height(player.name)+hudY+playerHudHealthPadding, playerHudHealthWidth+hudX+32+playerHudPadding, string_height(player.name)+playerHudHealthPadding+hudY+playerHudHealthHeight, player.hitPoints/player.maxHitPoints*100, c_white, c_red, c_lime, 0, true, true);
     draw_set_font(fnt_plasticLg);
-    var number = "";
-    scr_drawTextOutline(playerHudHealthWidth+hudX+32+playerHudPadding+playerHudPadding, hudY, player.powerupLetter+" "+number, player.powerupColor, c_black);
+    //scr_drawTextOutline(playerHudHealthWidth+hudX+32+playerHudPadding+playerHudPadding, hudY, player.powerupLetter+" "+number, player.powerupColor, c_black);
     draw_set_font(fnt_arial);
 }
 </string>
