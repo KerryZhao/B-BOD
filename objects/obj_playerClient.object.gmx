@@ -50,8 +50,32 @@ shootButtons[0] = gp_face3;
 shootButtons[1] = gp_shoulderrb;
 itemButtons[0] = gp_face2;
 itemButtons[1] = gp_shoulderr;
+offenseButtons[0] = gp_padu;
+defenseButtons[0] = gp_padr;
+utilityButtons[0] = gp_padl;
+trapButtons[0] = gp_padd;
 aimVAxis = gp_axisrv;
 aimHAxis = gp_axisrh;
+
+keyLeftButtons[0] = ord('A');
+keyLeftButtons[1] = ord('J');
+keyRightButtons[0] = ord('D');
+keyRightButtons[1] = ord('L');
+keyJumpButtons[0] = ord('W');
+keyJumpButtons[1] = ord('I');
+keyJetButtons[0] = vk_space;
+keyShootButtons[0] = mb_left;
+keyItemButtons[0] = mb_right;
+keyOffenseButtons[0] = ord('1');
+keyOffenseButtons[1] = ord('7');
+keyUtilityButtons[0] = ord('2');
+keyUtilityButtons[1] = ord('8');
+keyDefenseButtons[0] = ord('3');
+keyDefenseButtons[1] = ord('9');
+keyTrapButtons[0] = ord('4');
+keyTrapButtons[1] = ord('0');
+
+
 </string>
           </argument>
         </arguments>
@@ -111,20 +135,28 @@ if(abs(tempH)&gt;controlThreshold || abs(tempV)&gt;controlThreshold){
           <argument>
             <kind>1</kind>
             <string>///Check Jump Button
-for(var i=0;i&lt;array_length_1d(jumpButtons) &amp;&amp; onGround;i++){
-    if(((gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, jumpButtons[i])) || 
-        (gamepadSlot==-1 &amp;&amp; (keyboard_check(ord('W')) || keyboard_check(ord('I'))))) &amp;&amp; onGround){
-        if(instance_number(obj_client)&gt;0){
-            //Send server message to jump
-            var buffer = obj_client.readyBuffer;
-            buffer_seek(buffer, buffer_seek_start, 0);
-            buffer_write(buffer, buffer_u8, JUMP);
-            network_send_udp(obj_client.socketID, obj_client.server, PORT, buffer, buffer_tell(buffer));
-        }
-        // jump
-        event_user(2);
-        break;
+var jump = false;
+if(gamepadSlot!=-1){
+    for(var i=0;i&lt;array_length_1d(jumpButtons) &amp;&amp; onGround &amp;&amp; !jump;i++)
+        if(gamepad_button_check(gamepadSlot, jumpButtons[i]))
+            jump = true;
+}
+else{
+    for(var i=0;i&lt;array_length_1d(keyJumpButtons) &amp;&amp; onGround &amp;&amp; !jump;i++)
+        if(keyboard_check(keyJumpButtons[i]))
+            jump = true;
+}
+
+if(jump){
+    if(instance_number(obj_client)&gt;0){
+        //Send server message to jump
+        var buffer = obj_client.readyBuffer;
+        buffer_seek(buffer, buffer_seek_start, 0);
+        buffer_write(buffer, buffer_u8, JUMP);
+        network_send_udp(obj_client.socketID, obj_client.server, PORT, buffer, buffer_tell(buffer));
     }
+    // jump
+    event_user(2);
 }
 </string>
           </argument>
@@ -147,26 +179,34 @@ for(var i=0;i&lt;array_length_1d(jumpButtons) &amp;&amp; onGround;i++){
           <argument>
             <kind>1</kind>
             <string>///Check Shoot Button
+var shoot = false;
 cooldown -= delta_time/1000;
-for(var i=0;i&lt;array_length_1d(shootButtons);i++){
-    if(((gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, shootButtons[i])) || 
-        (gamepadSlot==-1 &amp;&amp; mouse_check_button(mb_left))) &amp;&amp; cooldown&lt;=0){
-        if(instance_number(obj_client)&gt;0){
-            //Send server message to shoot
-            var buffer = obj_client.shootBuffer;
-            buffer_seek(buffer, buffer_seek_start, 0);
-            buffer_write(buffer, buffer_u8, SHOOT);
-            buffer_write(buffer, buffer_f32, aimH);
-            buffer_write(buffer, buffer_f32, aimV);
-            network_send_udp(obj_client.socketID, obj_client.server, PORT, buffer, buffer_tell(buffer));
-        }
-        else{
-            event_user(0);
-        }
-        cooldown = shootCooldown;
-        audio_play_sound_at(snd_toss, x, y, 0, 300, 100, 1, false, 1);
-        break;
+if(gamepadSlot==-1){
+    for(var i=0;i&lt;array_length_1d(keyShootButtons) &amp;&amp; cooldown&lt;=0 &amp;&amp; !shoot;i++)
+        if(mouse_check_button(keyShootButtons[i]))
+            shoot = true;
+}
+else{
+    for(var i=0;i&lt;array_length_1d(shootButtons) &amp;&amp; cooldown&lt;=0 &amp;&amp; !shoot;i++)
+        if(gamepad_button_check(gamepadSlot, shootButtons[i]))
+            shoot = true;
+}
+
+if(shoot){
+    if(instance_number(obj_client)&gt;0){
+        //Send server message to shoot
+        var buffer = obj_client.shootBuffer;
+        buffer_seek(buffer, buffer_seek_start, 0);
+        buffer_write(buffer, buffer_u8, SHOOT);
+        buffer_write(buffer, buffer_f32, aimH);
+        buffer_write(buffer, buffer_f32, aimV);
+        network_send_udp(obj_client.socketID, obj_client.server, PORT, buffer, buffer_tell(buffer));
     }
+    else{
+        event_user(0);
+    }
+    cooldown = shootCooldown;
+    audio_play_sound_at(snd_toss, x, y, 0, 300, 100, 1, false, 1);
 }
 </string>
           </argument>
@@ -190,12 +230,15 @@ for(var i=0;i&lt;array_length_1d(shootButtons);i++){
             <kind>1</kind>
             <string>///Check Jetpack Button
 jetpackUsed = false;
-for(var i=0;i&lt;array_length_1d(jetButtons) &amp;&amp; fuel&gt;0 &amp;&amp; !jetpackUsed;i++){
-    if((gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, jetButtons[i])) ||
-        (gamepadSlot==-1 &amp;&amp; keyboard_check(vk_space))){
-        jetpackUsed = true;
-        break;
-    }
+if(gamepadSlot==-1){
+    for(var i=0;i&lt;array_length_1d(keyJetButtons) &amp;&amp; fuel&gt;0 &amp;&amp; !jetpackUsed;i++)
+        if(keyboard_check(keyJetButtons[i]))
+            jetpackUsed = true;
+}
+else{
+    for(var i=0;i&lt;array_length_1d(jetButtons) &amp;&amp; fuel&gt;0 &amp;&amp; !jetpackUsed;i++)
+        if(gamepad_button_check(gamepadSlot, jetButtons[i]))
+            jetpackUsed = true;
 }
 </string>
           </argument>
@@ -220,8 +263,17 @@ for(var i=0;i&lt;array_length_1d(jetButtons) &amp;&amp; fuel&gt;0 &amp;&amp; !je
             <string>///Check Move Axis
 if(gamepadSlot!=-1)
     moveForce = gamepad_axis_value(gamepadSlot, moveAxis);
-else
-    moveForce = (keyboard_check(ord('D')) || keyboard_check(ord('L')))*1+(keyboard_check(ord('A')) || keyboard_check(ord('J')))*-1;
+else{
+    var left = false;
+    var right = false;
+    for(var i=0;i&lt;array_length_1d(keyLeftButtons) &amp;&amp; !left;i++)
+        if(keyboard_check(keyLeftButtons[i]))
+            left = true;
+    for(var i=0;i&lt;array_length_1d(keyRightButtons) &amp;&amp; !right;i++)
+        if(keyboard_check(keyRightButtons[i]))
+            right = true;
+    moveForce = right*1+left*-1;
+}
 </string>
           </argument>
         </arguments>
@@ -243,24 +295,101 @@ else
           <argument>
             <kind>1</kind>
             <string>///Use item
-for(var i=0;i&lt;array_length_1d(itemButtons);i++){
-    if(((gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, itemButtons[i])) || 
-        (gamepadSlot==-1 &amp;&amp; mouse_check_button(mb_right))) &amp;&amp; cooldown&lt;=0){
-        if(instance_number(obj_client)&gt;0){
-            //Send server message to use item
-            var buffer = obj_client.shootBuffer;
-            buffer_seek(buffer, buffer_seek_start, 0);
-            buffer_write(buffer, buffer_u8, ITEM);
-            buffer_write(buffer, buffer_f32, aimH);
-            buffer_write(buffer, buffer_f32, aimV);
-            network_send_udp(obj_client.socketID, obj_client.server, PORT, buffer, buffer_tell(buffer));
-        }
-        else{
-            event_user(1);
-        }
-        cooldown = shootCooldown;
-        break;
+var itemUsed = false;
+if(gamepadSlot==-1){
+    for(var i=0;i&lt;array_length_1d(keyItemButtons) &amp;&amp; cooldown&lt;=0 &amp;&amp; !itemUsed;i++)
+        if(mouse_check_button(keyItemButtons[i]))
+            itemUsed = true;
+}
+else{
+    for(var i=0;i&lt;array_length_1d(itemButtons) &amp;&amp; cooldown&lt;=0 &amp;&amp; !itemUsed;i++)
+        if(gamepad_button_check(gamepadSlot, itemButtons[i]))
+            itemUsed = true;
+}
+
+if(itemUsed){
+    if(instance_number(obj_client)&gt;0){
+        //Send server message to use item
+        var buffer = obj_client.shootBuffer;
+        buffer_seek(buffer, buffer_seek_start, 0);
+        buffer_write(buffer, buffer_u8, ITEM);
+        buffer_write(buffer, buffer_f32, aimH);
+        buffer_write(buffer, buffer_f32, aimV);
+        network_send_udp(obj_client.socketID, obj_client.server, PORT, buffer, buffer_tell(buffer));
     }
+    else{
+        event_user(1);
+    }
+    cooldown = shootCooldown;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Change Station
+//Check for switch to offense
+var oldStation = curStation;
+if(gamepadSlot==-1){
+    for(var i=0;items[OFFENSE]!="" &amp;&amp; i&lt;array_length_1d(keyOffenseButtons) &amp;&amp; curStation!=OFFENSE;i++)
+        if(keyboard_check_released(keyOffenseButtons[i]))
+            curStation = OFFENSE;
+}
+else{
+    for(var i=0;items[OFFENSE]!="" &amp;&amp; i&lt;array_length_1d(offenseButtons) &amp;&amp; curStation!=OFFENSE;i++)
+        if(gamepad_button_check_released(gamepadSlot, offenseButtons[i]))
+            curStation = OFFENSE;
+}
+            
+//Check for switch to utility           
+if(gamepadSlot==-1){
+    for(var i=0;items[UTILITY]!="" &amp;&amp; i&lt;array_length_1d(keyUtilityButtons) &amp;&amp; curStation!=UTILITY;i++)
+        if(keyboard_check_released(keyUtilityButtons[i]))
+            curStation = UTILITY;
+}
+else{
+    for(var i=0;items[UTILITY]!="" &amp;&amp; i&lt;array_length_1d(utilityButtons) &amp;&amp; curStation!=UTILITY;i++)
+        if(gamepad_button_check_released(gamepadSlot, utilityButtons[i]))
+            curStation = UTILITY;
+}
+            
+//Check for switch to defense    
+if(gamepadSlot==-1){
+    for(var i=0;items[DEFENSE]!="" &amp;&amp; i&lt;array_length_1d(keyDefenseButtons) &amp;&amp; curStation!=DEFENSE;i++)
+        if(keyboard_check_released(keyDefenseButtons[i]))
+            curStation = DEFENSE;
+}
+else{
+    for(var i=0;items[DEFENSE]!="" &amp;&amp; i&lt;array_length_1d(defenseButtons) &amp;&amp; curStation!=DEFENSE;i++)
+        if(gamepad_button_check_released(gamepadSlot, defenseButtons[i]))
+            curStation = DEFENSE;
+}
+            
+//check for switch to trap        
+if(gamepadSlot==-1){
+    for(var i=0;items[TRAP]!="" &amp;&amp; i&lt;array_length_1d(keyTrapButtons) &amp;&amp; curStation!=TRAP;i++)
+        if(keyboard_check_released(keyTrapButtons[i]))
+            curStation = TRAP;
+}
+else{
+    for(var i=0;items[TRAP]!="" &amp;&amp; i&lt;array_length_1d(trapButtons) &amp;&amp; curStation!=TRAP;i++)
+        if(gamepad_button_check_released(gamepadSlot, trapButtons[i]))
+            curStation = TRAP;
 }
 </string>
           </argument>

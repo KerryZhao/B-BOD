@@ -49,63 +49,6 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Item variables
-global.colors[OFFENSE] = c_red;
-global.colors[DEFENSE] = c_blue;
-global.colors[UTILITY] = c_lime;
-global.colors[TRAP] = c_purple;
-global.letters[OFFENSE, 0] = "S";
-global.letters[OFFENSE, 1] = "W";
-global.letters[OFFENSE, 2] = "P";
-global.letters[OFFENSE, 3] = "F";
-global.letters[OFFENSE, 4] = "T";
-global.letters[OFFENSE, 5] = "B";
-global.letters[OFFENSE, 6] = "G";
-global.letters[OFFENSE, 7] = "E";
-global.letters[OFFENSE, 8] = "M";
-global.letters[DEFENSE, 0] = "S";
-global.letters[DEFENSE, 1] = "G";
-global.letters[DEFENSE, 2] = "I";
-global.letters[DEFENSE, 3] = "E";
-global.letters[DEFENSE, 4] = "B";
-global.letters[DEFENSE, 5] = "S";
-global.letters[DEFENSE, 6] = "W";
-global.letters[DEFENSE, 7] = "Q";
-global.letters[UTILITY, 0] = "S";
-global.letters[UTILITY, 1] = "F";
-global.letters[UTILITY, 2] = "U";
-global.letters[UTILITY, 3] = "J";
-global.letters[UTILITY, 4] = "T";
-global.letters[UTILITY, 5] = "R";
-global.letters[UTILITY, 6] = "A";
-global.letters[TRAP, 0] = "F";
-global.letters[TRAP, 1] = "B";
-global.letters[TRAP, 2] = "T";
-global.letters[TRAP, 3] = "J";
-global.letters[TRAP, 4] = "S";
-global.letters[TRAP, 5] = "L";
-global.letters[TRAP, 6] = "H";
-global.letters[TRAP, 7] = "A";
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
             <string>///Spawn first item if server or local
 if(instance_number(obj_client)==0)
     alarm[0] = 1;

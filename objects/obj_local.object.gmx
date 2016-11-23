@@ -141,6 +141,9 @@ ds_list_destroy(spawns);
           <argument>
             <kind>1</kind>
             <string>///Add/Remove Player on Start/Back Button
+if(instance_number(obj_playerClient)&gt;0)
+    exit;
+
 for(var i=0;i&lt;gamepad_get_device_count();i++){
     if(gamepad_is_connected(i)){
         var index = ds_list_find_index(controllers, i);

@@ -31,7 +31,6 @@ moveForce = 0;
 jumpForce = -60;
 jetForce = -3;
 fuelUseSpeed = 40;
-fuelRefillSpeed = 20;
 shootForce = 50;
 shootCooldown = 250;
 cooldown = 0;
@@ -152,27 +151,7 @@ fuelPadding = 5;
 fuelThickness = 5;
 jetSound = 0;
 jetpackUsed = false;
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Sound Variables
+fuelRefillSpeed = 20;
 </string>
           </argument>
         </arguments>
@@ -233,6 +212,10 @@ items[UTILITY] = "";
 items[TRAP] = "";
 curStation = 0;
 fastShots = -1;
+maxAmmo = 26;
+maxAmmoRegen = 10;
+ammo = maxAmmoRegen;
+ammoRefillSpeed = 1;
 </string>
           </argument>
         </arguments>
@@ -425,6 +408,33 @@ if(!jetpackUsed){
         fuel = maxFuel;
   }
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Refill Ammo
+if(ammo&lt;maxAmmoRegen)
+    ammo += ammoRefillSpeed*delta_time/1000000;
+else if(ammo&gt;maxAmmo)
+    ammo = maxAmmo;
+else
+    ammo = floor(ammo);
 </string>
           </argument>
         </arguments>
@@ -739,7 +749,10 @@ switch(curStation){
           <argument>
             <kind>1</kind>
             <string>///Shoot a ball in the Aim Direction
-scr_shootBall(obj_ball, x+aimH*2, y+aimV*2, aimH/aimDistance*shootForce, aimV/aimDistance*shootForce);
+if(ammo&gt;=1){
+    scr_shootBall(obj_ball, x+aimH*2, y+aimV*2, aimH/aimDistance*shootForce, aimV/aimDistance*shootForce);
+    ammo--;
+}
 </string>
           </argument>
         </arguments>

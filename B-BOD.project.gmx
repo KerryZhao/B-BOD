@@ -34,7 +34,7 @@
       <sprite>sprites\spr_player</sprite>
       <sprite>sprites\spr_playerHead</sprite>
       <sprite>sprites\spr_cursor</sprite>
-      <sprites name="power-ups">
+      <sprites name="items">
         <sprite>sprites\scr_stationO</sprite>
         <sprite>sprites\scr_stationD</sprite>
         <sprite>sprites\scr_stationU</sprite>
@@ -134,6 +134,7 @@
     <font>fonts\fnt_plasticLg</font>
     <font>fonts\fnt_plasticBg</font>
     <font>fonts\fnt_plastic</font>
+    <font>fonts\fnt_bicubik</font>
   </fonts>
   <objects name="objects">
     <objects name="Game Objects">
@@ -181,7 +182,7 @@
       <object>objects\obj_timer</object>
       <object>objects\obj_tutorialTarget</object>
       <object>objects\obj_tutorialManager</object>
-      <objects name="Power Ups">
+      <objects name="Items">
         <object>objects\obj_station</object>
         <object>objects\obj_item</object>
         <object>objects\obj_explosion</object>
@@ -193,8 +194,8 @@
       </objects>
     </objects>
     <objects name="UI">
-      <object>objects\obj_viewControl</object>
       <object>objects\obj_gamepadControl</object>
+      <object>objects\obj_viewControl</object>
       <object>objects\obj_clientList</object>
       <objects name="Elements">
         <object>objects\obj_label</object>

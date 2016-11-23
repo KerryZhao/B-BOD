@@ -25,6 +25,67 @@
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///Item variables
+global.colors[OFFENSE] = c_red;
+global.colors[DEFENSE] = c_blue;
+global.colors[UTILITY] = c_lime;
+global.colors[TRAP] = c_purple;
+global.colorsComp[OFFENSE] = c_yellow;
+global.colorsComp[DEFENSE] = c_orange;
+global.colorsComp[UTILITY] = c_fuchsia;
+global.colorsComp[TRAP] = c_white;
+global.letters[OFFENSE, 0] = "S";
+global.letters[OFFENSE, 1] = "W";
+global.letters[OFFENSE, 2] = "P";
+global.letters[OFFENSE, 3] = "F";
+global.letters[OFFENSE, 4] = "T";
+global.letters[OFFENSE, 5] = "B";
+global.letters[OFFENSE, 6] = "G";
+global.letters[OFFENSE, 7] = "E";
+global.letters[OFFENSE, 8] = "M";
+global.letters[DEFENSE, 0] = "S";
+global.letters[DEFENSE, 1] = "G";
+global.letters[DEFENSE, 2] = "I";
+global.letters[DEFENSE, 3] = "E";
+global.letters[DEFENSE, 4] = "B";
+global.letters[DEFENSE, 5] = "S";
+global.letters[DEFENSE, 6] = "W";
+global.letters[DEFENSE, 7] = "Q";
+global.letters[UTILITY, 0] = "S";
+global.letters[UTILITY, 1] = "F";
+global.letters[UTILITY, 2] = "U";
+global.letters[UTILITY, 3] = "J";
+global.letters[UTILITY, 4] = "T";
+global.letters[UTILITY, 5] = "R";
+global.letters[UTILITY, 6] = "A";
+global.letters[TRAP, 0] = "F";
+global.letters[TRAP, 1] = "B";
+global.letters[TRAP, 2] = "T";
+global.letters[TRAP, 3] = "J";
+global.letters[TRAP, 4] = "S";
+global.letters[TRAP, 5] = "L";
+global.letters[TRAP, 6] = "H";
+global.letters[TRAP, 7] = "A";
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>///View Variables
 bufferSize = 64;
 minXSize = 1024;
@@ -43,6 +104,9 @@ playerHudHeight = 70;
 playerHudAlpha = 0.75;
 playerHudBack = c_aqua;
 playerHudStartX = (minXSize-(playerHudWidth*4+playerHudPadding*3))/2;
+itemSizeY = 16;
+itemSizeX = 14;
+ammoSize = 2;
 </string>
           </argument>
         </arguments>
@@ -266,13 +330,63 @@ for(var i=0;i&lt;instance_number(obj_player);i++){
     draw_set_alpha(1);
     hudX += playerHudPadding;
     var hudY = hudHeight+playerHudPadding;
+    
+    //Draw player head
     draw_sprite_ext(spr_playerHead, -1, hudX, hudY, 1, 1, 0, player.playerColors[player.num], 1);
+    
+    //Draw name
     draw_text(hudX+32+playerHudPadding, hudY, player.name);
+    
+    //Draw health
     draw_healthbar(hudX+32+playerHudPadding, string_height(player.name)+hudY+playerHudHealthPadding, playerHudHealthWidth+hudX+32+playerHudPadding, string_height(player.name)+playerHudHealthPadding+hudY+playerHudHealthHeight, player.hitPoints/player.maxHitPoints*100, c_white, c_red, c_lime, 0, true, true);
-    draw_set_font(fnt_plasticLg);
-    //scr_drawTextOutline(playerHudHealthWidth+hudX+32+playerHudPadding+playerHudPadding, hudY, player.powerupLetter+" "+number, player.powerupColor, c_black);
-    draw_set_font(fnt_arial);
+    
+    //Draw ammo
+    if(player.object_index==obj_playerClient){
+        var drawX = hudX+32+playerHudPadding+ammoSize;
+        var drawY = string_height(player.name)+hudY+playerHudHealthPadding*2+playerHudHealthHeight;
+        for(var j=0;j&lt;floor(player.ammo);j++){
+            draw_circle_colour(drawX, drawY, ammoSize, c_white, c_white, false);
+            drawX += ammoSize*3;
+            if(drawX&gt;playerHudHealthWidth+hudX+32+playerHudPadding){
+                drawY += ammoSize*3;
+                drawX = hudX+32+playerHudPadding+ammoSize;
+            }
+        }
+    }
+    
+    //Draw items
+    scr_drawTextOutline(playerHudHealthWidth+hudX+32+playerHudPadding*2+itemSizeX, hudY-playerHudPadding/2, player.items[OFFENSE], global.colors[OFFENSE], global.colorsComp[OFFENSE]);
+    scr_drawTextOutline(playerHudHealthWidth+hudX+32+playerHudPadding*2, hudY+itemSizeY-playerHudPadding/2, player.items[UTILITY], global.colors[UTILITY], global.colorsComp[UTILITY]); 
+    scr_drawTextOutline(playerHudHealthWidth+hudX+32+playerHudPadding*2+itemSizeX*2, hudY+itemSizeY-playerHudPadding/2, player.items[DEFENSE], global.colors[DEFENSE], global.colorsComp[DEFENSE]); 
+    scr_drawTextOutline(playerHudHealthWidth+hudX+32+playerHudPadding*2+itemSizeX, hudY+itemSizeY*2-playerHudPadding/2, player.items[TRAP], global.colors[TRAP], global.colorsComp[TRAP]); 
+    
+    //Draw selected station
+    if(player.object_index==obj_playerClient &amp;&amp; player.items[player.curStation]!=""){
+        var selectX = 0;
+        var selectY = 0;
+        switch(player.curStation){
+            case OFFENSE:
+                selectX = playerHudHealthWidth+hudX+32+playerHudPadding*2+itemSizeX;
+                selectY = hudY-playerHudPadding/2;
+                break;
+            case DEFENSE:
+                selectX = playerHudHealthWidth+hudX+32+playerHudPadding*2+itemSizeX*2;
+                selectY = hudY-playerHudPadding/2+itemSizeY;
+                break;
+            case UTILITY:
+                selectX = playerHudHealthWidth+hudX+32+playerHudPadding*2;
+                selectY = hudY-playerHudPadding/2+itemSizeY;
+                break;
+            case TRAP:
+                selectX = playerHudHealthWidth+hudX+32+playerHudPadding*2+itemSizeX;
+                selectY = hudY-playerHudPadding/2+itemSizeY*2;
+                break;
+        }
+        var radius = max(string_width(player.items[player.curStation]), string_height(player.items[player.curStation]))/2;
+        draw_circle_colour(selectX+string_width(player.items[player.curStation])/2.2, selectY+string_height(player.items[player.curStation])/2.2, radius, c_black, c_black, true);
+    }
 }
+
 </string>
           </argument>
         </arguments>
