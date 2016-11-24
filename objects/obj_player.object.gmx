@@ -32,6 +32,7 @@ jumpForce = -60;
 jetForce = -3;
 fuelUseSpeed = 40;
 shootForce = 50;
+trapForce = 10;
 shootCooldown = 250;
 cooldown = 0;
 image_speed = 0;
@@ -220,6 +221,8 @@ itemTime = room_speed*5;
 itemUse = false;
 fuelUp = maxFuel*3/4;
 telepad = -1;
+maxTrapDist = 128;
+mute = false;
 </string>
           </argument>
         </arguments>
@@ -247,6 +250,7 @@ var xForce = aimH/aimDistance*shootForce;
 var yForce = aimV/aimDistance*shootForce;
 var ball = scr_shootBall(obj_ballSpecial, x+aimH*2, y+aimV*2, xForce*10, yForce*10);
 ball.type = "F";
+ball.phy_bullet = true;
 if(fastShots&gt;0){
     fastShots--;
     alarm[1] = 2;
@@ -280,6 +284,7 @@ moveMaxForce = 3;
 jumpForce = -60;
 jetForce = -3;
 shootCooldown = 250;
+mute = false;
 if(itemUse){
     items[UTILITY] = "";
     itemUse = false;
@@ -677,7 +682,7 @@ audio_play_sound_at(snd_jump, x, y, 0, 300, 100, 1, false, 1);
           <argument>
             <kind>1</kind>
             <string>///Use item
-if(items[curStation]=="")
+if(items[curStation]=="" || mute)
     exit;
 
 switch(curStation){
@@ -700,7 +705,6 @@ switch(curStation){
                 ball = scr_shootBall(obj_ballSpecial, x+aimH*2, y+aimV*2, xForce/10, yForce/10);
                 break;
             case "F": //Fast ball
-                ball = scr_shootBall(obj_ballSpecial, x+aimH*2, y+aimV*2, xForce*10, yForce*10);
                 alarm[1] = 1;
                 fastShots = 5;
                 break;
@@ -722,7 +726,7 @@ switch(curStation){
            ball.type = items[curStation];
         
         //Check if item fully used
-        if((ball!=-1 || items[curStation]=="B") &amp;&amp; items[curStation]!="F")
+        if(ball!=-1 || items[curStation]=="B")
             items[curStation] = "";
         break;
     case DEFENSE:
@@ -798,7 +802,53 @@ switch(curStation){
         }
         break;
     case TRAP:
-        
+        switch(items[curStation]){
+            case "F":
+                var item = instance_nearest(x, y, obj_item);
+                if(item!=noone &amp;&amp; point_distance(x, y, item.x, item.y)&lt;maxTrapDist){
+                    items[curStation] = "";
+                    if(!item.trap){
+                        var effect = instance_create(item.x, item.y, obj_particleEffect);
+                        effect.sprite_index = spr_fakeItemEffect;
+                        item.trap = true;
+                    }
+                }
+                break;
+            case "B":
+            case "J":
+            case "L":
+            case "H":
+            case "S":
+            case "A":
+                var trap = instance_create(x+aimH*3, y+aimV*3, obj_trap);
+                trap.type = items[curStation];
+                trap.tosser = id;
+                var placed = true;
+                with(trap){
+                    if(physics_test_overlap(x, y, phy_rotation, obj_obstacle)){
+                        instance_destroy();
+                        placed = false;
+                    }
+                    else
+                        physics_apply_force(other.x, other.y, other.aimH/other.aimDistance*other.trapForce, other.aimV/other.aimDistance*other.trapForce);
+                }
+                if(placed)
+                    items[curStation] = "";
+                break;
+            case "T":
+                var turret = instance_create(x+aimH*3, y+aimV*3, obj_turret);
+                var placed = true;
+                with(turret){
+                    if(physics_test_overlap(x, y, phy_rotation, obj_obstacle)){
+                        instance_destroy();
+                        placed = false;
+                    }
+                    else
+                        physics_apply_force(other.x, other.y, other.aimH/other.aimDistance*other.trapForce, other.aimV/other.aimDistance*other.trapForce);
+                }
+                if(placed)
+                    items[curStation] = "";
+        }
         break;
 }
 </string>
@@ -824,7 +874,7 @@ switch(curStation){
           <argument>
             <kind>1</kind>
             <string>///Shoot a ball in the Aim Direction
-if(ammo&gt;=1){
+if(!mute &amp;&amp; ammo&gt;=1){
     scr_shootBall(obj_ball, x+aimH*2, y+aimV*2, aimH/aimDistance*shootForce, aimV/aimDistance*shootForce);
     ammo--;
 }

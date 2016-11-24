@@ -41,10 +41,17 @@
         <sprite>sprites\scr_stationT</sprite>
         <sprite>sprites\spr_item</sprite>
         <sprite>sprites\spr_telepad</sprite>
+        <sprite>sprites\spr_specialBallEffect</sprite>
+        <sprite>sprites\spr_trapEffect</sprite>
+        <sprite>sprites\spr_fakeItemEffect</sprite>
+        <sprite>sprites\spr_trap</sprite>
+        <sprite>sprites\spr_smokescreen</sprite>
+        <sprite>sprites\spr_turret</sprite>
       </sprites>
       <sprite>sprites\spr_explosion</sprite>
       <sprites name="balls">
         <sprite>sprites\spr_ball</sprite>
+        <sprite>sprites\spr_ballTurret</sprite>
         <sprite>sprites\spr_explosionBall</sprite>
         <sprite>sprites\spr_magnetBall</sprite>
         <sprite>sprites\spr_fastBall</sprite>
@@ -188,11 +195,15 @@
         <object>objects\obj_item</object>
         <object>objects\obj_explosion</object>
         <object>objects\obj_telepad</object>
+        <object>objects\obj_particleEffect</object>
+        <object>objects\obj_trap</object>
+        <object>objects\obj_turret</object>
       </objects>
       <objects name="balls">
         <object>objects\obj_ballSpecial</object>
         <object>objects\obj_ballParent</object>
         <object>objects\obj_ball</object>
+        <object>objects\obj_ballTurret</object>
       </objects>
     </objects>
     <objects name="UI">
