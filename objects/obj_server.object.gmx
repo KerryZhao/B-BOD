@@ -200,40 +200,112 @@ buffer_seek(updateBuffer, buffer_seek_start, 0);
 buffer_write(updateBuffer, buffer_u8, UPDATE);
 
 //Write the item info
-var items = instance_number(obj_item);
-buffer_write(updateBuffer, buffer_u8, items);
-for(var i=0;i&lt;items;i++){
-    var item = instance_find(obj_item, i);
-    buffer_write(updateBuffer, buffer_f32, item.phy_position_x);
-    buffer_write(updateBuffer, buffer_f32, item.phy_position_y);
-    buffer_write(updateBuffer, buffer_f32, item.phy_speed_y);
-    buffer_write(updateBuffer, buffer_u8, item.station);
-    buffer_write(updateBuffer, buffer_string, item.type);
+var count = instance_number(obj_item);
+buffer_write(updateBuffer, buffer_u8, count);
+for(var i=0;i&lt;count;i++){
+    var instance = instance_find(obj_item, i);
+    buffer_write(updateBuffer, buffer_f32, instance.phy_position_x);
+    buffer_write(updateBuffer, buffer_f32, instance.phy_position_y);
+    buffer_write(updateBuffer, buffer_f32, instance.phy_speed_y);
+    buffer_write(updateBuffer, buffer_bool, instance.trap);
+    buffer_write(updateBuffer, buffer_u8, instance.station);
+    buffer_write(updateBuffer, buffer_string, instance.type);
 }
 
 //Write the ball info
-var balls = instance_number(obj_ball);
-buffer_write(updateBuffer, buffer_u16, balls);
-for(var i=0;i&lt;balls;i++){
-    var ball = instance_find(obj_ball, i);
-    buffer_write(updateBuffer, buffer_f32, ball.x);
-    buffer_write(updateBuffer, buffer_f32, ball.y);
-    buffer_write(updateBuffer, buffer_f32, ball.phy_speed_x);
-    buffer_write(updateBuffer, buffer_f32, ball.phy_speed_y);
-    buffer_write(updateBuffer, buffer_u8, ball.damage);
+count = instance_number(obj_ball);
+buffer_write(updateBuffer, buffer_u16, count);
+for(var i=0;i&lt;count;i++){
+    var instance = instance_find(obj_ball, i);
+    buffer_write(updateBuffer, buffer_f32, instance.x);
+    buffer_write(updateBuffer, buffer_f32, instance.y);
+    buffer_write(updateBuffer, buffer_f32, instance.phy_speed_x);
+    buffer_write(updateBuffer, buffer_f32, instance.phy_speed_y);
+    buffer_write(updateBuffer, buffer_u8, instance.damage);
 }
 
 //Write the special ball info
-var sBalls = instance_number(obj_ballSpecial);
-buffer_write(updateBuffer, buffer_u16, sBalls);
-for(var i=0;i&lt;sBalls;i++){
-    var ball = instance_find(obj_ballSpecial, i);
-    buffer_write(updateBuffer, buffer_f32, ball.x);
-    buffer_write(updateBuffer, buffer_f32, ball.y);
-    buffer_write(updateBuffer, buffer_f32, ball.phy_speed_x);
-    buffer_write(updateBuffer, buffer_f32, ball.phy_speed_y);
-    buffer_write(updateBuffer, buffer_u8, ball.damage);
-    buffer_write(updateBuffer, buffer_string, ball.type);
+count = instance_number(obj_ballSpecial);
+buffer_write(updateBuffer, buffer_u16, count);
+for(var i=0;i&lt;count;i++){
+    var instance = instance_find(obj_ballSpecial, i);
+    buffer_write(updateBuffer, buffer_f32, instance.x);
+    buffer_write(updateBuffer, buffer_f32, instance.y);
+    buffer_write(updateBuffer, buffer_f32, instance.phy_speed_x);
+    buffer_write(updateBuffer, buffer_f32, instance.phy_speed_y);
+    buffer_write(updateBuffer, buffer_u8, instance.damage);
+    buffer_write(updateBuffer, buffer_string, instance.type);
+}
+
+//Write the turret ball info
+count = instance_number(obj_ballTurret);
+buffer_write(updateBuffer, buffer_u16, count);
+for(var i=0;i&lt;count;i++){
+    var instance = instance_find(obj_ballTurret, i);
+    buffer_write(updateBuffer, buffer_f32, instance.x);
+    buffer_write(updateBuffer, buffer_f32, instance.y);
+    buffer_write(updateBuffer, buffer_f32, instance.phy_speed_x);
+    buffer_write(updateBuffer, buffer_f32, instance.phy_speed_y);
+}
+
+//Write the emp info
+count = instance_number(obj_emp);
+buffer_write(updateBuffer, buffer_u16, count);
+for(var i=0;i&lt;count;i++){
+    var instance = instance_find(obj_emp, i);
+    buffer_write(updateBuffer, buffer_f32, instance.x);
+    buffer_write(updateBuffer, buffer_f32, instance.y);
+    buffer_write(updateBuffer, buffer_f32, instance.image_index);
+}
+
+//Write the telepad info
+count = instance_number(obj_telepad);
+buffer_write(updateBuffer, buffer_u16, count);
+for(var i=0;i&lt;count;i++){
+    var instance = instance_find(obj_telepad, i);
+    buffer_write(updateBuffer, buffer_f32, instance.x);
+    buffer_write(updateBuffer, buffer_f32, instance.y);
+    buffer_write(updateBuffer, buffer_u32, instance.color);
+}
+
+//Write the trap info
+count = instance_number(obj_trap);
+buffer_write(updateBuffer, buffer_u16, count);
+for(var i=0;i&lt;count;i++){
+    var instance = instance_find(obj_trap, i);
+    buffer_write(updateBuffer, buffer_f32, instance.x);
+    buffer_write(updateBuffer, buffer_f32, instance.y);
+    buffer_write(updateBuffer, buffer_f32, instance.phy_speed_x);
+    buffer_write(updateBuffer, buffer_f32, instance.phy_speed_y);
+}
+
+//Write the turret info
+count = instance_number(obj_turret);
+buffer_write(updateBuffer, buffer_u16, count);
+for(var i=0;i&lt;count;i++){
+    var instance = instance_find(obj_turret, i);
+    buffer_write(updateBuffer, buffer_f32, instance.x);
+    buffer_write(updateBuffer, buffer_f32, instance.y);
+    buffer_write(updateBuffer, buffer_f32, instance.phy_speed_x);
+    buffer_write(updateBuffer, buffer_f32, instance.phy_speed_y);
+}
+
+//Write the guard info
+count = instance_number(obj_guard);
+buffer_write(updateBuffer, buffer_u16, count);
+for(var i=0;i&lt;count;i++){
+    var instance = instance_find(obj_guard, i);
+    buffer_write(updateBuffer, buffer_f32, instance.x);
+    buffer_write(updateBuffer, buffer_f32, instance.y);
+}
+
+//Write the temp wall info
+count = instance_number(obj_tempWall);
+buffer_write(updateBuffer, buffer_u16, count);
+for(var i=0;i&lt;count;i++){
+    var instance = instance_find(obj_tempWall, i);
+    buffer_write(updateBuffer, buffer_f32, instance.x);
+    buffer_write(updateBuffer, buffer_f32, instance.y);
 }
 
 //Write the player info
@@ -249,10 +321,15 @@ if(!serverPlayerDead){
         buffer_write(updateBuffer, buffer_f32, serverPlayer.phy_speed_y);
         buffer_write(updateBuffer, buffer_u8, serverPlayer.hitPoints);
         buffer_write(updateBuffer, buffer_f32, serverPlayer.fuel);
+        buffer_write(updateBuffer, buffer_f32, serverPlayer.ammo);
         buffer_write(updateBuffer, buffer_string, serverPlayer.items[OFFENSE]);
         buffer_write(updateBuffer, buffer_string, serverPlayer.items[DEFENSE]);
         buffer_write(updateBuffer, buffer_string, serverPlayer.items[UTILITY]);
         buffer_write(updateBuffer, buffer_string, serverPlayer.items[TRAP]);
+        buffer_write(updateBuffer, buffer_u8, serverPlayer.shield);
+        buffer_write(updateBuffer, buffer_u8, serverPlayer.body);
+        buffer_write(updateBuffer, buffer_u8, serverPlayer.reflex);
+        buffer_write(updateBuffer, buffer_bool, serverPlayer.invincible);
     }
     else{
         serverPlayerDead = true;
@@ -272,10 +349,15 @@ for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map
         buffer_write(updateBuffer, buffer_f32, player.phy_speed_y);
         buffer_write(updateBuffer, buffer_u8, player.hitPoints);
         buffer_write(updateBuffer, buffer_f32, player.fuel);
+        buffer_write(updateBuffer, buffer_f32, player.ammo);
         buffer_write(updateBuffer, buffer_string, player.items[OFFENSE]);
         buffer_write(updateBuffer, buffer_string, player.items[DEFENSE]);
         buffer_write(updateBuffer, buffer_string, player.items[UTILITY]);
         buffer_write(updateBuffer, buffer_string, player.items[TRAP]);
+        buffer_write(updateBuffer, buffer_u8, player.shield);
+        buffer_write(updateBuffer, buffer_u8, player.body);
+        buffer_write(updateBuffer, buffer_u8, player.reflex);
+        buffer_write(updateBuffer, buffer_bool, player.invincible);
     }
     playerID++;
 }

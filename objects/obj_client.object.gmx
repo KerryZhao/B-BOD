@@ -194,16 +194,35 @@ if(!instance_exists(player)){
 }
 else{
     //Write the player info
-    var moveForce;
+    var move;
     var jetpack;
     with(player){
         if(gamepadSlot!=-1)
-            moveForce = gamepad_axis_value(gamepadSlot, moveAxis);
-        else
-            moveForce = (keyboard_check(ord('D')) || keyboard_check(ord('L')))*1+(keyboard_check(ord('A')) || keyboard_check(ord('J')))*-1;
-        jetpack = (gamepadSlot!=-1 &amp;&amp; gamepad_button_check(gamepadSlot, jetButtons[i])) || (gamepadSlot==-1 &amp;&amp; keyboard_check(vk_space));    
+            move = gamepad_axis_value(gamepadSlot, moveAxis);
+        else{
+            var left = false;
+            var right = false;
+            for(var i=0;i&lt;array_length_1d(keyLeftButtons) &amp;&amp; !left;i++)
+                if(keyboard_check(keyLeftButtons[i]))
+                    left = true;
+            for(var i=0;i&lt;array_length_1d(keyRightButtons) &amp;&amp; !right;i++)
+                if(keyboard_check(keyRightButtons[i]))
+                    right = true;
+            move = right*1+left*-1;
+        }
+        jetpack = false;
+        if(gamepadSlot==-1){
+            for(var i=0;i&lt;array_length_1d(keyJetButtons) &amp;&amp; fuel&gt;0 &amp;&amp; !jetpackUsed;i++)
+                if(keyboard_check(keyJetButtons[i]))
+                    jetpack = true;
+        }
+        else{
+            for(var i=0;i&lt;array_length_1d(jetButtons) &amp;&amp; fuel&gt;0 &amp;&amp; !jetpackUsed;i++)
+                if(gamepad_button_check(gamepadSlot, jetButtons[i]))
+                    jetpack = true;
+        }
     }
-    buffer_write(updateBuffer, buffer_f32, moveForce);
+    buffer_write(updateBuffer, buffer_f32, move);
     buffer_write(updateBuffer, buffer_bool, jetpack);
 }
 
@@ -598,34 +617,36 @@ if(state==GAME){
         case UPDATE:
         
             //Handle getting items info
-            var numItems = buffer_read(async_load[? "buffer"], buffer_u8);
+            var count = buffer_read(async_load[? "buffer"], buffer_u8);
             //Update current items
-            for(var i=0;i&lt;instance_number(obj_item) &amp;&amp; i&lt;numItems;i++){
+            for(var i=0;i&lt;instance_number(obj_item) &amp;&amp; i&lt;count;i++){
                 var item = instance_find(obj_item, i);
                 item.newX = buffer_read(async_load[? "buffer"], buffer_f32);
                 item.newY = buffer_read(async_load[? "buffer"], buffer_f32);
                 item.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
-                item.station = buffer_read(async_load[? "buffer"], buffer_u32);
+                item.trap = buffer_read(async_load[? "buffer"], buffer_bool);
+                item.station = buffer_read(async_load[? "buffer"], buffer_u8);
                 item.type = buffer_read(async_load[? "buffer"], buffer_string);
             }
             //Create the new items
-            for(var i=instance_number(obj_item);i&lt;numItems;i++){
+            for(var i=instance_number(obj_item);i&lt;count;i++){
                 var powerX = buffer_read(async_load[? "buffer"], buffer_f32);
                 var powerY = buffer_read(async_load[? "buffer"], buffer_f32);
                 var item = instance_create(powerX, powerY, obj_item);
                 item.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+                item.trap = buffer_read(async_load[? "buffer"], buffer_bool);
                 item.station = buffer_read(async_load[? "buffer"], buffer_u8);
                 item.type = buffer_read(async_load[? "buffer"], buffer_string);
             }
             //Destroy the old items
-            for(var i=numItems;i&lt;instance_number(obj_item);i++)
+            for(var i=count;i&lt;instance_number(obj_item);i++)
                 with(instance_find(obj_item, i))
                     instance_destroy();
         
             //Handle getting ball info
-            var numBalls = buffer_read(async_load[? "buffer"], buffer_u16);
+            count = buffer_read(async_load[? "buffer"], buffer_u16);
             //Update current balls
-            for(var i=0;i&lt;instance_number(obj_ball) &amp;&amp; i&lt;numBalls;i++){
+            for(var i=0;i&lt;instance_number(obj_ball) &amp;&amp; i&lt;count;i++){
                 var ball = instance_find(obj_ball, i);
                 ball.newX = buffer_read(async_load[? "buffer"], buffer_f32);
                 ball.newY = buffer_read(async_load[? "buffer"], buffer_f32);
@@ -634,7 +655,7 @@ if(state==GAME){
                 ball.damage = buffer_read(async_load[? "buffer"], buffer_u8);
             }
             //Create the new balls
-            for(var i=instance_number(obj_ball);i&lt;numBalls;i++){
+            for(var i=instance_number(obj_ball);i&lt;count;i++){
                 var ballX = buffer_read(async_load[? "buffer"], buffer_f32);
                 var ballY = buffer_read(async_load[? "buffer"], buffer_f32);
                 var ball = instance_create(ballX, ballY, obj_ball);
@@ -643,14 +664,14 @@ if(state==GAME){
                 ball.damage = buffer_read(async_load[? "buffer"], buffer_u8);
             }
             //Destroy the old balls
-            for(var i=numBalls;i&lt;instance_number(obj_ball);i++)
+            for(var i=count;i&lt;instance_number(obj_ball);i++)
                 with(instance_find(obj_ball, i))
                     instance_destroy();
                     
             //Handle getting special ball info
-            var numSBalls = buffer_read(async_load[? "buffer"], buffer_u16);
+            count = buffer_read(async_load[? "buffer"], buffer_u16);
             //Update current balls
-            for(var i=0;i&lt;instance_number(obj_ballSpecial) &amp;&amp; i&lt;numSBalls;i++){
+            for(var i=0;i&lt;instance_number(obj_ballSpecial) &amp;&amp; i&lt;count;i++){
                 var ball = instance_find(obj_ballSpecial, i);
                 ball.newX = buffer_read(async_load[? "buffer"], buffer_f32);
                 ball.newY = buffer_read(async_load[? "buffer"], buffer_f32);
@@ -660,7 +681,7 @@ if(state==GAME){
                 ball.type = buffer_read(async_load[? "buffer"], buffer_string);
             }
             //Create the new special balls
-            for(var i=instance_number(obj_ballSpecial);i&lt;numSBalls;i++){
+            for(var i=instance_number(obj_ballSpecial);i&lt;count;i++){
                 var ballX = buffer_read(async_load[? "buffer"], buffer_f32);
                 var ballY = buffer_read(async_load[? "buffer"], buffer_f32);
                 var ball = instance_create(ballX, ballY, obj_ballSpecial);
@@ -670,10 +691,159 @@ if(state==GAME){
                 ball.type = buffer_read(async_load[? "buffer"], buffer_string);
             }
             //Destroy the old special balls
-            for(var i=numSBalls;i&lt;instance_number(obj_ballSpecial);i++)
+            for(var i=count;i&lt;instance_number(obj_ballSpecial);i++)
                 with(instance_find(obj_ballSpecial, i))
                     instance_destroy();
             
+            //Handle getting turret ball info
+            count = buffer_read(async_load[? "buffer"], buffer_u16);
+            //Update current balls
+            for(var i=0;i&lt;instance_number(obj_ballTurret) &amp;&amp; i&lt;count;i++){
+                var ball = instance_find(obj_ballTurret, i);
+                ball.newX = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.newY = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+            }
+            //Create the new turret balls
+            for(var i=instance_number(obj_ballTurret);i&lt;count;i++){
+                var ballX = buffer_read(async_load[? "buffer"], buffer_f32);
+                var ballY = buffer_read(async_load[? "buffer"], buffer_f32);
+                var ball = instance_create(ballX, ballY, obj_ballTurret);
+                ball.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
+                ball.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+            }
+            //Destroy the old turret balls
+            for(var i=count;i&lt;instance_number(obj_ballTurret);i++)
+                with(instance_find(obj_ballTurret, i))
+                    instance_destroy();
+            
+            //Handle getting emp info
+            count = buffer_read(async_load[? "buffer"], buffer_u16);
+            //Update current emp
+            for(var i=0;i&lt;instance_number(obj_emp) &amp;&amp; i&lt;count;i++){
+                var instance = instance_find(obj_emp, i);
+                instance.newX = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.newY = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.image_index = buffer_read(async_load[? "buffer"], buffer_f32);
+            }
+            //Create the new emp
+            for(var i=instance_number(obj_emp);i&lt;count;i++){
+                var instanceX = buffer_read(async_load[? "buffer"], buffer_f32);
+                var instanceY = buffer_read(async_load[? "buffer"], buffer_f32);
+                var instance = instance_create(instanceX, instanceY, obj_emp);
+                instance.image_index = buffer_read(async_load[? "buffer"], buffer_f32);
+            }
+            //Destroy the old emp
+            for(var i=count;i&lt;instance_number(obj_emp);i++)
+                with(instance_find(obj_emp, i))
+                    instance_destroy();
+                    
+            //Handle getting telepad info
+            count = buffer_read(async_load[? "buffer"], buffer_u16);
+            //Update current telepad
+            for(var i=0;i&lt;instance_number(obj_telepad) &amp;&amp; i&lt;count;i++){
+                var instance = instance_find(obj_telepad, i);
+                instance.newX = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.newY = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.color = buffer_read(async_load[? "buffer"], buffer_u32);
+            }
+            //Create the new telepad
+            for(var i=instance_number(obj_telepad);i&lt;count;i++){
+                var instanceX = buffer_read(async_load[? "buffer"], buffer_f32);
+                var instanceY = buffer_read(async_load[? "buffer"], buffer_f32);
+                var instance = instance_create(instanceX, instanceY, obj_telepad);
+                instance.color = buffer_read(async_load[? "buffer"], buffer_u32);
+            }
+            //Destroy the old telepad
+            for(var i=count;i&lt;instance_number(obj_telepad);i++)
+                with(instance_find(obj_telepad, i))
+                    instance_destroy();
+            
+            //Handle getting trap info
+            count = buffer_read(async_load[? "buffer"], buffer_u16);
+            //Update current trap
+            for(var i=0;i&lt;instance_number(obj_trap) &amp;&amp; i&lt;count;i++){
+                var instance = instance_find(obj_trap, i);
+                instance.newX = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.newY = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+            }
+            //Create the new trap
+            for(var i=instance_number(obj_trap);i&lt;count;i++){
+                var instanceX = buffer_read(async_load[? "buffer"], buffer_f32);
+                var instanceY = buffer_read(async_load[? "buffer"], buffer_f32);
+                var instance = instance_create(instanceX, instanceY, obj_trap);
+                instance.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+            }
+            //Destroy the old trap
+            for(var i=count;i&lt;instance_number(obj_trap);i++)
+                with(instance_find(obj_trap, i))
+                    instance_destroy();
+            
+            //Handle getting turret info
+            count = buffer_read(async_load[? "buffer"], buffer_u16);
+            //Update current turret
+            for(var i=0;i&lt;instance_number(obj_turret) &amp;&amp; i&lt;count;i++){
+                var instance = instance_find(obj_turret, i);
+                instance.newX = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.newY = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+            }
+            //Create the new turret
+            for(var i=instance_number(obj_turret);i&lt;count;i++){
+                var instanceX = buffer_read(async_load[? "buffer"], buffer_f32);
+                var instanceY = buffer_read(async_load[? "buffer"], buffer_f32);
+                var instance = instance_create(instanceX, instanceY, obj_turret);
+                instance.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
+            }
+            //Destroy the old turret
+            for(var i=count;i&lt;instance_number(obj_turret);i++)
+                with(instance_find(obj_turret, i))
+                    instance_destroy();
+                    
+            //Handle getting guard info
+            count = buffer_read(async_load[? "buffer"], buffer_u16);
+            //Update current guard
+            for(var i=0;i&lt;instance_number(obj_guard) &amp;&amp; i&lt;count;i++){
+                var instance = instance_find(obj_guard, i);
+                instance.newX = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.newY = buffer_read(async_load[? "buffer"], buffer_f32);
+            }
+            //Create the new guard
+            for(var i=instance_number(obj_guard);i&lt;count;i++){
+                var instanceX = buffer_read(async_load[? "buffer"], buffer_f32);
+                var instanceY = buffer_read(async_load[? "buffer"], buffer_f32);
+                var instance = instance_create(instanceX, instanceY, obj_guard);
+            }
+            //Destroy the old guard
+            for(var i=count;i&lt;instance_number(obj_guard);i++)
+                with(instance_find(obj_guard, i))
+                    instance_destroy();
+            
+            //Handle getting temp wall info
+            count = buffer_read(async_load[? "buffer"], buffer_u16);
+            //Update current temp wall
+            for(var i=0;i&lt;instance_number(obj_tempWall) &amp;&amp; i&lt;count;i++){
+                var instance = instance_find(obj_tempWall, i);
+                instance.x = buffer_read(async_load[? "buffer"], buffer_f32);
+                instance.y = buffer_read(async_load[? "buffer"], buffer_f32);
+            }
+            //Create the new temp wall
+            for(var i=instance_number(obj_tempWall);i&lt;count;i++){
+                var instanceX = buffer_read(async_load[? "buffer"], buffer_f32);
+                var instanceY = buffer_read(async_load[? "buffer"], buffer_f32);
+                var instance = instance_create(instanceX, instanceY, obj_tempWall);
+            }
+            //Destroy the old temp wall
+            for(var i=count;i&lt;instance_number(obj_tempWall);i++)
+                with(instance_find(obj_tempWall, i))
+                    instance_destroy();
+                    
             //Handle getting player info
             var numPlayers = buffer_read(async_load[? "buffer"], buffer_u8);
             var playerNum = 0;
@@ -701,10 +871,15 @@ if(state==GAME){
                 player.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
                 player.hitPoints = buffer_read(async_load[? "buffer"], buffer_u8);
                 player.fuel = buffer_read(async_load[? "buffer"], buffer_f32);
+                player.ammo = buffer_read(async_load[? "buffer"], buffer_f32);
                 player.items[OFFENSE] = buffer_read(async_load[? "buffer"], buffer_string);
                 player.items[DEFENSE] = buffer_read(async_load[? "buffer"], buffer_string);
                 player.items[UTILITY] = buffer_read(async_load[? "buffer"], buffer_string);
                 player.items[TRAP] = buffer_read(async_load[? "buffer"], buffer_string);
+                player.shield = buffer_read(async_load[? "buffer"], buffer_u8);
+                player.body = buffer_read(async_load[? "buffer"], buffer_u8);
+                player.reflex = buffer_read(async_load[? "buffer"], buffer_u8);
+                player.invincible = buffer_read(async_load[? "buffer"], buffer_bool);
                 player.num = playerID;
                 var split = scr_splitString(clientInfo[|i], "&amp;");
                 player.name = split[0];

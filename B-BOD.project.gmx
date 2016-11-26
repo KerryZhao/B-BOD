@@ -47,6 +47,8 @@
         <sprite>sprites\spr_trap</sprite>
         <sprite>sprites\spr_smokescreen</sprite>
         <sprite>sprites\spr_turret</sprite>
+        <sprite>sprites\spr_emp</sprite>
+        <sprite>sprites\spr_guard</sprite>
       </sprites>
       <sprite>sprites\spr_explosion</sprite>
       <sprites name="balls">
@@ -136,6 +138,7 @@
     <script>scripts\scr_drawTriangle.gml</script>
     <script>scripts\scr_drawTextOutline.gml</script>
     <script>scripts\scr_shootBall.gml</script>
+    <script>scripts\scr_createFixture.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\fnt_arial</font>
@@ -198,6 +201,9 @@
         <object>objects\obj_particleEffect</object>
         <object>objects\obj_trap</object>
         <object>objects\obj_turret</object>
+        <object>objects\obj_guard</object>
+        <object>objects\obj_tempWall</object>
+        <object>objects\obj_emp</object>
       </objects>
       <objects name="balls">
         <object>objects\obj_ballSpecial</object>

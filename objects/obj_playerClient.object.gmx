@@ -315,6 +315,7 @@ if(itemUsed){
         buffer_write(buffer, buffer_u8, ITEM);
         buffer_write(buffer, buffer_f32, aimH);
         buffer_write(buffer, buffer_f32, aimV);
+        buffer_write(buffer, buffer_u8, curStation);
         network_send_udp(obj_client.socketID, obj_client.server, PORT, buffer, buffer_tell(buffer));
     }
     else{

@@ -25,6 +25,54 @@
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>newX</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>-1</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>newY</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>-1</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>image_speed</string>
           </argument>
           <argument>
@@ -86,6 +134,37 @@ phy_fixed_rotation = true;
         </arguments>
       </action>
     </event>
+    <event eventtype="3" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check for new X and Y
+if(newX!=-1){
+    phy_position_x = newX;
+    newX = -1;
+}
+if(newY!=-1){
+    phy_position_y = newY;
+    newY = -1;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="4" ename="obj_obstacle">
       <action>
         <libid>1</libid>
@@ -139,13 +218,9 @@ phy_fixed_rotation = true;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Check Quick Reflexes
-if(other.reflex&gt;0){
-    other.reflex--;
-    if(other.reflex==0)
-        other.alarm[2] = 1;
-    exit;
-}
+            <string>///Play trap animation
+var effect = instance_create(other.x, other.y, obj_particleEffect);
+effect.sprite_index = spr_trapEffect;
 </string>
           </argument>
         </arguments>
@@ -166,9 +241,36 @@ if(other.reflex&gt;0){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Play trap animation
-var effect = instance_create(other.x, other.y, obj_particleEffect);
-effect.sprite_index = spr_trapEffect;
+            <string>///Check not on client
+if(instance_number(obj_client)&gt;0)
+    exit;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check Quick Reflexes
+if(other.reflex&gt;0){
+    other.reflex--;
+    if(other.reflex==0)
+        other.alarm[2] = 1;
+    exit;
+}
 </string>
           </argument>
         </arguments>

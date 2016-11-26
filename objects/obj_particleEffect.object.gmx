@@ -75,7 +75,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//Destory at end of explosion
+            <string>///Destory at end of particle
 if(floor(image_index)==lastFrame)
     instance_destroy();
 </string>

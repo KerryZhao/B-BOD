@@ -359,65 +359,6 @@ if(itemUse){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Move player
-if(abs(moveForce)&lt;controlThreshold)
-    moveForce = 0;
-else{
-    var totalForce = moveForce * moveMaxForce;
-    if(onGround || !physics_test_overlap(x+sign(totalForce), y, 0, obj_obstacle))
-        physics_apply_local_impulse(0, 0, totalForce, 0);
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Jetpack
-if(jetpackUsed &amp;&amp; fuel-fuelUseSpeed*delta_time/1000000&gt;0){
-    fuel -= fuelUseSpeed*delta_time/1000000;
-    physics_apply_local_impulse(0, 0, 0, jetForce);
-    if(floor(image_index)!=5){
-        image_index = 5;
-        image_speed = 0;
-    }
-    if(jetSound==0 || !audio_is_playing(jetSound))
-        jetSound = audio_play_sound_at(snd_jetpack, x, y, 0, 300, 100, 1, false, 1);
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
             <string>///Check for new X and Y
 if(newX!=-1){
     phy_position_x = newX;
@@ -538,6 +479,88 @@ else if(floor(image_index)!=5){
           </argument>
         </arguments>
       </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check if Client
+if(instance_number(obj_client)&gt;0)
+    exit;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Jetpack
+if(jetpackUsed &amp;&amp; fuel-fuelUseSpeed*delta_time/1000000&gt;0){
+    fuel -= fuelUseSpeed*delta_time/1000000;
+    physics_apply_local_impulse(0, 0, 0, jetForce);
+    if(floor(image_index)!=5){
+        image_index = 5;
+        image_speed = 0;
+    }
+    if(jetSound==0 || !audio_is_playing(jetSound))
+        jetSound = audio_play_sound_at(snd_jetpack, x, y, 0, 300, 100, 1, false, 1);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Move player
+if(abs(moveForce)&lt;controlThreshold)
+    moveForce = 0;
+else{
+    var totalForce = moveForce * moveMaxForce;
+    if(onGround || !physics_test_overlap(x+sign(totalForce), y, 0, obj_obstacle))
+        physics_apply_local_impulse(0, 0, totalForce, 0);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
     </event>
     <event eventtype="3" enumb="1">
       <action>
@@ -582,6 +605,8 @@ if(phy_speed_y!=0)
           <argument>
             <kind>1</kind>
             <string>///Check for damage reduction
+if(invincible)
+    hitPoints = oldHitPoints;
 if(shield&gt;0){
     var damage = oldHitPoints-hitPoints;
     shield -= damage;
@@ -591,13 +616,14 @@ if(shield&gt;0){
     }
     hitPoints = oldHitPoints;
 }
-if(invincible)
-    hitPoints = oldHitPoints;
 if(body&gt;0){
-    body--;
-    if(body==0)
-        alarm[2] = 1;
-    hitPoints = oldHitPoints - 1;
+    var damage = oldHitPoints-hitPoints;
+    if(damage&gt;0){
+        body--;
+        if(body==0)
+            alarm[2] = 1;
+        hitPoints = oldHitPoints - 1;
+    }
 }
 oldHitPoints = hitPoints;
 </string>
@@ -958,11 +984,8 @@ switch(curStation){
                 var item = instance_nearest(x, y, obj_item);
                 if(item!=noone &amp;&amp; point_distance(x, y, item.x, item.y)&lt;maxTrapDist){
                     items[curStation] = "";
-                    if(!item.trap){
-                        var effect = instance_create(item.x, item.y, obj_particleEffect);
-                        effect.sprite_index = spr_fakeItemEffect;
+                    if(!item.trap)
                         item.trap = true;
-                    }
                 }
                 break;
             case "B":

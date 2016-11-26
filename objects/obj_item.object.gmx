@@ -265,11 +265,59 @@
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>trapped</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>false</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>trapDamage</string>
           </argument>
           <argument>
             <kind>0</kind>
             <string>5</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>effect</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>0</string>
           </argument>
         </arguments>
       </action>
@@ -329,6 +377,34 @@ if(y&gt;endY){
 else if(y&lt;startY){
     phy_speed_y = moveSpeed;
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Trap animation
+if(!trapped &amp;&amp; trap){
+    effect = instance_create(x, y, obj_particleEffect);
+    effect.sprite_index = spr_fakeItemEffect;
+    trapped = true;
+}
+else if(effect!=0 &amp;&amp; !instance_exists(effect))
+    trapped = false;
 </string>
           </argument>
         </arguments>
@@ -430,6 +506,52 @@ if(instance_number(obj_client)==0)
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///Trap Effect
+var effect = instance_create(other.x, other.y, obj_particleEffect);
+effect.sprite_index = spr_trapEffect;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check not on client
+if(instance_number(obj_client)&gt;0)
+    exit;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>///Check Quick Reflexes
 if(other.reflex&gt;0){
     other.reflex--;
@@ -458,8 +580,6 @@ if(other.reflex&gt;0){
           <argument>
             <kind>1</kind>
             <string>///Set off trap
-var effect = instance_create(other.x, other.y, obj_particleEffect);
-effect.sprite_index = spr_trapEffect;
 other.hitPoints -= trapDamage;
 with(other)
     event_user(3);
