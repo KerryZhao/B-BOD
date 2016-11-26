@@ -25,30 +25,6 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>playersHurt</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>ds_list_create()</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>611</id>
-        <kind>6</kind>
-        <userelative>-1</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
             <string>image_speed</string>
           </argument>
           <argument>
@@ -78,6 +54,54 @@
           <argument>
             <kind>0</kind>
             <string>0</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>playersHurt</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>ds_list_create()</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Create physics
+fixture = scr_createFixture("explosion0", true, 8, 0, 0, 0, 0, 0, 0, true, false);
+physics_fixture_bind_ext(fixture, id, -8, 0);
+step = 0;
+</string>
           </argument>
         </arguments>
       </action>
@@ -123,9 +147,54 @@ ds_list_destroy(playersHurt);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//Destory at end of explosion
+            <string>///Destory at end of explosion
 if(floor(image_index)==9)
     instance_destroy();
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Update collision
+if(step==0 &amp;&amp; image_index&gt;=1){
+    physics_remove_fixture(id, fixture);
+    fixture = scr_createFixture("explosion1", true, 32, 0, 0, 0, 0, 0, 0, true, false);
+    physics_fixture_bind_ext(fixture, id, -8, 0);
+    step = 1;
+}
+else if(step==1 &amp;&amp; image_index&gt;=2){
+    physics_remove_fixture(id, fixture);
+    fixture = scr_createFixture("explosion2", true, 40, 0, 0, 0, 0, 0, 0, true, false);
+    physics_fixture_bind_ext(fixture, id, -8, 0);
+    step = 2;
+}
+else if(step==2 &amp;&amp; image_index&gt;=4){
+    physics_remove_fixture(id, fixture);
+    fixture = scr_createFixture("explosion4", true, 48, 0, 0, 0, 0, 0, 0, true, false);
+    physics_fixture_bind_ext(fixture, id, -8, 0);
+    step = 4;
+}
+else if(step==4 &amp;&amp; image_index&gt;=7){
+    physics_remove_fixture(id, fixture);
+    fixture = scr_createFixture("explosion7", true, 56, 0, 0, 0, 0, 0, 0, true, false);
+    physics_fixture_bind_ext(fixture, id, -8, 0);
+    step = 7;
+}
 </string>
           </argument>
         </arguments>
@@ -170,7 +239,7 @@ if(ds_list_find_index(playersHurt, other)==-1){
       </action>
     </event>
   </events>
-  <PhysicsObject>-1</PhysicsObject>
+  <PhysicsObject>0</PhysicsObject>
   <PhysicsObjectSensor>-1</PhysicsObjectSensor>
   <PhysicsObjectShape>0</PhysicsObjectShape>
   <PhysicsObjectDensity>0</PhysicsObjectDensity>
@@ -181,8 +250,5 @@ if(ds_list_find_index(playersHurt, other)==-1){
   <PhysicsObjectFriction>0</PhysicsObjectFriction>
   <PhysicsObjectAwake>-1</PhysicsObjectAwake>
   <PhysicsObjectKinematic>0</PhysicsObjectKinematic>
-  <PhysicsShapePoints>
-    <point>30,30</point>
-    <point>30,30</point>
-  </PhysicsShapePoints>
+  <PhysicsShapePoints/>
 </object>

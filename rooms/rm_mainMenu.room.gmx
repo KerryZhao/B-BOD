@@ -11,7 +11,8 @@
   <colour>12632256</colour>
   <showcolour>-1</showcolour>
   <code>randomize();
-global.multiplayerGame = -1;</code>
+global.multiplayerGame = -1;
+global.fixtures = ds_map_create();</code>
   <enableViews>0</enableViews>
   <clearViewBackground>-1</clearViewBackground>
   <clearDisplayBuffer>-1</clearDisplayBuffer>

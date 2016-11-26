@@ -139,6 +139,33 @@ phy_fixed_rotation = true;
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///Check Quick Reflexes
+if(other.reflex&gt;0){
+    other.reflex--;
+    if(other.reflex==0)
+        other.alarm[2] = 1;
+    exit;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>///Play trap animation
 var effect = instance_create(other.x, other.y, obj_particleEffect);
 effect.sprite_index = spr_trapEffect;

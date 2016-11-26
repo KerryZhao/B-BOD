@@ -123,6 +123,7 @@ server = false;
             <string>///Set Health Variables
 maxHitPoints = 100;
 hitPoints = maxHitPoints;
+oldHitPoints = hitPoints;
 healthPadding = 10;
 healthThickness = 10;
 </string>
@@ -223,6 +224,52 @@ fuelUp = maxFuel*3/4;
 telepad = -1;
 maxTrapDist = 128;
 mute = false;
+shield = 0;
+body = 0;
+reflex = 0;
+invincible = false;
+guards = 0;
+tempWalls = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Reset defense
+shield = 0;
+body = 0;
+reflex = 0;
+invincible = false;
+if(guards!=0){
+    for(var i=0;i&lt;array_length_1d(guards);i++)
+        with(guards[i])
+            instance_destroy();
+    guards = 0;
+}
+if(tempWalls!=0){
+    for(var i=0;i&lt;array_length_1d(tempWalls);i++)
+        with(tempWalls[i])
+            instance_destroy();
+    tempWalls = 0;
+}
+items[DEFENSE] = "";
 </string>
           </argument>
         </arguments>
@@ -520,6 +567,45 @@ if(phy_speed_y!=0)
     <event eventtype="7" enumb="13">
       <action>
         <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check for damage reduction
+if(shield&gt;0){
+    var damage = oldHitPoints-hitPoints;
+    shield -= damage;
+    if(shield&lt;=0){
+        oldHitPoints += shield;
+        alarm[2] = 1;
+    }
+    hitPoints = oldHitPoints;
+}
+if(invincible)
+    hitPoints = oldHitPoints;
+if(body&gt;0){
+    body--;
+    if(body==0)
+        alarm[2] = 1;
+    hitPoints = oldHitPoints - 1;
+}
+oldHitPoints = hitPoints;
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
         <id>605</id>
         <kind>0</kind>
         <userelative>0</userelative>
@@ -730,7 +816,72 @@ switch(curStation){
             items[curStation] = "";
         break;
     case DEFENSE:
-        
+        switch(items[curStation]){
+            case "S":
+                if(shield&lt;=0){
+                    alarm[2] = itemTime;
+                    shield = 10;
+                }
+                break;
+            case "G":
+                if(guards==0){
+                    guards[0] = instance_create(0, 0, obj_guard);
+                    guards[0].player = id;
+                    guards[1] = instance_create(0, 0, obj_guard);
+                    guards[1].player = id;
+                    guards[1].relX = guards[1].maxX;
+                    guards[1].relY = guards[1].maxY;
+                    guards[1].dirX = -1;
+                    guards[2] = instance_create(0, 0, obj_guard);
+                    guards[2].player = id;
+                    guards[2].relX = guards[1].maxX;
+                    guards[2].dirX = 0;
+                    guards[2].dirY = 1;
+                    guards[3] = instance_create(0, 0, obj_guard);
+                    guards[3].player = id;
+                    guards[3].relY = guards[1].maxY;
+                    guards[3].dirX = 0;
+                    guards[3].dirY = -1;
+                    alarm[2] = itemTime;
+                }
+                break;
+            case "I":
+                if(!invincible){
+                    invincible = true;
+                    alarm[2] = floor(itemTime/2);
+                }
+                break;
+            case "E":
+                items[DEFENSE] = "";
+                instance_create(x, y, obj_emp);
+                break;
+            case "B":
+                if(body&lt;=0){
+                    alarm[2] = itemTime;
+                    body = 3;
+                }
+                break;
+            case "Q":
+                if(reflex&lt;=0){
+                    alarm[2] = itemTime;
+                    reflex = 2;
+                }
+                break;
+            case "W":
+                if(tempWalls==0){
+                    var snapX = floor(x/32)*32;
+                    var snapY = floor(y/32)*32-32;
+                    if(aimH&lt;0){
+                        tempWalls[0] = instance_create(snapX-32, snapY, obj_tempWall);
+                        tempWalls[1] = instance_create(snapX-32, snapY+32, obj_tempWall);
+                    }
+                    else{
+                        tempWalls[0] = instance_create(snapX+32, snapY, obj_tempWall);
+                        tempWalls[1] = instance_create(snapX+32, snapY+32, obj_tempWall);
+                    }
+                    alarm[2] = itemTime;
+                }
+        }
         break;
     case UTILITY:
         switch(items[curStation]){
@@ -900,12 +1051,93 @@ if(!mute &amp;&amp; ammo&gt;=1){
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///Draw Shield
+if(shield&gt;0){
+    draw_set_alpha(shield/10);
+    draw_ellipse_colour(x-sprite_width*3/4, y-sprite_height*5/8, x+sprite_width*3/4, y+sprite_height*5/8, c_aqua, c_aqua, false);
+    draw_set_alpha(1);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw Body Armor
+if(body&gt;0){
+    draw_set_alpha(body/3);
+    draw_ellipse_colour(x-sprite_width*3/4, y-sprite_height*5/8, x+sprite_width*3/4, y+sprite_height*5/8, c_gray, c_gray, false);
+    draw_set_alpha(1);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw Quick Reflexes
+if(reflex&gt;0){
+    draw_set_alpha(reflex/2);
+    draw_ellipse_colour(x-sprite_width*3/4, y-sprite_height*5/8, x+sprite_width*3/4, y+sprite_height*5/8, c_purple, c_purple, false);
+    draw_set_alpha(1);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>///Draw Self
 color = playerColors[num];
+var alpha = 1;
+if(invincible)
+    alpha = 0.5;
 if(moveDir)
-    draw_sprite_ext(sprite_index, -1, x, y, -1, 1, 0, color, 1);
+    draw_sprite_ext(sprite_index, -1, x, y, -1, 1, 0, color, alpha);
 else
-    draw_sprite_ext(sprite_index, -1, x, y, 1, 1, 0, color, 1);
+    draw_sprite_ext(sprite_index, -1, x, y, 1, 1, 0, color, alpha);
 </string>
           </argument>
         </arguments>
