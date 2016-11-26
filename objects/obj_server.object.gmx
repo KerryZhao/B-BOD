@@ -138,7 +138,7 @@ event_user(1);
           </argument>
           <argument>
             <kind>0</kind>
-            <string>room_speed/10</string>
+            <string>2</string>
           </argument>
         </arguments>
       </action>
