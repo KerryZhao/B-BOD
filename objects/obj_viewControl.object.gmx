@@ -233,7 +233,7 @@ view_hview[0] = room_height;
             <string>///Update view based on players
 
 //Get box around players
-var minX = room_height;
+var minX = room_width;
 var minY = room_height;
 var maxX = 0;
 var maxY = 0;
@@ -250,7 +250,7 @@ for(var i=0;i&lt;instance_number(obj_playerClient);i++){
 }
 
 //Get width of view based on players
-var tempMinYSize = minYSize;
+/*var tempMinYSize = minYSize;
 if(maxX-minX+bufferSize*2&gt;minXSize){
     view_wview[0] = maxX-minX+bufferSize*2;
     tempMinYSize = (maxX-minX)/minXSize*minYSize+bufferSize*2;
@@ -264,27 +264,25 @@ if(maxY-minY+bufferSize*2&gt;tempMinYSize){
     view_wview[0] = (maxY-minY)/minYSize*minXSize+bufferSize*2;
 }
 else
-    view_hview[0] = tempMinYSize;
+    view_hview[0] = tempMinYSize;*/
 
 //Get x position of viewport based on players, viewport size, and room size
 view_xview[0] = (minX+maxX-view_wview[0])/2;
-/*
 if(view_wview[0]&gt;room_width)
     view_xview[0] = -(view_wview[0]-room_width)/2;
 else if(view_xview[0]&lt;0)
     view_xview[0] = 0;
 else if(view_xview[0]&gt;room_width-view_wview[0])
-    view_xview[0] = room_width-view_wview[0];*/
+    view_xview[0] = room_width-view_wview[0];
 
 //Get y position of viewport based on players, viewport size, and room size
 view_yview[0] = (minY+maxY-view_hview[0])/2;
-/*
 if(view_hview[0]&gt;room_height)
     view_yview[0] = -(view_hview[0]-room_height)/2;
 else if(view_yview[0]&lt;0)
     view_yview[0] = 0;
 else if(view_yview[0]&gt;room_height-view_hview[0])
-    view_yview[0] = room_height-view_hview[0];*/
+    view_yview[0] = room_height-view_hview[0];
 </string>
           </argument>
         </arguments>
@@ -341,7 +339,7 @@ for(var i=0;i&lt;instance_number(obj_player);i++){
     draw_healthbar(hudX+32+playerHudPadding, string_height(player.name)+hudY+playerHudHealthPadding, playerHudHealthWidth+hudX+32+playerHudPadding, string_height(player.name)+playerHudHealthPadding+hudY+playerHudHealthHeight, player.hitPoints/player.maxHitPoints*100, c_white, c_red, c_lime, 0, true, true);
     
     //Draw ammo
-    if(player.object_index==obj_playerClient){
+    if((player.object_index==obj_playerClient || object_is_ancestor(player.object_index, obj_playerClient))){
         var drawX = hudX+32+playerHudPadding+ammoSize;
         var drawY = string_height(player.name)+hudY+playerHudHealthPadding*2+playerHudHealthHeight;
         for(var j=0;j&lt;floor(player.ammo);j++){
@@ -361,7 +359,7 @@ for(var i=0;i&lt;instance_number(obj_player);i++){
     scr_drawTextOutline(playerHudHealthWidth+hudX+32+playerHudPadding*2+itemSizeX, hudY+itemSizeY*2-playerHudPadding/2, player.items[TRAP], global.colors[TRAP], global.colorsComp[TRAP]); 
     
     //Draw selected station
-    if(player.object_index==obj_playerClient &amp;&amp; player.items[player.curStation]!=""){
+    if((player.object_index==obj_playerClient || object_is_ancestor(player.object_index, obj_playerClient)) &amp;&amp; player.items[player.curStation]!=""){
         var selectX = 0;
         var selectY = 0;
         switch(player.curStation){
