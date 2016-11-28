@@ -170,7 +170,7 @@
           <argument>
             <kind>1</kind>
             <string>///Turn on physics
-physics_fixture_bind_ext(scr_createFixture("ball", true, 16, 0, 0.025, 0, 0, 0, 1, false, false), id, 0, 0);
+physics_fixture_bind_ext(scr_createFixture("ball", true, 8, 0, 0.1, 0, 0, 0, 1, false, false), id, 0, 0);
 </string>
           </argument>
         </arguments>
