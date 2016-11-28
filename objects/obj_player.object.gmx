@@ -25,6 +25,28 @@
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///Turn on physics
+physics_fixture_bind_ext(scr_createFixture("player", false, 13, 24, 1, 0.2, 2.5, 0, 0, false, false), id, 0, 0);
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>///Set the Force Variables
 moveMaxForce = 3;
 moveForce = 0;
@@ -1241,6 +1263,28 @@ draw_healthbar(x-healthPadding-sprite_width/2, y+sprite_height/2+healthPadding, 
             <string>///Draw Fuel Bar
 if(fuel!=maxFuel)
     draw_healthbar(x-fuelPadding-sprite_width/2, y+sprite_height/2+healthPadding+healthThickness+fuelPadding, x+sprite_width/2+fuelPadding, y+sprite_height/2+healthPadding+healthThickness+fuelPadding+fuelThickness, fuel/maxFuel*100, c_white, c_yellow, c_orange, 0, false, false);
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw debug Physics
+physics_world_draw_debug(phy_debug_render_aabb);
 </string>
           </argument>
         </arguments>
