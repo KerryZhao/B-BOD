@@ -435,6 +435,8 @@
     <instance objName="obj_T10" x="2528" y="448" name="inst_839CE77F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_T11" x="2784" y="448" name="inst_A745684D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_T12" x="2752" y="224" name="inst_B83C3EB0" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_tutExit" x="3072" y="672" name="inst_0E7E1E6E" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_label" x="3040" y="608" name="inst_C767D170" locked="0" code="text = &quot;Exit#(Press Jump)&quot;;&#xA;font = fnt_arial;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>-1</PhysicsWorld>

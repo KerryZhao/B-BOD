@@ -2,8 +2,8 @@
 <object>
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
-  <visible>0</visible>
-  <depth>0</depth>
+  <visible>-1</visible>
+  <depth>2</depth>
   <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -201,6 +201,30 @@
           </argument>
         </arguments>
       </action>
+      <action>
+        <libid>1</libid>
+        <id>611</id>
+        <kind>6</kind>
+        <userelative>-1</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>pausedGame</string>
+          </argument>
+          <argument>
+            <kind>0</kind>
+            <string>surface_create(0, 0)</string>
+          </argument>
+        </arguments>
+      </action>
     </event>
     <event eventtype="3" enumb="0">
       <action>
@@ -219,9 +243,58 @@
         <arguments>
           <argument>
             <kind>1</kind>
+            <string>///Trap mouse
+if(off &amp;&amp; view_enabled){
+    var gWidth = display_get_width();
+    var gHeight = display_get_height();
+    
+    var newX = window_mouse_get_x();
+    var newY = window_mouse_get_y();
+    
+    // limit virtual mouse pointer
+    if (newX &gt;= gWidth)
+    {
+        newX  = gWidth-1;
+    }
+    if (newX &lt;= 0)
+    {
+        newX = 1;
+    }
+    if (newY &gt;= gHeight)
+    {
+        newY = gHeight-1;
+    }
+    if (newY &lt;= 0)
+    {
+        newY = 1;
+    }
+    
+    window_mouse_set(newX, newY);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
             <string>///Check for pause
-if((controller!=-1 &amp;&amp; gamepad_button_check_released(controller, gp_start)) ||
-    (controller==-1 &amp;&amp; keyboard_check_released(vk_enter))){
+if(view_enabled &amp;&amp;
+    ((controller!=-1 &amp;&amp; gamepad_button_check_released(controller, gp_start)) ||
+    (controller==-1 &amp;&amp; keyboard_check_released(vk_enter)))){
     event_user(0);
 }
 </string>
@@ -252,9 +325,10 @@ if(!gamepad_is_connected(controller)){
         controller++;
 }
 off = !gamepad_is_connected(controller);
+if(off){
+    controller = -1;
+}
 if(instance_number(obj_local)==0 &amp;&amp; instance_number(obj_playerClient)&gt;0){
-    if(off)
-        controller = -1;
     obj_playerClient.gamepadSlot = controller;
 }
 
@@ -485,7 +559,9 @@ else{
             <string>///Pause or Unpause
 paused = !paused;
 if(paused){
-    pausedGame = sprite_create_from_surface(application_surface, view_xview[0], view_yview[0], view_wview[0], view_hview[0], false, false, 0, 0);
+    surface_resize(pausedGame, view_wview[0], view_hview[0]);
+    surface_copy(pausedGame, 0, 0, application_surface);
+    physics_pause_enable(true);
     instance_deactivate_all(true);
     var buttonW = 250*(view_wview[0]/1024);
     var buttonH = 110*(view_hview[0]/576);
@@ -493,21 +569,48 @@ if(paused){
     pausedButtons[0] = instance_create(buttonX, view_yview[0]+view_hview[0]/2, obj_unpauseButton);
     pausedButtons[0].image_xscale = buttonW/pausedButtons[0].sprite_width;
     pausedButtons[0].image_yscale = buttonH/pausedButtons[0].sprite_height;
-    pausedButtons[1] = instance_create(buttonX, view_yview[0]+view_hview[0]/2+buttonH*2, obj_button);
-    pausedButtons[1].image_xscale = buttonW/pausedButtons[0].sprite_width;
-    pausedButtons[1].image_yscale = buttonH/pausedButtons[0].sprite_height;
+    pausedButtons[1] = instance_create(buttonX, view_yview[0]+view_hview[0]/2+buttonH, obj_button);
+    pausedButtons[1].image_xscale = buttonW/pausedButtons[1].sprite_width;
+    pausedButtons[1].image_yscale = buttonH/pausedButtons[1].sprite_height;
     pausedButtons[1].font = fnt_plasticLg;
     pausedButtons[1].buttonText = "Quit";
     pausedButtons[1].buttonRoom = rm_gameTypeSelect;
 }
 else{
     instance_activate_all();
+    physics_pause_enable(false);
     for(var i=0;i&lt;array_length_1d(pausedButtons);i++)
         with(pausedButtons[i])
             instance_destroy();
     pausedButtons = 0;
-    if(sprite_exists(pausedGame))
-       sprite_delete(pausedGame);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="5">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Check if leave rooom paused
+if(paused){
+    event_user(0);
+    with(obj_singlePlayermanager)
+        instance_destroy();
 }
 </string>
           </argument>
@@ -575,50 +678,6 @@ ds_list_destroy(yValues);
           </argument>
         </arguments>
       </action>
-    </event>
-    <event eventtype="8" enumb="64">
-      <action>
-        <libid>1</libid>
-        <id>612</id>
-        <kind>0</kind>
-        <userelative>0</userelative>
-        <isquestion>-1</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>1</exetype>
-        <functionname>action_if_variable</functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>0</kind>
-            <string>paused</string>
-          </argument>
-          <argument>
-            <kind>0</kind>
-            <string>true</string>
-          </argument>
-          <argument>
-            <kind>4</kind>
-            <string>0</string>
-          </argument>
-        </arguments>
-      </action>
-      <action>
-        <libid>1</libid>
-        <id>422</id>
-        <kind>1</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-      </action>
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -635,28 +694,63 @@ ds_list_destroy(yValues);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Draw game
-draw_sprite(pausedGame, 0, 0, 0);
-draw_set_font(fnt_plasticLg);
-draw_text(view_wview[0]/2-string_width("PAUSED"), view_hview[0]/2+string_height("PAUSED")*2, "PAUSED");
-draw_set_font(fnt_arial);
-</string>
+            <string></string>
           </argument>
         </arguments>
       </action>
+    </event>
+    <event eventtype="8" enumb="64">
       <action>
         <libid>1</libid>
-        <id>424</id>
-        <kind>2</kind>
+        <id>603</id>
+        <kind>7</kind>
         <userelative>0</userelative>
         <isquestion>0</isquestion>
-        <useapplyto>0</useapplyto>
-        <exetype>0</exetype>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
         <functionname></functionname>
         <codestring></codestring>
         <whoName>self</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw paused title
+if(paused){
+    draw_set_font(fnt_plasticLg);
+    draw_text(view_wview[0]/2-string_width("PAUSED"), view_hview[0]/2-string_height("PAUSED")*2, "PAUSED");
+    draw_set_font(fnt_arial);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Draw paused game
+if(paused){
+    draw_surface(pausedGame, view_xview[0], view_yview[0]);
+}
+</string>
+          </argument>
+        </arguments>
       </action>
     </event>
   </events>

@@ -35,6 +35,7 @@
       <sprite>sprites\spr_tutorial_10</sprite>
       <sprite>sprites\spr_tutorial_11</sprite>
       <sprite>sprites\spr_tutorial_12</sprite>
+      <sprite>sprites\spr_exit</sprite>
     </sprites>
     <sprites name="Player Sprites">
       <sprite>sprites\spr_player</sprite>
@@ -219,6 +220,7 @@
         <object>objects\obj_ball</object>
         <object>objects\obj_ballTurret</object>
       </objects>
+      <object>objects\obj_tutExit</object>
     </objects>
     <objects name="UI">
       <object>objects\obj_gamepadControl</object>
