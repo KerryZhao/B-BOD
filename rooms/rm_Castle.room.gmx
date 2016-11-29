@@ -584,16 +584,16 @@ global.room_gravity = 60;</code>
     <instance objName="obj_floorCastle" x="128" y="32" name="inst_A966FF5E" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="180"/>
     <instance objName="obj_floorCastle" x="96" y="32" name="inst_480DBAB5" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="180"/>
     <instance objName="obj_floorCastle" x="64" y="32" name="inst_619E9537" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="180"/>
-    <instance objName="obj_station" x="544" y="1248" name="inst_A424E7DE" locked="0" code="station = &quot;OFFENSE&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="256" y="1248" name="inst_F10BE795" locked="0" code="station = &quot;TRAP&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="352" y="1088" name="inst_312DE840" locked="0" code="station = &quot;DEFENSE&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="544" y="1248" name="inst_A424E7DE" locked="0" code="station = OFFENSE;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="256" y="1248" name="inst_F10BE795" locked="0" code="station = TRAP;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="352" y="1088" name="inst_312DE840" locked="0" code="station = DEFENSE;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_station" x="1056" y="928" name="inst_8C5C533E" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="1024" y="544" name="inst_483C71CC" locked="0" code="station = &quot;TRAP&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="1536" y="1024" name="inst_047DEE8D" locked="0" code="station = &quot;UTILITY&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="1952" y="1248" name="inst_FC606E2E" locked="0" code="station = &quot;DEFENSE&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="2016" y="896" name="inst_44109D61" locked="0" code="station = &quot;OFFENSE&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="1024" y="544" name="inst_483C71CC" locked="0" code="station = TRAP;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="1536" y="1024" name="inst_047DEE8D" locked="0" code="station = UTILITY;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="1952" y="1248" name="inst_FC606E2E" locked="0" code="station = DEFENSE;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="1984" y="896" name="inst_44109D61" locked="0" code="station = OFFENSE;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_station" x="2368" y="1248" name="inst_6B5E97C0" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="1984" y="544" name="inst_1D66D45D" locked="0" code="station = &quot;OFFENSE&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="1984" y="544" name="inst_1D66D45D" locked="0" code="station = OFFENSE;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tileset" x="480" y="640" w="32" h="32" xo="320" yo="32" id="10000001" name="inst_1850FE67" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>
