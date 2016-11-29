@@ -782,7 +782,7 @@ if(instance_number(obj_client)==0)
 draw_sprite_ext(sprite_index, -1, x, y, 1, 1, 0, global.colors[station], 1);
 draw_set_valign(fa_middle);
 draw_set_halign(fa_center);
-draw_set_font(fnt_plasticBg);
+draw_set_font(fnt_arialLg);
 scr_drawTextOutline(x+sprite_width/2, y+sprite_width/2, type, c_white, c_black);
 draw_set_valign(fa_top);
 draw_set_halign(fa_left);
