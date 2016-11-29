@@ -289,13 +289,13 @@
     <instance objName="obj_tutorialTarget" x="1824" y="608" name="inst_F7151842" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="1888" y="512" name="inst_DDB4885C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_playerClient" x="128" y="672" name="inst_2D3B4EB0" locked="0" code="tutorial = true;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_T1" x="64" y="544" name="inst_0DEAD3B6" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
-    <instance objName="obj_T2" x="288" y="480" name="inst_2591A613" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
-    <instance objName="obj_T3" x="544" y="384" name="inst_A580F9B1" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
+    <instance objName="obj_T1" x="64" y="448" name="inst_0DEAD3B6" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
+    <instance objName="obj_T2" x="320" y="352" name="inst_2591A613" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
+    <instance objName="obj_T3" x="544" y="224" name="inst_A580F9B1" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
     <instance objName="obj_T6" x="1312" y="384" name="inst_DA9A9F19" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
     <instance objName="obj_T7" x="1536" y="384" name="inst_213B7E3E" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
-    <instance objName="obj_T4" x="896" y="448" name="inst_FA0F76A5" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
-    <instance objName="obj_T5" x="1088" y="448" name="inst_85F7070D" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
+    <instance objName="obj_T4" x="896" y="384" name="inst_FA0F76A5" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
+    <instance objName="obj_T5" x="1120" y="384" name="inst_85F7070D" locked="0" code="" scaleX="0.75" scaleY="0.75" colour="4294967295" rotation="0"/>
     <instance objName="obj_tutorialManager" x="32" y="32" name="inst_1D258951" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="2016" y="0" name="inst_9A305D30" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="2048" y="0" name="inst_08EC60C2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
@@ -426,10 +426,15 @@
     <instance objName="obj_wallCity" x="1888" y="96" name="inst_CF8C07E3" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="1888" y="64" name="inst_51253E83" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="1888" y="32" name="inst_4D647792" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="2784" y="704" name="inst_E48CAEFA" locked="0" code="station = TRAP;&#xA;debug = &quot;B&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="2208" y="704" name="inst_CBEBA09E" locked="0" code="station = OFFENSE;&#xA;debug = &quot;F&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="2880" y="704" name="inst_E48CAEFA" locked="0" code="station = TRAP;&#xA;debug = &quot;B&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="2176" y="704" name="inst_CBEBA09E" locked="0" code="station = OFFENSE;&#xA;debug = &quot;F&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_station" x="2400" y="704" name="inst_B69A69F6" locked="0" code="station = UTILITY;&#xA;debug = &quot;J3&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="2592" y="704" name="inst_C9B48C41" locked="0" code="station = DEFENSE;&#xA;debug = &quot;G&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="2624" y="704" name="inst_C9B48C41" locked="0" code="station = DEFENSE;&#xA;debug = &quot;G&quot;;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_T8" x="2080" y="448" name="inst_C3C745C7" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_T9" x="2304" y="448" name="inst_E07A768C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_T10" x="2528" y="448" name="inst_839CE77F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_T11" x="2784" y="448" name="inst_A745684D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_T12" x="2752" y="224" name="inst_B83C3EB0" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>-1</PhysicsWorld>

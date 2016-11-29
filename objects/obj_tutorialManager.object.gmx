@@ -80,7 +80,14 @@ if(targetsDestroy==3 &amp;&amp; instance_number(obj_door)&gt;0)
           <argument>
             <kind>1</kind>
             <string>///draw text 
-draw_text(1408, 288, "Destroy three targets to go back to the main menu");
+draw_text(1408, 288, "Destroy three targets to unlock the door to the right");
+draw_text_transformed(2176, 224, "Power-ups",4,4,0);
+draw_text(2176,300,"There are four types of power-ups");
+draw_text(2176,320,"Red: offense power-up");
+draw_text(2176,340,"Green: utility power-up");
+draw_text(2176,360,"Blue: defense power-up");
+draw_text(2176,380,"Purple: trap power-up");
+draw_text(2176,400,"You can only one type of one power up at a time");
 </string>
           </argument>
         </arguments>

@@ -30,6 +30,11 @@
       <sprite>sprites\spr_tutorial_5</sprite>
       <sprite>sprites\spr_tutorial_6</sprite>
       <sprite>sprites\spr_tutorial_7</sprite>
+      <sprite>sprites\spr_tutorial_8</sprite>
+      <sprite>sprites\spr_tutorial_9</sprite>
+      <sprite>sprites\spr_tutorial_10</sprite>
+      <sprite>sprites\spr_tutorial_11</sprite>
+      <sprite>sprites\spr_tutorial_12</sprite>
     </sprites>
     <sprites name="Player Sprites">
       <sprite>sprites\spr_player</sprite>
@@ -268,6 +273,11 @@
       <object>objects\obj_T5</object>
       <object>objects\obj_T6</object>
       <object>objects\obj_T7</object>
+      <object>objects\obj_T8</object>
+      <object>objects\obj_T9</object>
+      <object>objects\obj_T10</object>
+      <object>objects\obj_T11</object>
+      <object>objects\obj_T12</object>
     </objects>
   </objects>
   <rooms name="rooms">
