@@ -122,6 +122,7 @@ newX = -1;
 warpX = -1;
 warpY = -1;
 server = false;
+tutorial = false;
 </string>
           </argument>
         </arguments>
@@ -688,7 +689,7 @@ oldHitPoints = hitPoints;
         <arguments>
           <argument>
             <kind>0</kind>
-            <string>hitPoints&lt;=0  &amp;&amp; !server</string>
+            <string>hitPoints&lt;=0  &amp;&amp; !server &amp;&amp; !tutorial</string>
           </argument>
         </arguments>
       </action>
