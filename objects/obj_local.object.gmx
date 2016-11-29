@@ -200,6 +200,8 @@ for(var i=0;i&lt;gamepad_get_device_count();i++){
           <argument>
             <kind>1</kind>
             <string>///Remove keyboard player
+if(instance_number(obj_playerClient)&gt;0)
+    exit;
 var index = ds_list_find_index(controllers, -1);
 show_debug_message(index);
 if(index!=-1){
@@ -235,6 +237,8 @@ if(index!=-1){
           <argument>
             <kind>1</kind>
             <string>///Add keyboard player
+if(instance_number(obj_playerClient)&gt;0)
+    exit;
 var index = ds_list_find_index(controllers, -1);
 if(index==-1){
     ds_list_add(controllers, -1);

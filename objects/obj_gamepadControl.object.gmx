@@ -244,7 +244,7 @@
           <argument>
             <kind>1</kind>
             <string>///Trap mouse
-if(off &amp;&amp; view_enabled){
+if(view_enabled &amp;&amp; !paused){
     var gWidth = display_get_width();
     var gHeight = display_get_height();
     
@@ -294,7 +294,7 @@ if(off &amp;&amp; view_enabled){
             <string>///Check for pause
 if(view_enabled &amp;&amp;
     ((controller!=-1 &amp;&amp; gamepad_button_check_released(controller, gp_start)) ||
-    (controller==-1 &amp;&amp; keyboard_check_released(vk_enter)))){
+    (controller==-1 &amp;&amp; (keyboard_check_released(vk_enter) || keyboard_check_released(vk_escape))))){
     event_user(0);
 }
 </string>
