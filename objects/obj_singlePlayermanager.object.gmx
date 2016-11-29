@@ -173,21 +173,21 @@ if(instance_exists(obj_target)==true)
             <string>///Text that say how many targets need to be hit and how many we have hit
 if(ingame == true)
 {
-    draw_set_alpha(0.5);
-    draw_rectangle_colour(0, obj_viewControl.minYSize - height, width, obj_viewControl.minYSize, c_ltgray, c_ltgray, c_ltgray, c_ltgray, false);
+    draw_set_alpha(0.8);
+    draw_rectangle_colour(obj_viewControl.minXSize - width, 0, obj_viewControl.minXSize, height, c_ltgray, c_ltgray, c_ltgray, c_ltgray, false);
     draw_set_alpha(1);
     text1 = "Targets Needed: " + string(obj_singlePlayermanager.targetsNeededtext);
-    draw_text(0, obj_viewControl.minYSize - (height - 60), text1);
+    draw_text(obj_viewControl.minXSize - (width - 20),0, text1);
     text2 = "Targets Hit: " + string(obj_singlePlayermanager.targetsHit);
-    draw_text(0,obj_viewControl.minYSize - (height - 40),text2);   
+    draw_text(obj_viewControl.minXSize - (width - 20),20,text2);   
     with(obj_timer)
     {
       event_user(0);
     }
      text3 = "Time: " + string(obj_timer.minutes)+ "." + string(obj_timer.seconds);
-    draw_text(0,obj_viewControl.minYSize - (height - 20),text3);
+    draw_text(obj_viewControl.minXSize - (width - 20),40,text3);
     text4 = "Score: " + string(obj_singlePlayermanager.cusScore);
-    draw_text(100,obj_viewControl.minYSize - (height - 20),text4);
+    draw_text(obj_viewControl.minXSize - (width - 20),60,text4);
 
     
     
