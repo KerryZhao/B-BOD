@@ -479,14 +479,14 @@ global.room_gravity = 60;</code>
     <instance objName="obj_wallCity" x="1024" y="1728" name="inst_AC49E4C2" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="1504" y="1728" name="inst_AC960EAF" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="1536" y="1728" name="inst_460146F7" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_spawnPoint" x="96" y="128" name="inst_7F8D99F1" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_spawnPoint" x="224" y="320" name="inst_7F8D99F1" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_spawnPoint" x="672" y="416" name="inst_EBCB297D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_spawnPoint" x="768" y="1024" name="inst_CC07264C" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_spawnPoint" x="1408" y="672" name="inst_3C8821BE" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_spawnPoint" x="1120" y="1664" name="inst_B75DA3CC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_spawnPoint" x="1696" y="1568" name="inst_5CAEAFF9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_spawnPoint" x="224" y="1376" name="inst_01B4C56A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_spawnPoint" x="1152" y="640" name="inst_A491F736" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_spawnPoint" x="992" y="480" name="inst_A491F736" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="1216" y="1600" name="inst_51393321" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="1216" y="1568" name="inst_358374F7" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="1216" y="1536" name="inst_4DB29C1A" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
@@ -652,16 +652,11 @@ global.room_gravity = 60;</code>
     <instance objName="obj_wallCity" x="352" y="1248" name="inst_DA600F79" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="384" y="1248" name="inst_0A47F59D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_wallCity" x="768" y="608" name="inst_552AB29F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="448" y="704" name="inst_E498F483" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="512" y="1696" name="inst_CC09B9FD" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="128" y="1312" name="inst_13D1CEDC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="640" y="1152" name="inst_830618F5" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="768" y="256" name="inst_FF33730F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="192" y="160" name="inst_B32AD7A0" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="1056" y="1088" name="inst_20C1989B" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="1344" y="1696" name="inst_ED332EAF" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="1824" y="1696" name="inst_B9633F5B" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_station" x="992" y="544" name="inst_B833E51D" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="736" y="96" name="inst_B32AD7A0" locked="0" code="station = OFFENSE;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="1024" y="1280" name="inst_C74D50FC" locked="0" code="station = DEFENSE;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="864" y="928" name="inst_D4FF5362" locked="0" code="station = UTILITY;&#xA;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="64" y="832" name="inst_01D06A25" locked="0" code="station = DEFENSE;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_station" x="128" y="1696" name="inst_A76D1930" locked="0" code="station = OFFENSE;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles/>
   <PhysicsWorld>-1</PhysicsWorld>

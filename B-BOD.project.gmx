@@ -19,6 +19,7 @@
       <sound>sound\snd_jetpack</sound>
     </sounds>
     <sound>sound\snd_bgMusic1</sound>
+    <sound>sound\sound10</sound>
   </sounds>
   <sprites name="sprites">
     <sprites name="tutorial Sprites">
@@ -96,6 +97,7 @@
         <sprite>sprites\spr_floorCastle</sprite>
       </sprites>
       <sprite>sprites\spr_spikes</sprite>
+      <sprite>sprites\spr_movingPlatform</sprite>
     </sprites>
     <sprites name="Menu Sprites">
       <sprites name="Map Icons">
