@@ -415,7 +415,7 @@ global.room_gravity = 60;</code>
     <instance objName="obj_floorCastle" x="448" y="1152" name="inst_F3C964FE" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_floorForest" x="128" y="1280" name="inst_A60727FC" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_floorForest" x="96" y="1280" name="inst_5B1F2D2F" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
-    <instance objName="obj_floorForest" x="32" y="1280" name="inst_CCD572AF" locked="0" code="" scaleX="2" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_floorForest" x="32" y="1280" name="inst_CCD572AF" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_floorForest" x="0" y="1280" name="inst_21E402D9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_floorForest" x="2144" y="1280" name="inst_2F157364" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_floorForest" x="2176" y="1280" name="inst_DD4FE635" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
@@ -594,6 +594,7 @@ global.room_gravity = 60;</code>
     <instance objName="obj_station" x="1984" y="896" name="inst_44109D61" locked="0" code="station = OFFENSE;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_station" x="2368" y="1248" name="inst_6B5E97C0" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
     <instance objName="obj_station" x="1984" y="544" name="inst_1D66D45D" locked="0" code="station = OFFENSE;&#xA;" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
+    <instance objName="obj_floorForest" x="64" y="1280" name="inst_D7CFB5D9" locked="0" code="" scaleX="1" scaleY="1" colour="4294967295" rotation="0"/>
   </instances>
   <tiles>
     <tile bgName="bg_tileset" x="480" y="640" w="32" h="32" xo="320" yo="32" id="10000001" name="inst_1850FE67" depth="1000000" locked="0" colour="4294967295" scaleX="1" scaleY="1"/>

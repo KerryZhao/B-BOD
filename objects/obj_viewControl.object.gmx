@@ -339,7 +339,7 @@ for(var i=0;i&lt;instance_number(obj_player);i++){
     draw_healthbar(hudX+32+playerHudPadding, string_height(player.name)+hudY+playerHudHealthPadding, playerHudHealthWidth+hudX+32+playerHudPadding, string_height(player.name)+playerHudHealthPadding+hudY+playerHudHealthHeight, player.hitPoints/player.maxHitPoints*100, c_white, c_red, c_lime, 0, true, true);
     
     //Draw ammo
-    if((player.object_index==obj_playerClient || object_is_ancestor(player.object_index, obj_playerClient))){
+    if(instance_number(obj_playerClient)&gt;0 &amp;&amp; (player.object_index==obj_playerClient || object_is_ancestor(player.object_index, obj_playerClient))){
         var drawX = hudX+32+playerHudPadding+ammoSize;
         var drawY = string_height(player.name)+hudY+playerHudHealthPadding*2+playerHudHealthHeight;
         for(var j=0;j&lt;floor(player.ammo);j++){
@@ -359,7 +359,7 @@ for(var i=0;i&lt;instance_number(obj_player);i++){
     scr_drawTextOutline(playerHudHealthWidth+hudX+32+playerHudPadding*2+itemSizeX, hudY+itemSizeY*2-playerHudPadding/2, player.items[TRAP], global.colors[TRAP], global.colorsComp[TRAP]); 
     
     //Draw selected station
-    if((player.object_index==obj_playerClient || object_is_ancestor(player.object_index, obj_playerClient)) &amp;&amp; player.items[player.curStation]!=""){
+    if(instance_number(obj_playerClient)&gt;0 &amp;&amp; (player.object_index==obj_playerClient || object_is_ancestor(player.object_index, obj_playerClient)) &amp;&amp; player.items[player.curStation]!=""){
         var selectX = 0;
         var selectY = 0;
         switch(player.curStation){
