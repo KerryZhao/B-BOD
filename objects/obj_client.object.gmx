@@ -906,13 +906,15 @@ if(state==GAME){
                 player.reflex = buffer_read(async_load[? "buffer"], buffer_u8);
                 player.invincible = buffer_read(async_load[? "buffer"], buffer_bool);
                 player.num = playerID;
-                var split = scr_splitString(clientInfo[|i], "&amp;");
+                var split = scr_splitString(clientInfo[|playerID], "&amp;");
                 player.name = split[0];
-                show_debug_message(player.name+":"+string(player.num));
             }
             for(var i=instance_number(obj_playerNetwork);i&gt;numPlayers-1;i--)
                 with(instance_find(obj_playerNetwork, i))
                     instance_destroy();
+            for(var i=0;i&lt;ds_list_size(clientInfo);i++)
+                show_debug_message(clientInfo[|i]);
+            show_debug_message("---------------");
             break;
             
         case END_GAME:
