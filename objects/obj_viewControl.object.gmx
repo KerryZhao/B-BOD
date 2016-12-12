@@ -164,10 +164,26 @@ ammoSize = 2;
           <argument>
             <kind>1</kind>
             <string>///View Entire Room
-view_xview[0] = 0;
-view_yview[0] = 0;
-view_wview[0] = room_width;
-view_hview[0] = room_height;
+
+//Get width of view based on room size
+var tempMinYSize = minYSize;
+if(room_width+bufferSize*2&gt;minXSize){
+    view_wview[0] = room_width+bufferSize*2;
+    tempMinYSize = (room_width)/minXSize*minYSize+bufferSize*2;
+}
+else
+    view_wview[0] = minXSize;
+
+//Get height of view based on players
+if(room_height+bufferSize*2&gt;tempMinYSize){
+    view_hview[0] = room_height+bufferSize*2;
+    view_wview[0] = (room_height)/minYSize*minXSize+bufferSize*2;
+}
+else
+    view_hview[0] = tempMinYSize;
+
+view_xview[0] = (view_wview[0]-room_width)/2;
+view_yview[0] = (view_hview[0]-room_height)/2;
 </string>
           </argument>
         </arguments>

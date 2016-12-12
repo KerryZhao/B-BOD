@@ -309,7 +309,6 @@ for(var i=0;i&lt;count;i++){
 }
 
 //Write the player info
-var playerID = 0;
 if(!serverPlayerDead &amp;&amp; instance_number(obj_playerClient)&lt;=0){
     serverPlayerDead = true;
     numPlayers--;
@@ -317,7 +316,7 @@ if(!serverPlayerDead &amp;&amp; instance_number(obj_playerClient)&lt;=0){
 buffer_write(updateBuffer, buffer_u8, numPlayers);
 //Write the server player
 if(!serverPlayerDead){
-    buffer_write(updateBuffer, buffer_u8, playerID);
+    buffer_write(updateBuffer, buffer_u8, 0);
     buffer_write(updateBuffer, buffer_f32, serverPlayer.x);
     buffer_write(updateBuffer, buffer_f32, serverPlayer.y);
     buffer_write(updateBuffer, buffer_f32, serverPlayer.phy_speed_x);
@@ -334,12 +333,13 @@ if(!serverPlayerDead){
     buffer_write(updateBuffer, buffer_u8, serverPlayer.reflex);
     buffer_write(updateBuffer, buffer_bool, serverPlayer.invincible);
 }
-playerID++;
 //Write the client players
 for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map_find_next(clients, address)){
     var client = clients[? address];
     if(!client[? "dead"]){
         var player = client[? "player"];
+        var playerID = client[? "num"];
+        show_debug_message(clientInfo[|playerID]+":"+string(playerID));
         buffer_write(updateBuffer, buffer_u8, playerID);
         buffer_write(updateBuffer, buffer_f32, player.x);
         buffer_write(updateBuffer, buffer_f32, player.y);
@@ -357,7 +357,6 @@ for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map
         buffer_write(updateBuffer, buffer_u8, player.reflex);
         buffer_write(updateBuffer, buffer_bool, player.invincible);
     }
-    playerID++;
 }
 
 //Send all the data to the clients
@@ -838,6 +837,7 @@ for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map
     if(client[? "ready"]) info += "Yes";
     else info += "No";
     buffer_write(infoBuffer, buffer_string, info);
+    client[? "num"] = i;
     clientInfo[| i++] = info;
 }
 buffer_write(infoBuffer, buffer_u8, 0);

@@ -556,18 +556,41 @@ switch(messageType){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Handle Messages in LOBBY
-if(state==LOBBY){
-    switch(messageType){
+            <string>///Handle update of client list
+switch(messageType){
         case CONNECT:
             // Get the client current client list
+            show_debug_message("CONNECT MESSAGE");
             ds_list_clear(clientInfo);
             var numClients = buffer_read(async_load[? "buffer"], buffer_u8);
             for(var i=0;i&lt;numClients;i++)
                 ds_list_add(clientInfo, buffer_read(async_load[? "buffer"], buffer_string));
             clientNum = buffer_read(async_load[? "buffer"], buffer_u8);
             break;
-            
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Handle Messages in LOBBY
+if(state==LOBBY){
+    switch(messageType){
         case READY:
             ready = !ready;
             if(instance_number(obj_buttonMReady)&gt;0){
@@ -854,6 +877,8 @@ if(state==GAME){
                 var pY = buffer_read(async_load[? "buffer"], buffer_f32);
                 if(playerID==clientNum+1){
                     player = instance_find(obj_playerClient, 0);
+                    if(player==noone)
+                        continue;
                     player.newX = pX;
                     player.newY = pY;
                 }
@@ -883,6 +908,7 @@ if(state==GAME){
                 player.num = playerID;
                 var split = scr_splitString(clientInfo[|i], "&amp;");
                 player.name = split[0];
+                show_debug_message(player.name+":"+string(player.num));
             }
             for(var i=instance_number(obj_playerNetwork);i&gt;numPlayers-1;i--)
                 with(instance_find(obj_playerNetwork, i))
