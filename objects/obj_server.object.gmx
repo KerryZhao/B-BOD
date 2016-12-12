@@ -310,31 +310,29 @@ for(var i=0;i&lt;count;i++){
 
 //Write the player info
 var playerID = 0;
+if(!serverPlayerDead &amp;&amp; instance_number(obj_playerClient)&lt;=0){
+    serverPlayerDead = true;
+    numPlayers--;
+}
 buffer_write(updateBuffer, buffer_u8, numPlayers);
 //Write the server player
 if(!serverPlayerDead){
-    if(instance_exists(serverPlayer)){
-        buffer_write(updateBuffer, buffer_u8, playerID);
-        buffer_write(updateBuffer, buffer_f32, serverPlayer.x);
-        buffer_write(updateBuffer, buffer_f32, serverPlayer.y);
-        buffer_write(updateBuffer, buffer_f32, serverPlayer.phy_speed_x);
-        buffer_write(updateBuffer, buffer_f32, serverPlayer.phy_speed_y);
-        buffer_write(updateBuffer, buffer_u8, serverPlayer.hitPoints);
-        buffer_write(updateBuffer, buffer_f32, serverPlayer.fuel);
-        buffer_write(updateBuffer, buffer_f32, serverPlayer.ammo);
-        buffer_write(updateBuffer, buffer_string, serverPlayer.items[OFFENSE]);
-        buffer_write(updateBuffer, buffer_string, serverPlayer.items[DEFENSE]);
-        buffer_write(updateBuffer, buffer_string, serverPlayer.items[UTILITY]);
-        buffer_write(updateBuffer, buffer_string, serverPlayer.items[TRAP]);
-        buffer_write(updateBuffer, buffer_u8, serverPlayer.shield);
-        buffer_write(updateBuffer, buffer_u8, serverPlayer.body);
-        buffer_write(updateBuffer, buffer_u8, serverPlayer.reflex);
-        buffer_write(updateBuffer, buffer_bool, serverPlayer.invincible);
-    }
-    else{
-        serverPlayerDead = true;
-        numPlayers--;
-    }
+    buffer_write(updateBuffer, buffer_u8, playerID);
+    buffer_write(updateBuffer, buffer_f32, serverPlayer.x);
+    buffer_write(updateBuffer, buffer_f32, serverPlayer.y);
+    buffer_write(updateBuffer, buffer_f32, serverPlayer.phy_speed_x);
+    buffer_write(updateBuffer, buffer_f32, serverPlayer.phy_speed_y);
+    buffer_write(updateBuffer, buffer_u8, serverPlayer.hitPoints);
+    buffer_write(updateBuffer, buffer_f32, serverPlayer.fuel);
+    buffer_write(updateBuffer, buffer_f32, serverPlayer.ammo);
+    buffer_write(updateBuffer, buffer_string, serverPlayer.items[OFFENSE]);
+    buffer_write(updateBuffer, buffer_string, serverPlayer.items[DEFENSE]);
+    buffer_write(updateBuffer, buffer_string, serverPlayer.items[UTILITY]);
+    buffer_write(updateBuffer, buffer_string, serverPlayer.items[TRAP]);
+    buffer_write(updateBuffer, buffer_u8, serverPlayer.shield);
+    buffer_write(updateBuffer, buffer_u8, serverPlayer.body);
+    buffer_write(updateBuffer, buffer_u8, serverPlayer.reflex);
+    buffer_write(updateBuffer, buffer_bool, serverPlayer.invincible);
 }
 playerID++;
 //Write the client players
