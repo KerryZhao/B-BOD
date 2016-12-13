@@ -909,7 +909,7 @@ if(state==GAME){
                 if(ds_list_size(clientInfo)&gt;playerID){
                     var split = scr_splitString(clientInfo[|playerID], "&amp;");
                     player.name = split[0];
-                    show_debug_message(player.name+":"+string(playerID));
+                    show_debug_message(player.name+":"+string(playerID)+":"+string(playerNum-1));
                 }
             }
             for(var i=instance_number(obj_playerNetwork);i&gt;numPlayers-1;i--)

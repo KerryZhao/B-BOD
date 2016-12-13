@@ -334,6 +334,7 @@ if(!serverPlayerDead){
     buffer_write(updateBuffer, buffer_bool, serverPlayer.invincible);
 }
 //Write the client players
+var playerCount = 0;
 for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map_find_next(clients, address)){
     var client = clients[? address];
     if(!client[? "dead"]){
@@ -356,8 +357,16 @@ for(var address=ds_map_find_first(clients);!is_undefined(address);address=ds_map
         buffer_write(updateBuffer, buffer_u8, player.body);
         buffer_write(updateBuffer, buffer_u8, player.reflex);
         buffer_write(updateBuffer, buffer_bool, player.invincible);
+        playerCount++;
+    }
+    else{
+        var playerID = client[? "num"];
+        show_debug_message(clientInfo[|playerID]+":DEAD");
     }
 }
+show_debug_message(playerCount);
+show_debug_message(numPlayers);
+show_debug_message("---------------");
 
 //Send all the data to the clients
 scr_sendMessageUdpAll(clients, updateBuffer);
@@ -520,7 +529,8 @@ for(var i=0;i&lt;ds_list_size(disconnect);i++){
         client[? "dead"] = true;
         with(client[? "player"]) 
             instance_destroy();
-        numPlayers--;
+        if(!client[? "dead"])
+            numPlayers--;
     }
     ds_map_destroy(client);
     ds_map_delete(clients, disconnect[| i]);
