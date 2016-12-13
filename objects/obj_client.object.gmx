@@ -876,11 +876,10 @@ if(state==GAME){
                 var pX = buffer_read(async_load[? "buffer"], buffer_f32);
                 var pY = buffer_read(async_load[? "buffer"], buffer_f32);
                 if(playerID==clientNum+1){
+                    show_debug_message("CLIENT");
                     player = instance_find(obj_playerClient, 0);
                     if(player==noone)
                         continue;
-                    player.newX = pX;
-                    player.newY = pY;
                 }
                 else if(playerNum&gt;=instance_number(obj_playerNetwork)){
                     player = instance_create(pX, pY, obj_playerNetwork);
@@ -888,10 +887,10 @@ if(state==GAME){
                 }
                 else{
                     player = instance_find(obj_playerNetwork, playerNum);
-                    player.newX = pX;
-                    player.newY = pY;
                     playerNum++;
                 }
+                player.newX = pX;
+                player.newY = pY;
                 player.phy_speed_x = buffer_read(async_load[? "buffer"], buffer_f32);
                 player.phy_speed_y = buffer_read(async_load[? "buffer"], buffer_f32);
                 player.hitPoints = buffer_read(async_load[? "buffer"], buffer_u8);
@@ -909,10 +908,10 @@ if(state==GAME){
                 if(ds_list_size(clientInfo)&gt;playerID){
                     var split = scr_splitString(clientInfo[|playerID], "&amp;");
                     player.name = split[0];
-                    show_debug_message(player.name+":"+string(playerID)+":"+string(playerNum-1));
                 }
             }
-            for(var i=instance_number(obj_playerNetwork);i&gt;numPlayers-1;i--)
+            var clientPlayers = numPlayers - (instance_number(obj_playerClient)&gt;0);
+            for(var i=instance_number(obj_playerNetwork);i&gt;clientPlayers;i--)
                 with(instance_find(obj_playerNetwork, i))
                     instance_destroy();
             for(var i=0;i&lt;ds_list_size(clientInfo);i++)
